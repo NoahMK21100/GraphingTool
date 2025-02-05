@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graph Visualization Tool</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./components/ControlPanel/ControlPanel.css" />
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="input-section">
+        <h3>Input Data</h3>
+        <div class="matrix-header">
+          <div class="header-cell">
+            <input type="text" value="Technology" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Tech Type" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Subsystem" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Component" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Manufacturer" class="editable-header" />
+          </div>
+        </div>
+        <div class="matrix-container">
+          <!-- Dynamic rows will be added here -->
+        </div>
+        <button class="add-row-button">Add Row</button>
+        <div class="input-controls">
+          <button id="generateBtn">Update Diagram</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="theme-toggle">
+          <h3>Theme</h3>
+          <button id="themeToggle" class="theme-toggle-btn">
+            <span class="light-icon">☀️</span>
+            <span class="dark-icon">🌙</span>
+          </button>
+        </div>
+
+        <div class="graph-type-selector">
+          <h3>Visualization Type</h3>
+          <select id="graphType">
+            <option value="sankey">Sankey Diagram</option>
+            <option value="force">Force Graph</option>
+            <option value="sunburst">Sunburst</option>
+            <option value="chord">Chord Diagram</option>
+            <option value="circle">Circle Packing</option>
+          </select>
+        </div>
+
+        <div class="color-scheme-selector">
+          <h3>Color Scheme</h3>
+          <select id="colorPreset">
+            <option value="default">Default</option>
+            <option value="distinct">Distinct</option>
+            <option value="nature">Nature</option>
+            <option value="bright">Bright</option>
+            <option value="vivid">Vivid</option>
+            <option value="bold">Bold</option>
+          </select>
+        </div>
+
+        <div class="color-settings">
+          <h3>Node Colors</h3>
+          <div class="color-pickers">
+            <div class="color-picker">
+              <label>Level 1</label>
+              <input type="color" id="nodeColor1" value="#818cf8" />
+            </div>
+            <div class="color-picker">
+              <label>Level 2</label>
+              <input type="color" id="nodeColor2" value="#a78bfa" />
+            </div>
+            <div class="color-picker">
+              <label>Level 3</label>
+              <input type="color" id="nodeColor3" value="#ec4899" />
+            </div>
+            <div class="color-picker">
+              <label>Level 4</label>
+              <input type="color" id="nodeColor4" value="#f43f5e" />
+            </div>
+            <div class="color-picker">
+              <label>Level 5</label>
+              <input type="color" id="nodeColor5" value="#f59e0b" />
+            </div>
+          </div>
+        </div>
+
+        <div class="sankey-controls" data-graph-type="sankey">
+          <h3>Sankey Settings</h3>
+          <div class="spacing-control">
+            <label>Node Padding</label>
+            <input type="range" id="nodePadding" min="0" max="100" value="30" />
+          </div>
+        </div>
+      </div>
+
+      <div class="title-inputs-section">
+        <div class="title-inputs-container">
+          <div class="input-group">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" placeholder="Company Name" value="Anduril" />
+          </div>
+          <div class="input-group">
+            <label for="techName">Technology Name</label>
+            <input type="text" id="techName" placeholder="Technology Name" value="ALTIUS DRONE" />
+          </div>
+        </div>
+        <div class="export-controls">
+          <button id="exportPNG">Export PNG</button>
+          <button id="exportSVG">Export SVG</button>
+        </div>
+      </div>
+    </div>
+    <div id="visualization-container" class="visualization-container"></div>
+  </div>
+  <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>

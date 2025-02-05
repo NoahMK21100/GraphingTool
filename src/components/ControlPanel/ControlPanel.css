@@ -1,0 +1,766 @@
+/* Fix for text colors and inputs */
+.header-cell input.editable-header,
+.matrix-cell input[type="text"],
+input[type="text"],
+input[type="number"],
+select,
+.graph-type-selector select,
+.color-scheme-selector select {
+    color: var(--input-text);
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+}
+
+/* Fix for dropdowns */
+select {
+    background-color: var(--select-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* Fix for section headers and labels */
+h3,
+label,
+.color-picker label,
+.spacing-control label,
+.graph-type-selector h3,
+.color-settings h3,
+.input-group label {
+    color: var(--text-primary);
+}
+
+/* Fix for matrix header text */
+.matrix-header input {
+    color: var(--text-primary);
+    background-color: var(--input-bg);
+}
+
+/* Fix for highlighted text */
+::selection {
+    background-color: var(--button-primary);
+    color: white;
+}
+
+/* Fix for section titles */
+.theme-toggle h3,
+.graph-type-selector h3,
+.color-scheme-selector h3,
+.color-settings h3,
+.sankey-controls h3 {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Fix for level labels */
+.color-settings label,
+.color-picker label {
+    color: var(--text-primary);
+}
+
+/* Fix for dropdown backgrounds */
+#graphType,
+#colorPreset {
+    background-color: var(--select-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.control-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    width: 320px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 300;
+}
+
+.tab-navigation {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    background: #6366f1;
+    color: white;
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.button {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.button.primary {
+    background: #6366f1;
+    color: white;
+}
+
+.button.primary:hover {
+    background: #4f46e5;
+}
+
+.nodes-container {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0.5rem;
+}
+
+.node-item {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e7eb;
+    transition: all 0.2s;
+}
+
+.node-item:last-child {
+    border-bottom: none;
+}
+
+.node-item:hover {
+    background: #f3f4f6;
+}
+
+.node-item.selected {
+    background: #eff6ff;
+    border-color: #6366f1;
+}
+
+.weight-slider {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.weight-slider input {
+    flex: 1;
+}
+
+.color-preview {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0 1rem;
+}
+
+.color-box {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+}
+
+.layout-options {
+    margin-top: 1rem;
+}
+
+.slider-group {
+    margin-bottom: 1rem;
+}
+
+.slider-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+h3 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+
+
+#flowInput {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", monospace;
+    font-size: 13px;
+    resize: vertical;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+.input-controls {
+    display: flex;
+    gap: 8px;
+}
+
+/* Settings Section */
+.settings-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.graph-type-selector h3,
+.color-settings h3,
+.input-group label,
+h3 {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.graph-type-selector select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.color-settings {
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.color-group {
+    display: grid;
+    grid-template-columns: 1fr 36px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.color-group:last-child {
+    border-bottom: none;
+}
+
+.color-group label {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+input[type="color"] {
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    width: 36px;
+    height: 24px;
+    padding: 2px;
+    background: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Title Inputs */
+.title-inputs {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.input-group {
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: #1e293b;
+    margin-bottom: 4px;
+    font-weight: 400;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Buttons */
+button,
+input,
+select {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+}
+
+#generateBtn {
+    background: #6366f1;
+    color: white;
+    flex: 1;
+}
+
+#generateBtn:hover {
+    background: #4f46e5;
+}
+
+#clearBtn {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+#clearBtn:hover {
+    background: #cbd5e1;
+}
+
+.export-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.export-controls button {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+}
+
+.export-controls button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* Control Panel Container */
+.sidebar {
+    width: 500px;
+    min-width: 400px;
+    flex-shrink: 0;
+    background: var(--sidebar-bg);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 24px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px -1px var(--shadow-color);
+    max-height: calc(100vh - 48px);
+}
+
+/* Input Section */
+.input-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 0px 20px 20px 10px;
+    margin-bottom: 32px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-section h3 {
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+/* Matrix Input */
+.matrix-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 3px;
+    padding: 0 0px;
+}
+
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.matrix-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    padding: 6px;
+    box-sizing: border-box;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.matrix-cell {
+    min-width: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.matrix-cell input[type="text"] {
+    width: 100%;
+    min-width: 0;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 12px;
+    box-sizing: border-box;
+    background: var(--input-bg);
+    color: var(--matrix-input-text);
+}
+
+.header-cell {
+    min-width: 0;
+}
+
+.header-cell input.editable-header {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--matrix-input-text);
+    background: var(--input-bg);
+    cursor: pointer;
+}
+
+.header-cell input.editable-header:hover {
+    border-color: var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.header-cell input.editable-header:focus {
+    border-color: var(--button-primary);
+    background: var(--input-bg);
+    outline: none;
+}
+
+/* Matrix Controls */
+.add-row-button {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--button-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color);
+    margin-bottom: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-row-button:hover {
+    background-color: var(--button-secondary-hover) !important;
+}
+
+.input-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.input-controls button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#generateBtn {
+    background: var(--button-primary);
+    color: white;
+    flex: 1;
+}
+
+#generateBtn:hover {
+    background: var(--button-primary-hover);
+}
+
+#clearBtn {
+    background: var(--button-secondary);
+    color: var(--text-primary);
+}
+
+#clearBtn:hover {
+    background: var(--button-secondary-hover);
+}
+
+/* Settings Section */
+.settings-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+.theme-toggle-btn {
+    background: var(--button-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--button-secondary-hover);
+}
+
+/* Color Scheme Selector */
+.color-scheme-selector {
+    margin: 0;
+    padding: 0;
+}
+
+.color-scheme-selector select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* Title Inputs Section */
+.title-inputs-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 24px;
+}
+
+.title-inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.input-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.input-group input:hover {
+    border-color: var(--button-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--button-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Export Controls */
+.export-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.export-controls button {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--button-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.export-controls button:hover {
+    background-color: var(--button-secondary-hover) !important;
+    transform: none;
+}
+
+/* Row Action Buttons */
+.row-action-buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.row-action-buttons button {
+    width: calc(50% - 4px);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.row-action-buttons button.duplicate {
+    background-color: #86efac !important;
+    color: #166534 !important;
+}
+
+.row-action-buttons button.duplicate:hover {
+    background-color: #6ee7a0 !important;
+}
+
+.row-action-buttons button.delete {
+    background-color: #fca5a5 !important;
+    color: #991b1b !important;
+}
+
+.row-action-buttons button.delete:hover {
+    background-color: #f87171 !important;
+}
+
+/* Button base styles */
+button {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Section Headers */
+h3,
+.theme-toggle h3,
+.graph-type-selector h3,
+.color-scheme-selector h3,
+.color-settings h3,
+.sankey-controls h3,
+.input-section h3 {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Remove border and adjust spacing */
+.color-settings {
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+/* Fix for section headers and labels */
+label,
+.color-picker label,
+.spacing-control label,
+.input-group label {
+    color: var(--text-primary);
+}
+
+/* Fix for dropdowns */
+select,
+#graphType,
+#colorPreset,
+.graph-type-selector select,
+.color-scheme-selector select {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--select-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
