@@ -27,9 +27,38 @@ export class SunburstGraph extends BaseGraph {
 
         // Get the path from root to this node
         const path = d.ancestors().reverse();
-        // The level is the index in the path (minus 1 to skip root)
-        const level = path.indexOf(d) - 1;
+        // The level is the index in the path (minus 1 to skip root, plus 1 to start at level1)
+        const level = path.indexOf(d); // This will naturally give us 1-5 instead of 0-4
         return this.settings.colors[`level${level}`] || '#818cf8';
+    }
+
+    getNodeOpacity() {
+        return this.settings.opacity?.nodes ?? 0.85;
+    }
+
+    getNodeStroke(d) {
+        // Don't show outline for root node or invisible nodes
+        if (!d.parent || !this.arcVisible(d.current)) return 'none';
+        if (!this.settings.display?.showOutlines) return 'none';
+
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? '#ffffff' : '#000000';
+    }
+
+    getNodeStrokeWidth(d) {
+        // Don't show outline for root node or invisible nodes
+        if (!d.parent || !this.arcVisible(d.current)) return 0;
+        if (!this.settings.display?.showOutlines) return 0;
+
+        return 1.5;
+    }
+
+    getNodeStrokeOpacity(d) {
+        // Don't show outline for root node or invisible nodes
+        if (!d.parent || !this.arcVisible(d.current)) return 0;
+        if (!this.settings.display?.showOutlines) return 0;
+
+        return 0.8;
     }
 
     createSunburstDiagram() {
@@ -62,6 +91,8 @@ export class SunburstGraph extends BaseGraph {
             .style('width', '100%')
             .style('height', '100%');
 
+        this.svg = svg; // Store reference for updates
+
         const g = svg.append('g');
 
         const path = g
@@ -69,7 +100,10 @@ export class SunburstGraph extends BaseGraph {
             .data(root.descendants().slice(1))
             .join('path')
             .attr('fill', d => this.getNodeColor(d))
-            .attr('fill-opacity', d => this.arcVisible(d.current) ? (d.children ? 0.6 : 0.4) : 0)
+            .attr('fill-opacity', d => this.arcVisible(d.current) ? this.getNodeOpacity() : 0)
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d))
             .attr('d', d => arc(d.current));
 
         path.filter(d => d.children)
@@ -116,15 +150,31 @@ export class SunburstGraph extends BaseGraph {
 
             const t = g.transition().duration(750);
 
+            // Immediately hide outlines of nodes that will be invisible
+            path.filter(d => !self.arcVisible(d.target))
+                .attr('stroke-opacity', 0)
+                .attr('stroke-width', 0);
+
             path.transition(t)
                 .tween('data', d => {
                     const i = d3.interpolate(d.current, d.target);
-                    return t => d.current = i(t);
+                    return t => {
+                        d.current = i(t);
+                        // Update stroke properties during the transition
+                        if (!self.arcVisible(d.current)) {
+                            d3.select(this)
+                                .attr('stroke-opacity', 0)
+                                .attr('stroke-width', 0);
+                        }
+                    };
                 })
                 .filter(function (d) {
                     return +this.getAttribute('fill-opacity') || self.arcVisible(d.target);
                 })
-                .attr('fill-opacity', d => self.arcVisible(d.target) ? (d.children ? 0.6 : 0.4) : 0)
+                .attr('fill-opacity', d => self.arcVisible(d.target) ? self.getNodeOpacity() : 0)
+                .attr('stroke', d => self.getNodeStroke(d))
+                .attr('stroke-width', d => self.getNodeStrokeWidth(d))
+                .attr('stroke-opacity', d => self.getNodeStrokeOpacity(d))
                 .attrTween('d', d => () => arc(d.current));
 
             label.transition(t)
@@ -157,5 +207,21 @@ export class SunburstGraph extends BaseGraph {
         this.radius = Math.min(this.width, this.height) / 8;
 
         this.createSunburstDiagram();
+    }
+
+    update() {
+        if (!this.svg) return;
+
+        // Update paths
+        this.svg.selectAll('path')
+            .attr('fill', d => this.getNodeColor(d))
+            .attr('fill-opacity', d => this.arcVisible(d.current) ? this.getNodeOpacity() : 0)
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
+
+        // Update labels
+        this.svg.selectAll('text')
+            .style('fill', this.currentLabelColor);
     }
 } 

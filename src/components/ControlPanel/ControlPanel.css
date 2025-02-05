@@ -764,3 +764,193 @@ select,
     font-size: 14px;
     cursor: pointer;
 }
+
+.opacity-control {
+    margin-top: 16px;
+    padding: 8px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.opacity-control label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.opacity-control input[type="range"] {
+    width: 100%;
+    margin: 8px 0;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    height: 6px;
+    -webkit-appearance: none;
+}
+
+.opacity-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--button-primary);
+    cursor: pointer;
+    border: 2px solid var(--bg-primary);
+    transition: all 0.2s ease;
+}
+
+.opacity-control input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.1);
+}
+
+.opacity-control .opacity-value {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 8px;
+}
+
+.slider-settings {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.slider-control {
+    margin-bottom: 16px;
+}
+
+.slider-control:last-child {
+    margin-bottom: 0;
+}
+
+.slider-control h3 {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.slider-control input[type="range"] {
+    width: 100%;
+    margin: 8px 0;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    height: 6px;
+    -webkit-appearance: none;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--button-primary);
+    cursor: pointer;
+    border: 2px solid var(--bg-primary);
+    transition: all 0.2s ease;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.1);
+}
+
+.slider-value {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: 8px;
+    min-width: 36px;
+    text-align: right;
+}
+
+.sankey-controls {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.sankey-controls h3 {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.slider-control {
+    margin-bottom: 16px;
+}
+
+.slider-control:last-child {
+    margin-bottom: 0;
+}
+
+.slider-control label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.slider-control input[type="range"] {
+    width: calc(100% - 50px);
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    -webkit-appearance: none;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #6366f1;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+.slider-control input[type="range"]::-webkit-slider-thumb:hover {
+    background: #4f46e5;
+}
+
+.slider-value {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    min-width: 40px;
+}
+
+.slider-control input[type="checkbox"] {
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.graph-settings {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.graph-settings h3 {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+}

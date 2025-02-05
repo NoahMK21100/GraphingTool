@@ -65,11 +65,19 @@
           <h3>Color Scheme</h3>
           <select id="colorPreset">
             <option value="default">Default</option>
-            <option value="distinct">Distinct</option>
-            <option value="nature">Nature</option>
-            <option value="bright">Bright</option>
-            <option value="vivid">Vivid</option>
-            <option value="bold">Bold</option>
+            <option value="aukus">AUKUS Theme</option>
+            <option value="freshMint">Fresh Mint</option>
+            <option value="vibrantJewel">Vibrant Jewel</option>
+            <option value="earthTones">Earth Tones</option>
+            <option value="deepOcean">Deep Ocean</option>
+            <option value="emeraldDream">Emerald Dream</option>
+            <option value="royalPurple">Royal Purple</option>
+            <option value="sunsetGlow">Sunset Glow</option>
+            <option value="modernMuted">Modern Muted</option>
+            <option value="nordic">Nordic</option>
+            <option value="crimsonShades">Crimson Shades</option>
+            <option value="deepForest">Deep Forest</option>
+            <option value="midnightBlue">Midnight Blue</option>
           </select>
         </div>
 
@@ -99,11 +107,21 @@
           </div>
         </div>
 
-        <div class="sankey-controls" data-graph-type="sankey">
-          <h3>Sankey Settings</h3>
-          <div class="spacing-control">
+        <div class="graph-settings">
+          <h3>Graph Settings</h3>
+          <div class="slider-control">
             <label>Node Padding</label>
             <input type="range" id="nodePadding" min="0" max="100" value="30" />
+            <span class="slider-value" id="nodePaddingValue">30</span>
+          </div>
+          <div class="slider-control">
+            <label>Color Opacity</label>
+            <input type="range" id="opacitySlider" min="0.3" max="1" step="0.05" value="0.85" />
+            <span class="slider-value" id="opacityValue">0.85</span>
+          </div>
+          <div class="slider-control">
+            <label>Show Node Outlines</label>
+            <input type="checkbox" id="showOutlines" checked />
           </div>
         </div>
       </div>

@@ -144,8 +144,36 @@ export class BaseGraph {
         return GraphUtils.getNodeColor(d, this.settings.colors);
     }
 
+    getNodeOpacity() {
+        return this.settings.opacity?.nodes ?? 0.85;
+    }
+
+    getLinkOpacity() {
+        return this.settings.opacity?.links ?? 0.6;
+    }
+
+    getNodeStroke(d) {
+        if (!this.settings.display?.showOutlines) return 'none';
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? '#ffffff' : '#000000';
+    }
+
+    getNodeStrokeWidth(d) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 1.5;
+    }
+
+    getNodeStrokeOpacity(d) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 0.8;
+    }
+
     getNodeRadius(d) {
         return GraphUtils.getNodeRadius(d, GRAPH_CONSTANTS.MIN_NODE_RADIUS, GRAPH_CONSTANTS.MAX_NODE_RADIUS);
+    }
+
+    getNodePadding() {
+        return this.settings.sankey?.nodePadding || 30;
     }
 
     createSvg() {

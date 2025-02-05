@@ -42,64 +42,36 @@ export class ForceGraph extends BaseGraph {
         const width = this.wrapper.clientWidth;
         const height = this.wrapper.clientHeight;
 
-        // Create the simulation with centered forces
-        this.simulation = d3.forceSimulation(this.data.nodes)
-            .force('link', d3.forceLink(this.data.links)
-                .id(d => d.id)
-                .distance(100))  // Reduced distance
-
-            // Center force to keep everything in the middle
-            .force('center', d3.forceCenter(width / 2, height / 2).strength(1))
-
-            // Charge force for node repulsion
-            .force('charge', d3.forceManyBody()
-                .strength(-500)  // Reduced strength
-                .distanceMax(200))  // Limited distance effect
-
-            // Collision force to prevent overlap
-            .force('collide', d3.forceCollide()
-                .radius(d => this.getNodeRadius(d) + 10)
-                .strength(1))
-
-            // Boundary force to keep nodes within container
-            .force('x', d3.forceX(width / 2).strength(0.1))
-            .force('y', d3.forceY(height / 2).strength(0.1));
-
         // Create SVG with proper bounds
-        const svg = d3.select(this.chartContainer)
+        this.svg = d3.select(this.chartContainer)
             .append('svg')
             .attr('width', '100%')
             .attr('height', '100%')
             .attr('viewBox', [0, 0, width, height])
             .attr('preserveAspectRatio', 'xMidYMid meet');
 
-        // Create gradients for links
-        const defs = svg.append('defs');
-        this.data.links.forEach((link, i) => {
-            const gradient = defs.append('linearGradient')
-                .attr('id', `force-gradient-${i}`)
-                .attr('gradientUnits', 'userSpaceOnUse');
+        // Create the force simulation
+        this.simulation = d3.forceSimulation(this.data.nodes)
+            .force('link', d3.forceLink(this.data.links)
+                .id(d => d.id)
+                .distance(100))
+            .force('charge', d3.forceManyBody()
+                .strength(-500))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide()
+                .radius(d => this.getNodeRadius(d) + 10));
 
-            gradient.append('stop')
-                .attr('offset', '0%')
-                .attr('stop-color', this.getNodeColor({ column: link.source.column }));
-
-            gradient.append('stop')
-                .attr('offset', '100%')
-                .attr('stop-color', this.getNodeColor({ column: link.target.column }));
-        });
-
-        // Draw links
-        const link = svg.append('g')
+        // Draw the links
+        const link = this.svg.append('g')
             .selectAll('line')
             .data(this.data.links)
             .join('line')
-            .attr('stroke', (d, i) => `url(#force-gradient-${i})`)
-            .attr('stroke-width', d => Math.sqrt(d.value))
-            .attr('stroke-opacity', 0.6);
+            .attr('stroke', '#999')
+            .attr('stroke-opacity', this.getLinkOpacity())
+            .attr('stroke-width', 1);
 
-        // Draw nodes
-        const node = svg.append('g')
+        // Draw the nodes
+        const node = this.svg.append('g')
             .selectAll('g')
             .data(this.data.nodes)
             .join('g')
@@ -110,24 +82,22 @@ export class ForceGraph extends BaseGraph {
         node.append('circle')
             .attr('r', d => this.getNodeRadius(d))
             .attr('fill', d => this.getNodeColor(d))
-            .attr('stroke', '#fff')
-            .attr('stroke-width', 1.5);
+            .attr('fill-opacity', this.getNodeOpacity())
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
 
-        // Add labels to nodes
+        // Add labels
         node.append('text')
             .text(d => d.name)
             .attr('x', 0)
-            .attr('y', d => {
-                const sizes = [20, 15, 12, 10];
-                return sizes[d.column] + 10 || 20;
-            })
+            .attr('y', d => this.getNodeRadius(d) + 15)
             .attr('text-anchor', 'middle')
             .attr('class', 'node-label');
 
         // Store references
         this.node = node;
         this.link = link;
-        this.svg = svg;
 
         // Update positions on tick
         this.simulation.on('tick', () => {
@@ -181,21 +151,17 @@ export class ForceGraph extends BaseGraph {
                 }
             });
 
-            node.classed('faded', true);
-            link.classed('faded', true);
-
-            node.filter(n => connectedNodes.has(n.id))
-                .classed('faded', false)
-                .classed('highlighted', true);
-
-            link.filter((l, i) => connectedLinks.has(i))
-                .classed('faded', false)
-                .classed('highlighted', true);
+            // Update opacity for non-connected nodes and links
+            node.selectAll('circle')
+                .attr('fill-opacity', n => connectedNodes.has(n.id) ? this.getNodeOpacity() : 0.1);
+            link.attr('stroke-opacity', (l, i) => connectedLinks.has(i) ? this.getLinkOpacity() : 0.1);
         };
 
         const unhighlight = () => {
-            node.classed('faded', false).classed('highlighted', false);
-            link.classed('faded', false).classed('highlighted', false);
+            // Reset opacity to original settings
+            node.selectAll('circle')
+                .attr('fill-opacity', this.getNodeOpacity());
+            link.attr('stroke-opacity', this.getLinkOpacity());
         };
 
         node
@@ -224,8 +190,36 @@ export class ForceGraph extends BaseGraph {
     }
 
     getNodeColor(node) {
-        const level = node.column || 0;
-        return this.settings.colors[`level${level + 1}`] || '#818cf8';
+        const level = node.depth || node.column || 0;
+        return this.settings.colors[`level${level + 1}`] || this.settings.colors.level1;  // Default to level1 color instead of hardcoded
+    }
+
+    getNodePadding() {
+        return this.settings.padding || 10;
+    }
+
+    getNodeOpacity() {
+        return this.settings.opacity.nodes;
+    }
+
+    getLinkOpacity() {
+        return this.settings.opacity.links;
+    }
+
+    getNodeStroke(node) {
+        if (!this.settings.display?.showOutlines) return 'none';
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? '#ffffff' : '#000000';
+    }
+
+    getNodeStrokeWidth(node) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 1.5;
+    }
+
+    getNodeStrokeOpacity(node) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 0.8;
     }
 
     drawGraph() {
@@ -318,5 +312,22 @@ export class ForceGraph extends BaseGraph {
         this.context.fillStyle = '#818cf8';
         this.context.fillRect(-20, -1, 40 * p, 2);
         this.context.restore();
+    }
+
+    update() {
+        if (!this.node || !this.link) return;
+
+        // Update node appearance
+        this.node.selectAll('circle')
+            .attr('fill-opacity', this.getNodeOpacity())
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
+
+        // Update link opacity
+        this.link.attr('stroke-opacity', this.getLinkOpacity());
+
+        // Restart simulation with a small alpha to trigger movement
+        this.simulation.alpha(0.3).restart();
     }
 }

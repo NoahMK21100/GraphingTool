@@ -60,6 +60,30 @@ export class SankeyGraph extends BaseGraph {
         return this.settings.colors[`level${level}`] || (level === 5 ? '#818cf8' : '#818cf8');
     }
 
+    getNodeOpacity() {
+        return this.settings.opacity?.nodes ?? 0.85;
+    }
+
+    getLinkOpacity() {
+        return this.settings.opacity?.links ?? 0.6;
+    }
+
+    getNodeStroke(d) {
+        if (!this.settings.display?.showOutlines) return 'none';
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? '#ffffff' : '#1e293b';
+    }
+
+    getNodeStrokeWidth(d) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 2;
+    }
+
+    getNodeStrokeOpacity(d) {
+        if (!this.settings.display?.showOutlines) return 0;
+        return 0.9;
+    }
+
     createSankeyDiagram() {
         const margin = { top: 20, right: 80, bottom: 20, left: 80 };
 
@@ -123,7 +147,7 @@ export class SankeyGraph extends BaseGraph {
                 .attr('stroke', (d, i) => `url(#link-gradient-${i})`)
                 .attr('stroke-width', d => Math.max(1, d.width))
                 .attr('fill', 'none')
-                .attr('opacity', 1);
+                .attr('opacity', this.getLinkOpacity());
 
             // Draw nodes
             const node = g.append('g')
@@ -138,7 +162,10 @@ export class SankeyGraph extends BaseGraph {
                 .attr('height', d => Math.max(d.y1 - d.y0, 1))
                 .attr('width', d => d.x1 - d.x0)
                 .attr('fill', d => this.getNodeColor(d))
-                .attr('opacity', 0.8);
+                .attr('fill-opacity', this.getNodeOpacity())
+                .attr('stroke', d => this.getNodeStroke(d))
+                .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+                .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
 
             // Add labels
             node.each(function (d) {
@@ -224,11 +251,17 @@ export class SankeyGraph extends BaseGraph {
         this.createSankeyDiagram();
     }
 
-    updateLinkOpacity() {
+    update() {
+        // Update node appearance
+        this.svg.selectAll('.node rect')
+            .attr('fill-opacity', this.getNodeOpacity())
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
+
+        // Update link opacity
         this.svg.selectAll('.link')
-            .transition()
-            .duration(200)
-            .attr('opacity', this.settings.sankey.linkOpacity);
+            .attr('opacity', this.getLinkOpacity());
     }
 
     getConnectedWithPath(d, isNode = true) {

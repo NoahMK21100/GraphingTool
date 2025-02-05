@@ -29,6 +29,26 @@ export class CirclePackingGraph extends BaseGraph {
         return this.settings.colors[`level${level + 1}`] || '#818cf8';
     }
 
+    getNodeOpacity() {
+        return this.settings.opacity.nodes;
+    }
+
+    getNodeStroke(d) {
+        if (d.depth === 0 || !this.settings.display?.showOutlines) return 'none';
+        const theme = document.documentElement.getAttribute('data-theme');
+        return theme === 'dark' ? '#ffffff' : '#000000';
+    }
+
+    getNodeStrokeWidth(d) {
+        if (d.depth === 0 || !this.settings.display?.showOutlines) return 0;
+        return 1.5;
+    }
+
+    getNodeStrokeOpacity(d) {
+        if (d.depth === 0 || !this.settings.display?.showOutlines) return 0;
+        return 0.8;
+    }
+
     createCirclePacking() {
         this.chartContainer.innerHTML = '';
 
@@ -46,7 +66,7 @@ export class CirclePackingGraph extends BaseGraph {
         // Create the pack layout with more padding for top level
         const pack = d3.pack()
             .size([minDimension - this.padding * 2, minDimension - this.padding * 2])
-            .padding(d => d.depth === 0 ? 30 : d.depth === 1 ? 20 : 5);
+            .padding(d => d.depth === 0 ? 30 : d.depth === 1 ? 20 : 5);  // Fixed padding values
 
         const root = d3.hierarchy(this.data)
             .sum(d => d.value)
@@ -64,17 +84,13 @@ export class CirclePackingGraph extends BaseGraph {
             .data(packedData.descendants())
             .join('circle')
             .attr('fill', d => this.getNodeColor(d))
-            .attr('fill-opacity', d => d.depth === 0 ? 0 : 0.85)
+            .attr('fill-opacity', d => this.getNodeOpacity())
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d))
             .attr('pointer-events', d => !d.children || d.depth === 0 ? 'none' : null)
             .attr('transform', d => `translate(${d.x},${d.y})`)
-            .attr('r', d => d.r)
-            .attr('stroke', d => {
-                if (d.depth === 0) return null;
-                const color = d3.color(this.getNodeColor(d));
-                return d.depth === 1 && color ? color.darker(0.2) : null;
-            })
-            .attr('stroke-width', d => d.depth === 1 ? 2 : 1)
-            .attr('stroke-opacity', d => d.depth === 0 ? 0 : 0.3);
+            .attr('r', d => d.r);
 
         // Store the instance reference for event handlers
         const self = this;
@@ -172,5 +188,19 @@ export class CirclePackingGraph extends BaseGraph {
         this.height = this.chartContainer.clientHeight;
         this.view = [this.width / 2, this.height / 2, this.width];
         this.createCirclePacking();
+    }
+
+    update() {
+        // Update circles
+        this.svg.selectAll('circle')
+            .attr('fill', d => this.getNodeColor(d))
+            .attr('fill-opacity', this.getNodeOpacity())
+            .attr('stroke', d => this.getNodeStroke(d))
+            .attr('stroke-width', d => this.getNodeStrokeWidth(d))
+            .attr('stroke-opacity', d => this.getNodeStrokeOpacity(d));
+
+        // Update labels
+        this.svg.selectAll('text')
+            .style('fill', this.currentLabelColor);
     }
 } 

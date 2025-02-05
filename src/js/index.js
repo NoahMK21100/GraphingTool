@@ -40,25 +40,121 @@ class GraphVisualizer {
                 level4: document.getElementById('nodeColor4')?.value || '#f59e0b',
                 level5: document.getElementById('nodeColor5')?.value || '#818cf8'
             },
+            opacity: {
+                nodes: 0.85,
+                links: 0.6
+            },
             sankey: {
                 nodePadding: 30
             },
             force: {
                 linkDistance: 100,
                 chargeStrength: -300
+            },
+            display: {
+                showOutlines: true
             }
         };
 
         this.colorPresets = {
-            default: ['#818cf8', '#a78bfa', '#ec4899', '#f43f5e'],
-            distinct: ['#2563eb', '#7c3aed', '#db2777', '#dc2626'],
-            nature: ['#059669', '#8b5cf6', '#d97706', '#b91c1c'],
-            contrast: ['#0369a1', '#4f46e5', '#be185d', '#b45309'],
-            modern: ['#0284c7', '#7c3aed', '#e11d48', '#ea580c'],
-            bold: ['#1d4ed8', '#7e22ce', '#be123c', '#92400e'],
-            vivid: ['#0ea5e9', '#8b5cf6', '#f43f5e', '#f59e0b'],
-            deep: ['#1e40af', '#6d28d9', '#9d174d', '#92400e'],
-            bright: ['#0284c7', '#6d28d9', '#db2777', '#ea580c']
+            default: {
+                level1: '#818cf8',  // Indigo
+                level2: '#a78bfa',  // Purple
+                level3: '#ec4899',  // Pink
+                level4: '#f43f5e',  // Rose
+                level5: '#f59e0b'   // Amber
+            },
+            aukus: {
+                level1: '#002868',  // Navy Blue (US Flag Blue)
+                level2: '#012169',  // Royal Blue (UK Flag Blue)
+                level3: '#00247d',  // Royal Blue (Australian Flag Blue)
+                level4: '#C8102E',  // Red (Common in all flags)
+                level5: '#FFFFFF'   // White (Common in all flags)
+            },
+            vibrantJewel: {
+                level1: '#0ea5e9',  // Vivid Sky Blue
+                level2: '#6366f1',  // Electric Indigo
+                level3: '#8b5cf6',  // Rich Purple
+                level4: '#d946ef',  // Bright Magenta
+                level5: '#ec4899'   // Deep Pink
+            },
+            earthTones: {
+                level1: '#78350f',  // Deep Brown
+                level2: '#92400e',  // Rich Copper
+                level3: '#b45309',  // Warm Bronze
+                level4: '#d97706',  // Golden Brown
+                level5: '#f59e0b'   // Amber
+            },
+            deepOcean: {
+                level1: '#0c4a6e',  // Dark Ocean Blue
+                level2: '#075985',  // Deep Sea Blue
+                level3: '#0369a1',  // Rich Marine
+                level4: '#0284c7',  // Bright Ocean
+                level5: '#0ea5e9'   // Vivid Azure
+            },
+            emeraldDream: {
+                level1: '#064e3b',  // Dark Emerald
+                level2: '#065f46',  // Deep Forest
+                level3: '#047857',  // Rich Emerald
+                level4: '#059669',  // Bright Jade
+                level5: '#10b981'   // Vivid Green
+            },
+            royalPurple: {
+                level1: '#3b0764',  // Deep Purple
+                level2: '#4c1d95',  // Royal Purple
+                level3: '#5b21b6',  // Rich Violet
+                level4: '#6d28d9',  // Bright Purple
+                level5: '#7c3aed'   // Electric Violet
+            },
+            sunsetGlow: {
+                level1: '#7c2d12',  // Deep Rust
+                level2: '#9a3412',  // Rich Terra
+                level3: '#c2410c',  // Bright Orange
+                level4: '#ea580c',  // Vivid Orange
+                level5: '#f97316'   // Glowing Orange
+            },
+            modernMuted: {
+                level1: '#60a5fa',  // Muted Blue
+                level2: '#a78bfa',  // Muted Purple
+                level3: '#f472b6',  // Muted Pink
+                level4: '#34d399',  // Muted Green
+                level5: '#fbbf24'   // Muted Yellow
+            },
+            nordic: {
+                level1: '#64748b',  // Slate
+                level2: '#78716c',  // Warm Gray
+                level3: '#92400e',  // Rich Brown
+                level4: '#78350f',  // Deep Brown
+                level5: '#451a03'   // Dark Brown
+            },
+            freshMint: {
+                level1: '#99f6e4',  // Fresh Mint
+                level2: '#a5f3fc',  // Sky Blue
+                level3: '#bae6fd',  // Light Blue
+                level4: '#86efac',  // Light Green
+                level5: '#d9f99d'   // Lime Green
+            },
+            crimsonShades: {
+                level1: '#881337',  // Deep Crimson
+                level2: '#9f1239',  // Rich Ruby
+                level3: '#be123c',  // Bright Ruby
+                level4: '#e11d48',  // Vivid Red
+                level5: '#f43f5e'   // Glowing Rose
+            },
+            deepForest: {
+                level1: '#14532d',  // Dark Forest
+                level2: '#166534',  // Deep Pine
+                level3: '#15803d',  // Rich Forest
+                level4: '#16a34a',  // Bright Forest
+                level5: '#22c55e'   // Vivid Green
+            },
+            midnightBlue: {
+                level1: '#1e3a8a',  // Deep Navy
+                level2: '#1e40af',  // Rich Navy
+                level3: '#1d4ed8',  // Bright Navy
+                level4: '#2563eb',  // Electric Blue
+                level5: '#3b82f6'   // Vivid Blue
+            }
         };
 
         this.setupEventListeners();
@@ -69,6 +165,39 @@ class GraphVisualizer {
         document.querySelector('.add-row-button').addEventListener('click', () => {
             this.matrixInput.addRow();
         });
+
+        // Node padding slider
+        document.getElementById('nodePadding')?.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            this.settings.sankey.nodePadding = value;
+            document.getElementById('nodePaddingValue').textContent = value;
+            if (this.currentGraph) {
+                this.currentGraph.update();
+            }
+        });
+
+        // Opacity slider
+        document.getElementById('opacitySlider')?.addEventListener('input', (e) => {
+            const value = parseFloat(e.target.value);
+            this.settings.opacity.nodes = value;
+            this.settings.opacity.links = Math.max(0.3, value - 0.2); // Links slightly more transparent
+            document.getElementById('opacityValue').textContent = value.toFixed(2);
+            if (this.currentGraph) {
+                this.currentGraph.update();
+            }
+        });
+
+        // Show outlines toggle
+        document.getElementById('showOutlines')?.addEventListener('change', (e) => {
+            this.settings.display.showOutlines = e.target.checked;
+            if (this.currentGraph) {
+                this.currentGraph.update();
+            }
+        });
+
+        // Initialize slider values
+        document.getElementById('nodePaddingValue').textContent = this.settings.sankey.nodePadding;
+        document.getElementById('opacityValue').textContent = this.settings.opacity.nodes.toFixed(2);
     }
 
     setupEventListeners() {
@@ -107,25 +236,28 @@ class GraphVisualizer {
             this.updateURL();
         });
 
-        ['nodeColor0', 'nodeColor1', 'nodeColor2', 'nodeColor3', 'nodeColor4'].forEach((id, index) => {
+        ['nodeColor1', 'nodeColor2', 'nodeColor3', 'nodeColor4', 'nodeColor5'].forEach((id, index) => {
             document.getElementById(id)?.addEventListener('input', (e) => {
-                this.settings.colors[`level${index}`] = e.target.value;
+                this.settings.colors[`level${index + 1}`] = e.target.value;
                 this.updateGraph();
                 this.updateURL();
             });
         });
 
+        // Color preset listener
         document.getElementById('colorPreset')?.addEventListener('change', (e) => {
-            const colors = this.colorPresets[e.target.value];
-            colors.forEach((color, i) => {
-                // Update the color inputs visually
-                const input = document.getElementById(`nodeColor${i}`);
+            const selectedScheme = e.target.value;
+            const colorScheme = this.colorPresets[selectedScheme];
+
+            // Update the color inputs visually and settings
+            Object.entries(colorScheme).forEach(([level, color]) => {
+                const input = document.getElementById(`nodeColor${level.slice(-1)}`);
                 if (input) {
                     input.value = color;
-                    // Update the settings object
-                    this.settings.colors[`level${i}`] = color;
+                    this.settings.colors[level] = color;
                 }
             });
+
             // Force graph update
             this.updateGraph();
         });
@@ -171,15 +303,22 @@ class GraphVisualizer {
     }
 
     toggleGraphControls(type) {
-        // Hide all controls first
-        document.querySelectorAll('[data-graph-type]').forEach(el => {
-            el.classList.remove('active');
-        });
+        // Show/hide node padding based on graph type
+        const nodePaddingControl = document.querySelector('.slider-control:has(#nodePadding)');
+        if (nodePaddingControl) {
+            nodePaddingControl.style.display = type === 'sankey' ? 'flex' : 'none';
+        }
 
-        // Show selected graph's controls
-        const controls = document.querySelector(`[data-graph-type="${type}"]`);
-        if (controls) {
-            controls.classList.add('active');
+        // Show/hide outline toggle based on graph type
+        const outlineControl = document.querySelector('.slider-control:has(#showOutlines)');
+        if (outlineControl) {
+            outlineControl.style.display = ['sankey', 'force', 'circle'].includes(type) ? 'flex' : 'none';
+        }
+
+        // Show/hide opacity control based on graph type
+        const opacityControl = document.querySelector('.slider-control:has(#opacitySlider)');
+        if (opacityControl) {
+            opacityControl.style.display = ['sankey', 'force', 'circle', 'chord'].includes(type) ? 'flex' : 'none';
         }
     }
 

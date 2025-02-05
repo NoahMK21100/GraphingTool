@@ -1,24 +1,73 @@
 export const colorSchemes = {
     default: {
-        level1: '#ff4d6a',  // Red/Pink for node 1
-        level2: '#ec4899',  // Pink for node 2
-        level3: '#a78bfa',  // Purple for node 3
-        level4: '#f59e0b',  // Orange for node 4
-        level5: '#818cf8'   // Blue for node 5
+        level1: '#818cf8',  // Indigo
+        level2: '#a78bfa',  // Purple
+        level3: '#ec4899',  // Pink
+        level4: '#f43f5e',  // Rose
+        level5: '#f59e0b'   // Amber
+    },
+    pastel: {
+        level1: '#bfdbfe',  // Pastel Blue
+        level2: '#ddd6fe',  // Pastel Purple
+        level3: '#fbcfe8',  // Pastel Pink
+        level4: '#fed7aa',  // Pastel Orange
+        level5: '#d9f99d'   // Pastel Green
+    },
+    softPastel: {
+        level1: '#93c5fd',  // Soft Blue
+        level2: '#c4b5fd',  // Soft Purple
+        level3: '#f9a8d4',  // Soft Pink
+        level4: '#fca5a5',  // Soft Red
+        level5: '#86efac'   // Soft Green
+    },
+    aukus: {
+        level1: '#1e40af',  // Navy Blue
+        level2: '#0369a1',  // Ocean Blue
+        level3: '#0891b2',  // Teal
+        level4: '#064e3b',  // Dark Green
+        level5: '#115e59'   // Forest Green
+    },
+    modern: {
+        level1: '#3b82f6',  // Vibrant Blue
+        level2: '#8b5cf6',  // Vibrant Purple
+        level3: '#ec4899',  // Vibrant Pink
+        level4: '#10b981',  // Emerald
+        level5: '#f59e0b'   // Amber
+    },
+    modernMuted: {
+        level1: '#60a5fa',  // Muted Blue
+        level2: '#a78bfa',  // Muted Purple
+        level3: '#f472b6',  // Muted Pink
+        level4: '#34d399',  // Muted Green
+        level5: '#fbbf24'   // Muted Yellow
+    },
+    nordic: {
+        level1: '#64748b',  // Slate
+        level2: '#475569',  // Dark Slate
+        level3: '#78716c',  // Warm Gray
+        level4: '#57534e',  // Stone
+        level5: '#44403c'   // Dark Stone
     },
     ocean: {
-        level1: '#0ea5e9',
-        level2: '#0284c7',
-        level3: '#0369a1',
-        level4: '#075985',
-        level5: '#0c4a6e'
+        level1: '#0ea5e9',  // Sky
+        level2: '#0284c7',  // Light Ocean
+        level3: '#0369a1',  // Ocean
+        level4: '#075985',  // Deep Ocean
+        level5: '#0c4a6e'   // Abyss
     },
     forest: {
-        level1: '#059669',
-        level2: '#047857',
-        level3: '#065f46',
-        level4: '#064e3b',
-        level5: '#053e2b'
+        level1: '#059669',  // Emerald
+        level2: '#047857',  // Light Forest
+        level3: '#065f46',  // Forest
+        level4: '#064e3b',  // Deep Forest
+        level5: '#022c22'   // Dark Forest
+    },
+    sunset: {
+        level1: '#f472b6',  // Pink
+        level2: '#e879f9',  // Fuchsia
+        level3: '#c084fc',  // Purple
+        level4: '#818cf8',  // Indigo
+        level5: '#60a5fa'   // Blue
     }
 };
 
