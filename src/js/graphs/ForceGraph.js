@@ -172,7 +172,7 @@ export class ForceGraph extends BaseGraph {
 
     getNodeRadius(node) {
         // Base sizes for each column level
-        const baseSize = [45, 35, 25, 15][node.column] || 15;
+        const baseSize = [45, 35, 25, 20, 15, 10][node.column] || 10;
 
         // Get the maximum value of any single link connected to this node
         let maxWeight = 0;

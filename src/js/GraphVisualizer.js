@@ -1,4 +1,6 @@
 import MatrixInput from '../components/MatrixInput';
+import { ExampleDataManager } from './utils/ExampleDataManager.js';
+import { MatrixInput as MatrixInputUtils } from './utils/MatrixInput.js';
 
 class GraphVisualizer {
     constructor() {
@@ -58,9 +60,12 @@ class GraphVisualizer {
         this.setupEventListeners();
         this.initializeFromURL();
 
-        // Initialize MatrixInput
-        const inputContainer = document.getElementById('input-container');
-        this.matrixInput = new MatrixInput(inputContainer);
+        // Initialize matrix input
+        const matrixContainer = document.querySelector('.matrix-container');
+        this.matrixInput = new MatrixInputUtils(matrixContainer);
+
+        // Initialize example data manager
+        this.exampleManager = new ExampleDataManager(this.matrixInput);
     }
 
     setupEventListeners() {

@@ -2,11 +2,12 @@ export class MatrixInput {
     constructor(container) {
         this.container = container;
         this.columns = [
-            'Technology',
-            'Tech Type',
-            'Subsystem',
-            'Component',
-            'Manufacturing'
+            'Mission Type',
+            'Domain',
+            'Operation Type',
+            'System Type',
+            'Platform',
+            'Variant'
         ];
         this.rows = [[]];
         this.addRow(); // Add initial row
@@ -248,5 +249,27 @@ export class MatrixInput {
             detail: this.getData()
         });
         this.container.dispatchEvent(event);
+    }
+
+    setColumns(columns) {
+        this.columns = columns;
+        // Clear and rebuild the header
+        const header = this.container.querySelector('.matrix-header');
+        if (header) {
+            header.remove();
+        }
+        this.buildHeader();
+    }
+
+    buildHeader() {
+        const header = document.createElement('div');
+        header.className = 'matrix-header';
+        this.columns.forEach(column => {
+            const cell = document.createElement('div');
+            cell.className = 'header-cell';
+            cell.textContent = column;
+            header.appendChild(cell);
+        });
+        this.container.insertBefore(header, this.container.firstChild);
     }
 } 

@@ -7,6 +7,7 @@ import { CirclePackingGraph } from './graphs/CirclePackingGraph';
 import { FlowParser } from './utils/FlowParser';
 import { exportToSVG, exportToPNG } from './utils/exportUtils';
 import { MatrixInput } from './utils/MatrixInput';
+import { ExampleDataManager } from './utils/ExampleDataManager.js';
 
 function initTheme() {
     // Check for saved theme preference or default to light
@@ -198,6 +199,9 @@ class GraphVisualizer {
         // Initialize slider values
         document.getElementById('nodePaddingValue').textContent = this.settings.sankey.nodePadding;
         document.getElementById('opacityValue').textContent = this.settings.opacity.nodes.toFixed(2);
+
+        // Initialize example data manager
+        this.exampleManager = new ExampleDataManager(this.matrixInput);
     }
 
     setupEventListeners() {
