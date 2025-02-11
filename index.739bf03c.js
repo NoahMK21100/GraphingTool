@@ -28736,135 +28736,126 @@ class CirclePackingGraph extends (0, _baseGraph.BaseGraph) {
         this.settings = settings || {};
         this.width = this.chartContainer.clientWidth;
         this.height = this.chartContainer.clientHeight;
-        this.padding = 20;
-        this.currentFocus = null;
+        this.focus = null;
         this.view = [
             this.width / 2,
             this.height / 2,
             this.width
         ];
-        // Bind methods to preserve context
-        this.getNodeColor = this.getNodeColor.bind(this);
+        // Font size scale for different depths
+        this.fontScale = _d3.scaleOrdinal().domain([
+            1,
+            3
+        ]).range([
+            24,
+            16
+        ]);
         this.createCirclePacking();
     }
-    getNodeColor(d) {
-        if (!d.depth) return '#ffffff00'; // transparent root node
-        if (!d.children) return 'transparent'; // make leaf nodes transparent instead of white
-        const level = Math.min(d.depth - 1, 4); // cap at level 4 and adjust for 0-based index
-        return this.settings.colors[`level${level + 1}`] || '#818cf8';
+    setCircleColor(d) {
+        if (!d.depth) return 'transparent';
+        if (!d.children) return 'transparent';
+        let obj = d;
+        while(obj.depth > 1)obj = obj.parent;
+        // Use the node colors from settings
+        const level = `level${d.depth}`;
+        const color = this.settings.colors?.[level];
+        if (!color) return '#818cf8'; // Default fallback color
+        // Convert to HSL for lightness adjustment if needed
+        const baseColor = _d3.hsl(color);
+        baseColor.l += d.depth === 1 ? 0 : d.depth * 0.1;
+        baseColor.opacity = this.settings.opacity?.nodes || 0.85; // Apply opacity from settings
+        return baseColor;
     }
-    getNodeOpacity() {
-        return this.settings.opacity.nodes;
+    updateStyles() {
+        // Update circle styles based on settings
+        this.node.attr('fill', (d)=>this.setCircleColor(d)).attr('stroke', (d)=>this.settings.display?.showOutlines ? this.setCircleColor(d) : 'none').attr('stroke-width', this.settings.display?.showOutlines ? 1 : 0);
     }
-    getNodeStroke(d) {
-        if (d.depth === 0 || !this.settings.display?.showOutlines) return 'none';
-        const theme = document.documentElement.getAttribute('data-theme');
-        return theme === 'dark' ? '#ffffff' : '#000000';
-    }
-    getNodeStrokeWidth(d) {
-        if (d.depth === 0 || !this.settings.display?.showOutlines) return 0;
-        return .5;
-    }
-    getNodeStrokeOpacity(d) {
-        if (d.depth === 0 || !this.settings.display?.showOutlines) return 0;
-        return 0.8;
-    }
-    createCirclePacking() {
-        this.chartContainer.innerHTML = '';
-        // Calculate the effective dimensions
-        const minDimension = Math.min(this.width, this.height);
-        // Create the SVG container
-        const svg = _d3.select(this.chartContainer).append('svg').attr('width', '100%').attr('height', '100%').attr('viewBox', [
-            0,
-            0,
-            this.width,
-            this.height
-        ]).style('cursor', 'pointer');
-        // Create the pack layout with more padding for top level
-        const pack = _d3.pack().size([
-            minDimension - this.padding * 2,
-            minDimension - this.padding * 2
-        ]).padding((d)=>d.depth === 0 ? 30 : d.depth === 1 ? 20 : 5); // Fixed padding values
-        const root = _d3.hierarchy(this.data).sum((d)=>d.value).sort((a, b)=>b.value - a.value);
-        const packedData = pack(root);
-        this.currentFocus = root;
-        // Center the visualization
-        const g = svg.append('g').attr('transform', `translate(${(this.width - minDimension) / 2 + this.padding},${(this.height - minDimension) / 2 + this.padding})`);
-        // Create the circle nodes
-        const node = g.selectAll('circle').data(packedData.descendants()).join('circle').attr('fill', (d)=>this.getNodeColor(d)).attr('fill-opacity', (d)=>this.getNodeOpacity()).attr('stroke', (d)=>this.getNodeStroke(d)).attr('stroke-width', (d)=>this.getNodeStrokeWidth(d)).attr('stroke-opacity', (d)=>this.getNodeStrokeOpacity(d)).attr('pointer-events', (d)=>!d.children || d.depth === 0 ? 'none' : null).attr('transform', (d)=>`translate(${d.x},${d.y})`).attr('r', (d)=>d.r);
-        // Store the instance reference for event handlers
-        const self = this;
-        // Add hover effects
-        node.filter((d)=>d.depth !== 0).on('mouseover', function(event, d) {
-            _d3.select(this).attr('stroke', '#000').attr('stroke-width', 2).attr('stroke-opacity', 0.5);
-        }).on('mouseout', function(event, d) {
-            const color = _d3.color(self.getNodeColor(d));
-            _d3.select(this).attr('stroke', d.depth === 1 && color ? color.darker(0.2) : null).attr('stroke-width', d.depth === 1 ? 2 : 1).attr('stroke-opacity', 0.3);
-        }).on('click', (event, d)=>{
-            event.stopPropagation(); // Prevent event bubbling
-            this.focusOn(event, d);
+    zoomTo(v) {
+        const k = this.width / v[2];
+        this.view = v;
+        this.label.attr('transform', (d)=>`translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`).style('display', (d)=>{
+            // Show labels for all nodes that are:
+            // 1. Parent nodes (depth === 1)
+            // 2. Children of the currently focused node
+            // 3. Large enough to be readable
+            const isParent = d.depth === 1;
+            const isChild = d.parent && d.parent === this.focus;
+            const threshold = 20;
+            return (isParent || isChild) && d.r * k > threshold ? 'inline' : 'none';
+        }).style('font-size', (d)=>{
+            const size = Math.min(d.r * k / 5, this.fontScale(d.depth));
+            return `${Math.max(8, size)}px`;
         });
-        // Add labels with proper positioning
-        const label = g.selectAll('text').data(packedData.descendants().filter((d)=>d.depth !== 0)).join('text').attr('transform', (d)=>`translate(${d.x},${d.y})`).style('font-family', 'Inter, sans-serif').style('font-size', (d)=>Math.min(d.r / 3, 14) + 'px').style('font-weight', 600) // Make all labels bold
-        .style('fill', (d)=>_d3.color(this.getNodeColor(d)).darker(1)).style('pointer-events', 'none').style('text-anchor', 'middle').style('dominant-baseline', 'middle').style('fill-opacity', (d)=>d.parent === root ? 1 : 0).style('display', (d)=>d.parent === root ? 'inline' : 'none').text((d)=>d.data.name);
-        // Store references
-        this.node = node;
-        this.label = label;
-        this.root = root;
-        this.svg = svg;
-        this.g = g;
-        // Initial zoom to root
-        this.zoomTo([
-            root.x,
-            root.y,
-            root.r * 2
-        ]);
+        this.node.attr('transform', (d)=>`translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        this.node.attr('r', (d)=>d.r * k);
     }
-    focusOn(event, d) {
-        if (!d || !this.g || d.depth === 0) return;
-        const focus = d === this.currentFocus ? d.parent || this.root : d;
-        const transition = this.svg.transition().duration(event.altKey ? 7500 : 750).tween('zoom', ()=>{
+    zoom(d) {
+        const focus0 = this.focus;
+        this.focus = d;
+        const transition = this.svg.transition().duration(750).tween('zoom', ()=>{
+            // If zooming to root, use a larger view width to scale everything down
+            const targetWidth = !d.parent ? this.focus.r * 2.8 : this.focus.r * 2;
             const i = _d3.interpolateZoom(this.view, [
-                focus.x,
-                focus.y,
-                focus.r * 2
+                this.focus.x,
+                this.focus.y,
+                targetWidth
             ]);
             return (t)=>this.zoomTo(i(t));
         });
-        this.currentFocus = focus;
-        // Update label visibility with fade effect
-        this.label.filter(function(d) {
-            return d.parent === focus || this.style.display === 'inline';
-        }).transition(transition).style('fill-opacity', (d)=>d.parent === focus ? 1 : 0).on('start', function(d) {
-            if (d.parent === focus) this.style.display = 'inline';
-        }).on('end', function(d) {
-            if (d.parent !== focus) this.style.display = 'none';
+        // Remove the problematic label transitions
+        this.label.style('fill-opacity', (d)=>d.parent === this.focus ? 1 : 0).style('display', (d)=>d.parent === this.focus ? 'inline' : 'none');
+    }
+    createCirclePacking() {
+        this.chartContainer.innerHTML = '';
+        // Calculate dimensions with padding
+        const padding = 50;
+        const minDimension = Math.min(this.width, this.height);
+        const effectiveSize = minDimension - padding * 2;
+        const pack = _d3.pack().size([
+            effectiveSize,
+            effectiveSize
+        ]).padding(3);
+        const root = _d3.hierarchy(this.data).sum((d)=>d.value).sort((a, b)=>b.value - a.value);
+        const packedData = pack(root);
+        this.focus = root;
+        // Create SVG with adjusted viewBox
+        this.svg = _d3.select(this.chartContainer).append('svg').attr('viewBox', [
+            -minDimension / 2,
+            -minDimension / 2,
+            minDimension * 1.2,
+            minDimension * 1.2
+        ]).style('display', 'block').style('width', '95%').style('height', '95%').style('margin', 'auto').style('cursor', 'pointer').on('click', (event)=>{
+            event.stopPropagation();
+            this.zoom(root);
         });
+        // Store reference to this for event handlers
+        const self = this;
+        // Add a transform to the container group to center everything
+        const container = this.svg.append('g').attr('transform', `translate(${padding},${padding})`);
+        this.node = container.selectAll('circle').data(root.descendants().slice(1)).join('circle').attr('fill', (d)=>this.setCircleColor(d)).attr('stroke', (d)=>this.settings.display?.showOutlines ? this.setCircleColor(d) : 'none').attr('stroke-width', this.settings.display?.showOutlines ? 1 : 0).attr('pointer-events', (d)=>!d.children ? 'none' : null).on('mouseover', function(event, d) {
+            _d3.select(this).attr('stroke', d.depth == 1 ? 'black' : 'white').attr('stroke-width', 2);
+        }).on('mouseout', function(event, d) {
+            _d3.select(this).attr('stroke', self.settings.display?.showOutlines ? self.setCircleColor(d) : 'none').attr('stroke-width', self.settings.display?.showOutlines ? 1 : 0);
+        }).on('click', (event, d)=>{
+            if (this.focus !== d) {
+                this.zoom(d);
+                event.stopPropagation();
+            }
+        });
+        // Get the current theme
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+        this.label = this.svg.append('g').style('fill', isDarkMode ? 'white' : '#1a1a1a').style('text-shadow', isDarkMode ? '2px 2px 0px black' : '1px 1px 0px white, -1px 1px 0px white, 1px -1px 0px white, -1px -1px 0px white').attr('pointer-events', 'none').attr('text-anchor', 'middle').attr('dominant-baseline', 'middle').selectAll('text').data(root.descendants()).join('text').style('fill-opacity', (d)=>d.parent === root ? 1 : 0).style('display', (d)=>d.parent === root ? 'inline' : 'none').style('font-size', (d)=>`${this.fontScale(d.depth)}px`).style('font-weight', 'bold').text((d)=>d.data.name);
+        // Initial zoom with scaled down view
+        this.zoomTo([
+            root.x,
+            root.y,
+            root.r * 2.8
+        ]); // Even larger scale for better visibility
     }
-    zoomTo(v) {
-        if (!this.g || !v) return;
-        const k = Math.min(this.width, this.height) / v[2];
-        this.view = v;
-        const newX = this.width / 2 - v[0] * k;
-        const newY = this.height / 2 - v[1] * k;
-        this.g.attr('transform', `translate(${newX},${newY}) scale(${k})`);
-        this.node.attr('r', (d)=>d.r);
-    }
-    handleResize() {
-        this.width = this.chartContainer.clientWidth;
-        this.height = this.chartContainer.clientHeight;
-        this.view = [
-            this.width / 2,
-            this.height / 2,
-            this.width
-        ];
-        this.createCirclePacking();
-    }
+    // Add update method to handle settings changes
     update() {
-        // Update circles
-        this.svg.selectAll('circle').attr('fill', (d)=>this.getNodeColor(d)).attr('fill-opacity', this.getNodeOpacity()).attr('stroke', (d)=>this.getNodeStroke(d)).attr('stroke-width', (d)=>this.getNodeStrokeWidth(d)).attr('stroke-opacity', (d)=>this.getNodeStrokeOpacity(d));
-        // Update labels
-        this.svg.selectAll('text').style('fill', this.currentLabelColor);
+        this.updateStyles();
     }
 }
 
