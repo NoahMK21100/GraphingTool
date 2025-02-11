@@ -41,8 +41,13 @@ export class ForceGraph extends BaseGraph {
     createForceGraph() {
         const width = this.wrapper.clientWidth;
         const height = this.wrapper.clientHeight;
+        const padding = {
+            top: 50,
+            right: 50,
+            bottom: 100, // Increased bottom padding
+            left: 50
+        };
 
-        // Create SVG with proper bounds
         this.svg = d3.select(this.chartContainer)
             .append('svg')
             .attr('width', '100%')
@@ -50,7 +55,14 @@ export class ForceGraph extends BaseGraph {
             .attr('viewBox', [0, 0, width, height])
             .attr('preserveAspectRatio', 'xMidYMid meet');
 
-        // Create the force simulation
+        // Add boundary force to keep nodes within container
+        const boundaryForce = () => {
+            for (let node of this.data.nodes) {
+                node.x = Math.max(padding.left, Math.min(width - padding.right, node.x));
+                node.y = Math.max(padding.top, Math.min(height - padding.bottom, node.y));
+            }
+        };
+
         this.simulation = d3.forceSimulation(this.data.nodes)
             .force('link', d3.forceLink(this.data.links)
                 .id(d => d.id)
@@ -59,7 +71,19 @@ export class ForceGraph extends BaseGraph {
                 .strength(-500))
             .force('center', d3.forceCenter(width / 2, height / 2))
             .force('collision', d3.forceCollide()
-                .radius(d => this.getNodeRadius(d) + 10));
+                .radius(d => this.getNodeRadius(d) + 10))
+            .force('boundary', boundaryForce)
+            .on('tick', () => {
+                boundaryForce();
+
+                this.link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                this.node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
 
         // Draw the links
         const link = this.svg.append('g')
@@ -98,17 +122,6 @@ export class ForceGraph extends BaseGraph {
         // Store references
         this.node = node;
         this.link = link;
-
-        // Update positions on tick
-        this.simulation.on('tick', () => {
-            link
-                .attr('x1', d => d.source.x)
-                .attr('y1', d => d.source.y)
-                .attr('x2', d => d.target.x)
-                .attr('y2', d => d.target.y);
-
-            node.attr('transform', d => `translate(${d.x},${d.y})`);
-        });
 
         // Setup interactions
         this.setupInteractions(node, link);

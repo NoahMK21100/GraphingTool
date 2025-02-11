@@ -41,7 +41,7 @@ export class CirclePackingGraph extends BaseGraph {
 
     getNodeStrokeWidth(d) {
         if (d.depth === 0 || !this.settings.display?.showOutlines) return 0;
-        return 1.5;
+        return .5;
     }
 
     getNodeStrokeOpacity(d) {
