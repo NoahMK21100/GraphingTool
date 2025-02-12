@@ -2945,6 +2945,7 @@ var _sankeyGraph = require("./graphs/SankeyGraph");
 var _sunburstGraph = require("./graphs/SunburstGraph");
 var _chordGraph = require("./graphs/ChordGraph");
 var _circlePackingGraph = require("./graphs/CirclePackingGraph");
+var _worldMapGraph = require("./graphs/WorldMapGraph");
 var _flowParser = require("./utils/FlowParser");
 var _exportUtils = require("./utils/exportUtils");
 var _matrixInput = require("./utils/MatrixInput");
@@ -3259,6 +3260,26 @@ class GraphVisualizer {
         try {
             const matrixData = this.matrixInput.getData();
             let graphData;
+            // Handle world map separately since it has a different data structure
+            if (type.toLowerCase() === 'worldmap') {
+                const countryData = {};
+                matrixData.rows.forEach((row)=>{
+                    const countryName = row[0]?.value;
+                    if (countryName) {
+                        if (!countryData[countryName]) countryData[countryName] = {
+                            paths: []
+                        };
+                        // Create path from all non-empty values
+                        const path = row.slice(1) // Skip country name
+                        .map((cell)=>cell.value).filter((value)=>value); // Remove empty values
+                        if (path.length > 0) countryData[countryName].paths.push(path);
+                    }
+                });
+                this.currentGraph = new (0, _worldMapGraph.WorldMapGraph)(this.container, countryData, this.settings);
+                this.updateTitles();
+                this.toggleGraphControls(type);
+                return;
+            }
             // Use appropriate data format based on graph type
             if (type.toLowerCase() === 'sunburst') graphData = this.flowParser.parseSunburstData(matrixData);
             else if (type.toLowerCase() === 'chord') graphData = this.flowParser.parseChordData(matrixData);
@@ -3352,7 +3373,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     new GraphVisualizer();
 });
 
-},{"./graphs/ForceGraph":"aXaJm","./graphs/SankeyGraph":"jrmAK","./graphs/SunburstGraph":"34XTM","./graphs/ChordGraph":"436RY","./graphs/CirclePackingGraph":"jDZUH","./utils/FlowParser":"dOYzI","./utils/exportUtils":"3f3Xg","./utils/MatrixInput":"aTVmd","./utils/ExampleDataManager.js":"dxH0W"}],"aXaJm":[function(require,module,exports,__globalThis) {
+},{"./graphs/ForceGraph":"aXaJm","./graphs/SankeyGraph":"jrmAK","./graphs/SunburstGraph":"34XTM","./graphs/ChordGraph":"436RY","./graphs/CirclePackingGraph":"jDZUH","./utils/FlowParser":"dOYzI","./utils/exportUtils":"3f3Xg","./utils/MatrixInput":"aTVmd","./utils/ExampleDataManager.js":"dxH0W","./graphs/WorldMapGraph":"bXbT1"}],"aXaJm":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ForceGraph", ()=>ForceGraph);
@@ -27260,7 +27281,8 @@ const VISUALIZATION_TYPES = {
     SANKEY: 'sankey',
     CHORD: 'chord',
     CIRCLE: 'circle',
-    SUNBURST: 'sunburst'
+    SUNBURST: 'sunburst',
+    WORLDMAP: 'worldmap'
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jrmAK":[function(require,module,exports,__globalThis) {
@@ -38061,6 +38083,739 @@ const EXAMPLE_DATA = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aQL8O","8G2QE","ebWYT"], "ebWYT", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bXbT1":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "WorldMapGraph", ()=>WorldMapGraph);
+var _d3 = require("d3");
+var _topojsonClient = require("topojson-client");
+var _baseGraph = require("./BaseGraph");
+class WorldMapGraph extends (0, _baseGraph.BaseGraph) {
+    constructor(container, data, settings){
+        super(container, settings);
+        this.data = data;
+        this.settings = settings;
+        this.createMap();
+    }
+    async createMap() {
+        // Clear container
+        this.chartContainer.innerHTML = '';
+        // Create SVG
+        const svg = _d3.select(this.chartContainer).append('svg').attr('width', this.width).attr('height', this.height).attr('viewBox', [
+            0,
+            0,
+            this.width,
+            this.height
+        ]).attr('style', 'max-width: 100%; height: auto;');
+        // Create a container for all map elements
+        const g = svg.append('g');
+        // Create projection
+        const projection = _d3.geoEqualEarth().fitExtent([
+            [
+                2,
+                2
+            ],
+            [
+                this.width - 2,
+                this.height - 2
+            ]
+        ], {
+            type: "Sphere"
+        });
+        const path = _d3.geoPath(projection);
+        // Add zoom behavior
+        const zoom = _d3.zoom().scaleExtent([
+            1,
+            8
+        ]).on('zoom', (event)=>{
+            g.attr('transform', event.transform);
+        });
+        svg.call(zoom);
+        // Function to handle country click
+        const handleCountryClick = (event, d)=>{
+            event.stopPropagation(); // Prevent click from bubbling to svg
+            const bounds = path.bounds(d);
+            const dx = bounds[1][0] - bounds[0][0];
+            const dy = bounds[1][1] - bounds[0][1];
+            const x = (bounds[0][0] + bounds[1][0]) / 2;
+            const y = (bounds[0][1] + bounds[1][1]) / 2;
+            const scale = Math.min(4, 0.9 / Math.max(dx / this.width, dy / this.height));
+            const translate = [
+                this.width / 2 - scale * x,
+                this.height / 2 - scale * y
+            ];
+            svg.transition().duration(750).call(zoom.transform, _d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+        };
+        // Function to handle background click (zoom out)
+        const handleBackgroundClick = ()=>{
+            svg.transition().duration(750).call(zoom.transform, _d3.zoomIdentity);
+        };
+        // Create color scale using the node colors from settings
+        const getCountryColor = (countryData, countryName)=>{
+            if (!countryData || !countryData.paths.length) return '#ccc';
+            // Get unique countries and assign them colors sequentially
+            const uniqueCountries = Object.keys(this.data);
+            const countryIndex = uniqueCountries.indexOf(countryName);
+            // Cycle through the 5 colors based on country order
+            const colorLevel = countryIndex % 5 + 1;
+            return this.settings.colors[`level${colorLevel}`];
+        };
+        try {
+            // Fetch world topology data
+            const response = await fetch('https://unpkg.com/world-atlas@2/countries-50m.json');
+            const world = await response.json();
+            const countries = _topojsonClient.feature(world, world.objects.countries);
+            const countrymesh = _topojsonClient.mesh(world, world.objects.countries);
+            // Add sphere (background)
+            g.append('path').datum({
+                type: 'Sphere'
+            }).attr('fill', 'var(--bg-primary)').attr('stroke', 'var(--text-primary)').attr('d', path).on('click', handleBackgroundClick);
+            // Add countries
+            g.append('g').selectAll('path').data(countries.features).join('path').attr('fill', (d)=>{
+                const countryData = this.data[d.properties.name];
+                return getCountryColor(countryData, d.properties.name);
+            }).attr('d', path).attr('stroke', 'var(--bg-primary)').attr('stroke-width', '0.5').style('opacity', this.getNodeOpacity()).on('click', handleCountryClick).on('mouseover', (event, d)=>{
+                const countryData = this.data[d.properties.name];
+                const tooltip = _d3.select('body').append('div').attr('class', 'tooltip').style('position', 'absolute').style('background', 'var(--bg-secondary)').style('color', 'var(--text-primary)').style('padding', '8px').style('border-radius', '4px').style('font-size', '12px').style('pointer-events', 'none').style('z-index', '100').style('box-shadow', '0 2px 4px rgba(0,0,0,0.1)');
+                let tooltipContent = `<strong>${d.properties.name}</strong>`;
+                if (countryData && countryData.paths.length > 0) {
+                    tooltipContent += `<br><small>(${countryData.paths.length} connections)</small><br><br>`;
+                    countryData.paths.forEach((path, pathIndex)=>{
+                        path.forEach((component, index)=>{
+                            tooltipContent += component;
+                            if (index < path.length - 1) tooltipContent += '<br>';
+                        });
+                        if (pathIndex < countryData.paths.length - 1) tooltipContent += '<br><br>';
+                    });
+                }
+                tooltip.html(tooltipContent);
+                tooltip.style('left', event.pageX + 10 + 'px').style('top', event.pageY - 28 + 'px');
+                _d3.select(event.currentTarget).style('opacity', 1).style('stroke-width', '1.5');
+            }).on('mousemove', (event)=>{
+                _d3.select('.tooltip').style('left', event.pageX + 10 + 'px').style('top', event.pageY - 28 + 'px');
+            }).on('mouseout', (event)=>{
+                _d3.select('.tooltip').remove();
+                _d3.select(event.currentTarget).style('opacity', this.getNodeOpacity()).style('stroke-width', '0.5');
+            });
+            // Add mesh
+            g.append('path').datum(countrymesh).attr('fill', 'none').attr('stroke', 'var(--bg-primary)').attr('stroke-width', '0.5').attr('d', path);
+        } catch (error) {
+            console.error('Error loading world map data:', error);
+            this.chartContainer.innerHTML = '<div class="error">Error loading world map data</div>';
+        }
+    }
+    update() {
+        this.createMap();
+    }
+    destroy() {
+        if (this.chartContainer) this.chartContainer.innerHTML = '';
+    }
+}
+
+},{"d3":"17XFv","./BaseGraph":"ioqvX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","topojson-client":"ciUQq"}],"ciUQq":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bbox", ()=>(0, _bboxJsDefault.default));
+parcelHelpers.export(exports, "feature", ()=>(0, _featureJsDefault.default));
+parcelHelpers.export(exports, "mesh", ()=>(0, _meshJsDefault.default));
+parcelHelpers.export(exports, "meshArcs", ()=>(0, _meshJs.meshArcs));
+parcelHelpers.export(exports, "merge", ()=>(0, _mergeJsDefault.default));
+parcelHelpers.export(exports, "mergeArcs", ()=>(0, _mergeJs.mergeArcs));
+parcelHelpers.export(exports, "neighbors", ()=>(0, _neighborsJsDefault.default));
+parcelHelpers.export(exports, "quantize", ()=>(0, _quantizeJsDefault.default));
+parcelHelpers.export(exports, "transform", ()=>(0, _transformJsDefault.default));
+parcelHelpers.export(exports, "untransform", ()=>(0, _untransformJsDefault.default));
+var _bboxJs = require("./bbox.js");
+var _bboxJsDefault = parcelHelpers.interopDefault(_bboxJs);
+var _featureJs = require("./feature.js");
+var _featureJsDefault = parcelHelpers.interopDefault(_featureJs);
+var _meshJs = require("./mesh.js");
+var _meshJsDefault = parcelHelpers.interopDefault(_meshJs);
+var _mergeJs = require("./merge.js");
+var _mergeJsDefault = parcelHelpers.interopDefault(_mergeJs);
+var _neighborsJs = require("./neighbors.js");
+var _neighborsJsDefault = parcelHelpers.interopDefault(_neighborsJs);
+var _quantizeJs = require("./quantize.js");
+var _quantizeJsDefault = parcelHelpers.interopDefault(_quantizeJs);
+var _transformJs = require("./transform.js");
+var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
+var _untransformJs = require("./untransform.js");
+var _untransformJsDefault = parcelHelpers.interopDefault(_untransformJs);
+
+},{"./bbox.js":"uhxVo","./feature.js":"hVcmB","./mesh.js":"7csN8","./merge.js":"gZehY","./neighbors.js":"ggIrQ","./quantize.js":"dZnMF","./transform.js":"hDrZC","./untransform.js":"ioj0t","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"uhxVo":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology) {
+        var t = (0, _transformJsDefault.default)(topology.transform), key, x0 = Infinity, y0 = x0, x1 = -x0, y1 = -x0;
+        function bboxPoint(p) {
+            p = t(p);
+            if (p[0] < x0) x0 = p[0];
+            if (p[0] > x1) x1 = p[0];
+            if (p[1] < y0) y0 = p[1];
+            if (p[1] > y1) y1 = p[1];
+        }
+        function bboxGeometry(o) {
+            switch(o.type){
+                case "GeometryCollection":
+                    o.geometries.forEach(bboxGeometry);
+                    break;
+                case "Point":
+                    bboxPoint(o.coordinates);
+                    break;
+                case "MultiPoint":
+                    o.coordinates.forEach(bboxPoint);
+                    break;
+            }
+        }
+        topology.arcs.forEach(function(arc) {
+            var i = -1, n = arc.length, p;
+            while(++i < n){
+                p = t(arc[i], i);
+                if (p[0] < x0) x0 = p[0];
+                if (p[0] > x1) x1 = p[0];
+                if (p[1] < y0) y0 = p[1];
+                if (p[1] > y1) y1 = p[1];
+            }
+        });
+        for(key in topology.objects)bboxGeometry(topology.objects[key]);
+        return [
+            x0,
+            y0,
+            x1,
+            y1
+        ];
+    });
+var _transformJs = require("./transform.js");
+var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
+
+},{"./transform.js":"hDrZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hDrZC":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(transform) {
+        if (transform == null) return 0, _identityJsDefault.default;
+        var x0, y0, kx = transform.scale[0], ky = transform.scale[1], dx = transform.translate[0], dy = transform.translate[1];
+        return function(input, i) {
+            if (!i) x0 = y0 = 0;
+            var j = 2, n = input.length, output = new Array(n);
+            output[0] = (x0 += input[0]) * kx + dx;
+            output[1] = (y0 += input[1]) * ky + dy;
+            while(j < n)output[j] = input[j], ++j;
+            return output;
+        };
+    });
+var _identityJs = require("./identity.js");
+var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
+
+},{"./identity.js":"2mfyf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2mfyf":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(x) {
+        return x;
+    });
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hVcmB":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology, o) {
+        if (typeof o === "string") o = topology.objects[o];
+        return o.type === "GeometryCollection" ? {
+            type: "FeatureCollection",
+            features: o.geometries.map(function(o) {
+                return feature(topology, o);
+            })
+        } : feature(topology, o);
+    });
+parcelHelpers.export(exports, "object", ()=>object);
+var _reverseJs = require("./reverse.js");
+var _reverseJsDefault = parcelHelpers.interopDefault(_reverseJs);
+var _transformJs = require("./transform.js");
+var _transformJsDefault = parcelHelpers.interopDefault(_transformJs);
+function feature(topology, o) {
+    var id = o.id, bbox = o.bbox, properties = o.properties == null ? {} : o.properties, geometry = object(topology, o);
+    return id == null && bbox == null ? {
+        type: "Feature",
+        properties: properties,
+        geometry: geometry
+    } : bbox == null ? {
+        type: "Feature",
+        id: id,
+        properties: properties,
+        geometry: geometry
+    } : {
+        type: "Feature",
+        id: id,
+        bbox: bbox,
+        properties: properties,
+        geometry: geometry
+    };
+}
+function object(topology, o) {
+    var transformPoint = (0, _transformJsDefault.default)(topology.transform), arcs = topology.arcs;
+    function arc(i, points) {
+        if (points.length) points.pop();
+        for(var a = arcs[i < 0 ? ~i : i], k = 0, n = a.length; k < n; ++k)points.push(transformPoint(a[k], k));
+        if (i < 0) (0, _reverseJsDefault.default)(points, n);
+    }
+    function point(p) {
+        return transformPoint(p);
+    }
+    function line(arcs) {
+        var points = [];
+        for(var i = 0, n = arcs.length; i < n; ++i)arc(arcs[i], points);
+        if (points.length < 2) points.push(points[0]); // This should never happen per the specification.
+        return points;
+    }
+    function ring(arcs) {
+        var points = line(arcs);
+        while(points.length < 4)points.push(points[0]); // This may happen if an arc has only two points.
+        return points;
+    }
+    function polygon(arcs) {
+        return arcs.map(ring);
+    }
+    function geometry(o) {
+        var type = o.type, coordinates;
+        switch(type){
+            case "GeometryCollection":
+                return {
+                    type: type,
+                    geometries: o.geometries.map(geometry)
+                };
+            case "Point":
+                coordinates = point(o.coordinates);
+                break;
+            case "MultiPoint":
+                coordinates = o.coordinates.map(point);
+                break;
+            case "LineString":
+                coordinates = line(o.arcs);
+                break;
+            case "MultiLineString":
+                coordinates = o.arcs.map(line);
+                break;
+            case "Polygon":
+                coordinates = polygon(o.arcs);
+                break;
+            case "MultiPolygon":
+                coordinates = o.arcs.map(polygon);
+                break;
+            default:
+                return null;
+        }
+        return {
+            type: type,
+            coordinates: coordinates
+        };
+    }
+    return geometry(o);
+}
+
+},{"./reverse.js":"eTq9J","./transform.js":"hDrZC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eTq9J":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(array, n) {
+        var t, j = array.length, i = j - n;
+        while(i < --j)t = array[i], array[i++] = array[j], array[j] = t;
+    });
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7csN8":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology) {
+        return (0, _featureJs.object)(topology, meshArcs.apply(this, arguments));
+    });
+parcelHelpers.export(exports, "meshArcs", ()=>meshArcs);
+var _featureJs = require("./feature.js");
+var _stitchJs = require("./stitch.js");
+var _stitchJsDefault = parcelHelpers.interopDefault(_stitchJs);
+function meshArcs(topology, object, filter) {
+    var arcs, i, n;
+    if (arguments.length > 1) arcs = extractArcs(topology, object, filter);
+    else for(i = 0, arcs = new Array(n = topology.arcs.length); i < n; ++i)arcs[i] = i;
+    return {
+        type: "MultiLineString",
+        arcs: (0, _stitchJsDefault.default)(topology, arcs)
+    };
+}
+function extractArcs(topology, object, filter) {
+    var arcs = [], geomsByArc = [], geom;
+    function extract0(i) {
+        var j = i < 0 ? ~i : i;
+        (geomsByArc[j] || (geomsByArc[j] = [])).push({
+            i: i,
+            g: geom
+        });
+    }
+    function extract1(arcs) {
+        arcs.forEach(extract0);
+    }
+    function extract2(arcs) {
+        arcs.forEach(extract1);
+    }
+    function extract3(arcs) {
+        arcs.forEach(extract2);
+    }
+    function geometry(o) {
+        switch(geom = o, o.type){
+            case "GeometryCollection":
+                o.geometries.forEach(geometry);
+                break;
+            case "LineString":
+                extract1(o.arcs);
+                break;
+            case "MultiLineString":
+            case "Polygon":
+                extract2(o.arcs);
+                break;
+            case "MultiPolygon":
+                extract3(o.arcs);
+                break;
+        }
+    }
+    geometry(object);
+    geomsByArc.forEach(filter == null ? function(geoms) {
+        arcs.push(geoms[0].i);
+    } : function(geoms) {
+        if (filter(geoms[0].g, geoms[geoms.length - 1].g)) arcs.push(geoms[0].i);
+    });
+    return arcs;
+}
+
+},{"./feature.js":"hVcmB","./stitch.js":"k5MKi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5MKi":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology, arcs) {
+        var stitchedArcs = {}, fragmentByStart = {}, fragmentByEnd = {}, fragments = [], emptyIndex = -1;
+        // Stitch empty arcs first, since they may be subsumed by other arcs.
+        arcs.forEach(function(i, j) {
+            var arc = topology.arcs[i < 0 ? ~i : i], t;
+            if (arc.length < 3 && !arc[1][0] && !arc[1][1]) t = arcs[++emptyIndex], arcs[emptyIndex] = i, arcs[j] = t;
+        });
+        arcs.forEach(function(i) {
+            var e = ends(i), start = e[0], end = e[1], f, g;
+            if (f = fragmentByEnd[start]) {
+                delete fragmentByEnd[f.end];
+                f.push(i);
+                f.end = end;
+                if (g = fragmentByStart[end]) {
+                    delete fragmentByStart[g.start];
+                    var fg = g === f ? f : f.concat(g);
+                    fragmentByStart[fg.start = f.start] = fragmentByEnd[fg.end = g.end] = fg;
+                } else fragmentByStart[f.start] = fragmentByEnd[f.end] = f;
+            } else if (f = fragmentByStart[end]) {
+                delete fragmentByStart[f.start];
+                f.unshift(i);
+                f.start = start;
+                if (g = fragmentByEnd[start]) {
+                    delete fragmentByEnd[g.end];
+                    var gf = g === f ? f : g.concat(f);
+                    fragmentByStart[gf.start = g.start] = fragmentByEnd[gf.end = f.end] = gf;
+                } else fragmentByStart[f.start] = fragmentByEnd[f.end] = f;
+            } else {
+                f = [
+                    i
+                ];
+                fragmentByStart[f.start = start] = fragmentByEnd[f.end = end] = f;
+            }
+        });
+        function ends(i) {
+            var arc = topology.arcs[i < 0 ? ~i : i], p0 = arc[0], p1;
+            if (topology.transform) p1 = [
+                0,
+                0
+            ], arc.forEach(function(dp) {
+                p1[0] += dp[0], p1[1] += dp[1];
+            });
+            else p1 = arc[arc.length - 1];
+            return i < 0 ? [
+                p1,
+                p0
+            ] : [
+                p0,
+                p1
+            ];
+        }
+        function flush(fragmentByEnd, fragmentByStart) {
+            for(var k in fragmentByEnd){
+                var f = fragmentByEnd[k];
+                delete fragmentByStart[f.start];
+                delete f.start;
+                delete f.end;
+                f.forEach(function(i) {
+                    stitchedArcs[i < 0 ? ~i : i] = 1;
+                });
+                fragments.push(f);
+            }
+        }
+        flush(fragmentByEnd, fragmentByStart);
+        flush(fragmentByStart, fragmentByEnd);
+        arcs.forEach(function(i) {
+            if (!stitchedArcs[i < 0 ? ~i : i]) fragments.push([
+                i
+            ]);
+        });
+        return fragments;
+    });
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gZehY":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology) {
+        return (0, _featureJs.object)(topology, mergeArcs.apply(this, arguments));
+    });
+parcelHelpers.export(exports, "mergeArcs", ()=>mergeArcs);
+var _featureJs = require("./feature.js");
+var _stitchJs = require("./stitch.js");
+var _stitchJsDefault = parcelHelpers.interopDefault(_stitchJs);
+function planarRingArea(ring) {
+    var i = -1, n = ring.length, a, b = ring[n - 1], area = 0;
+    while(++i < n)a = b, b = ring[i], area += a[0] * b[1] - a[1] * b[0];
+    return Math.abs(area); // Note: doubled area!
+}
+function mergeArcs(topology, objects) {
+    var polygonsByArc = {}, polygons = [], groups = [];
+    objects.forEach(geometry);
+    function geometry(o) {
+        switch(o.type){
+            case "GeometryCollection":
+                o.geometries.forEach(geometry);
+                break;
+            case "Polygon":
+                extract(o.arcs);
+                break;
+            case "MultiPolygon":
+                o.arcs.forEach(extract);
+                break;
+        }
+    }
+    function extract(polygon) {
+        polygon.forEach(function(ring) {
+            ring.forEach(function(arc) {
+                (polygonsByArc[arc = arc < 0 ? ~arc : arc] || (polygonsByArc[arc] = [])).push(polygon);
+            });
+        });
+        polygons.push(polygon);
+    }
+    function area(ring) {
+        return planarRingArea((0, _featureJs.object)(topology, {
+            type: "Polygon",
+            arcs: [
+                ring
+            ]
+        }).coordinates[0]);
+    }
+    polygons.forEach(function(polygon) {
+        if (!polygon._) {
+            var group = [], neighbors = [
+                polygon
+            ];
+            polygon._ = 1;
+            groups.push(group);
+            while(polygon = neighbors.pop()){
+                group.push(polygon);
+                polygon.forEach(function(ring) {
+                    ring.forEach(function(arc) {
+                        polygonsByArc[arc < 0 ? ~arc : arc].forEach(function(polygon) {
+                            if (!polygon._) {
+                                polygon._ = 1;
+                                neighbors.push(polygon);
+                            }
+                        });
+                    });
+                });
+            }
+        }
+    });
+    polygons.forEach(function(polygon) {
+        delete polygon._;
+    });
+    return {
+        type: "MultiPolygon",
+        arcs: groups.map(function(polygons) {
+            var arcs = [], n;
+            // Extract the exterior (unique) arcs.
+            polygons.forEach(function(polygon) {
+                polygon.forEach(function(ring) {
+                    ring.forEach(function(arc) {
+                        if (polygonsByArc[arc < 0 ? ~arc : arc].length < 2) arcs.push(arc);
+                    });
+                });
+            });
+            // Stitch the arcs into one or more rings.
+            arcs = (0, _stitchJsDefault.default)(topology, arcs);
+            // If more than one ring is returned,
+            // at most one of these rings can be the exterior;
+            // choose the one with the greatest absolute area.
+            if ((n = arcs.length) > 1) {
+                for(var i = 1, k = area(arcs[0]), ki, t; i < n; ++i)if ((ki = area(arcs[i])) > k) t = arcs[0], arcs[0] = arcs[i], arcs[i] = t, k = ki;
+            }
+            return arcs;
+        }).filter(function(arcs) {
+            return arcs.length > 0;
+        })
+    };
+}
+
+},{"./feature.js":"hVcmB","./stitch.js":"k5MKi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ggIrQ":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(objects) {
+        var indexesByArc = {}, neighbors = objects.map(function() {
+            return [];
+        });
+        function line(arcs, i) {
+            arcs.forEach(function(a) {
+                if (a < 0) a = ~a;
+                var o = indexesByArc[a];
+                if (o) o.push(i);
+                else indexesByArc[a] = [
+                    i
+                ];
+            });
+        }
+        function polygon(arcs, i) {
+            arcs.forEach(function(arc) {
+                line(arc, i);
+            });
+        }
+        function geometry(o, i) {
+            if (o.type === "GeometryCollection") o.geometries.forEach(function(o) {
+                geometry(o, i);
+            });
+            else if (o.type in geometryType) geometryType[o.type](o.arcs, i);
+        }
+        var geometryType = {
+            LineString: line,
+            MultiLineString: polygon,
+            Polygon: polygon,
+            MultiPolygon: function(arcs, i) {
+                arcs.forEach(function(arc) {
+                    polygon(arc, i);
+                });
+            }
+        };
+        objects.forEach(geometry);
+        for(var i in indexesByArc){
+            for(var indexes = indexesByArc[i], m = indexes.length, j = 0; j < m; ++j)for(var k = j + 1; k < m; ++k){
+                var ij = indexes[j], ik = indexes[k], n;
+                if ((n = neighbors[ij])[i = (0, _bisectJsDefault.default)(n, ik)] !== ik) n.splice(i, 0, ik);
+                if ((n = neighbors[ik])[i = (0, _bisectJsDefault.default)(n, ij)] !== ij) n.splice(i, 0, ij);
+            }
+        }
+        return neighbors;
+    });
+var _bisectJs = require("./bisect.js");
+var _bisectJsDefault = parcelHelpers.interopDefault(_bisectJs);
+
+},{"./bisect.js":"dgF2n","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dgF2n":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(a, x) {
+        var lo = 0, hi = a.length;
+        while(lo < hi){
+            var mid = lo + hi >>> 1;
+            if (a[mid] < x) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    });
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dZnMF":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(topology, transform) {
+        if (topology.transform) throw new Error("already quantized");
+        if (!transform || !transform.scale) {
+            if (!((n = Math.floor(transform)) >= 2)) throw new Error("n must be \u22652");
+            box = topology.bbox || (0, _bboxJsDefault.default)(topology);
+            var x0 = box[0], y0 = box[1], x1 = box[2], y1 = box[3], n;
+            transform = {
+                scale: [
+                    x1 - x0 ? (x1 - x0) / (n - 1) : 1,
+                    y1 - y0 ? (y1 - y0) / (n - 1) : 1
+                ],
+                translate: [
+                    x0,
+                    y0
+                ]
+            };
+        } else box = topology.bbox;
+        var t = (0, _untransformJsDefault.default)(transform), box, key, inputs = topology.objects, outputs = {};
+        function quantizePoint(point) {
+            return t(point);
+        }
+        function quantizeGeometry(input) {
+            var output;
+            switch(input.type){
+                case "GeometryCollection":
+                    output = {
+                        type: "GeometryCollection",
+                        geometries: input.geometries.map(quantizeGeometry)
+                    };
+                    break;
+                case "Point":
+                    output = {
+                        type: "Point",
+                        coordinates: quantizePoint(input.coordinates)
+                    };
+                    break;
+                case "MultiPoint":
+                    output = {
+                        type: "MultiPoint",
+                        coordinates: input.coordinates.map(quantizePoint)
+                    };
+                    break;
+                default:
+                    return input;
+            }
+            if (input.id != null) output.id = input.id;
+            if (input.bbox != null) output.bbox = input.bbox;
+            if (input.properties != null) output.properties = input.properties;
+            return output;
+        }
+        function quantizeArc(input) {
+            var i = 0, j = 1, n = input.length, p, output = new Array(n); // pessimistic
+            output[0] = t(input[0], 0);
+            while(++i < n)if ((p = t(input[i], i))[0] || p[1]) output[j++] = p; // non-coincident points
+            if (j === 1) output[j++] = [
+                0,
+                0
+            ]; // an arc must have at least two points
+            output.length = j;
+            return output;
+        }
+        for(key in inputs)outputs[key] = quantizeGeometry(inputs[key]);
+        return {
+            type: "Topology",
+            bbox: box,
+            transform: transform,
+            objects: outputs,
+            arcs: topology.arcs.map(quantizeArc)
+        };
+    });
+var _bboxJs = require("./bbox.js");
+var _bboxJsDefault = parcelHelpers.interopDefault(_bboxJs);
+var _untransformJs = require("./untransform.js");
+var _untransformJsDefault = parcelHelpers.interopDefault(_untransformJs);
+
+},{"./bbox.js":"uhxVo","./untransform.js":"ioj0t","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ioj0t":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>function(transform) {
+        if (transform == null) return 0, _identityJsDefault.default;
+        var x0, y0, kx = transform.scale[0], ky = transform.scale[1], dx = transform.translate[0], dy = transform.translate[1];
+        return function(input, i) {
+            if (!i) x0 = y0 = 0;
+            var j = 2, n = input.length, output = new Array(n), x1 = Math.round((input[0] - dx) / kx), y1 = Math.round((input[1] - dy) / ky);
+            output[0] = x1 - x0, x0 = x1;
+            output[1] = y1 - y0, y0 = y1;
+            while(j < n)output[j] = input[j], ++j;
+            return output;
+        };
+    });
+var _identityJs = require("./identity.js");
+var _identityJsDefault = parcelHelpers.interopDefault(_identityJs);
+
+},{"./identity.js":"2mfyf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aQL8O","8G2QE","ebWYT"], "ebWYT", "parcelRequire94c2")
 
 //# sourceMappingURL=index.739bf03c.js.map
