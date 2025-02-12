@@ -4,6 +4,7 @@ import { SankeyGraph } from './graphs/SankeyGraph';
 import { SunburstGraph } from './graphs/SunburstGraph';
 import { ChordGraph } from './graphs/ChordGraph';
 import { CirclePackingGraph } from './graphs/CirclePackingGraph';
+import { WorldMapGraph } from './graphs/WorldMapGraph';
 import { FlowParser } from './utils/FlowParser';
 import { exportToSVG, exportToPNG } from './utils/exportUtils';
 import { MatrixInput } from './utils/MatrixInput';
@@ -356,6 +357,34 @@ class GraphVisualizer {
         try {
             const matrixData = this.matrixInput.getData();
             let graphData;
+
+            // Handle world map separately since it has a different data structure
+            if (type.toLowerCase() === 'worldmap') {
+                const countryData = {};
+                matrixData.rows.forEach(row => {
+                    const countryName = row[0]?.value;
+                    if (countryName) {
+                        if (!countryData[countryName]) {
+                            countryData[countryName] = {
+                                paths: []
+                            };
+                        }
+                        // Create path from all non-empty values
+                        const path = row
+                            .slice(1) // Skip country name
+                            .map(cell => cell.value)
+                            .filter(value => value); // Remove empty values
+
+                        if (path.length > 0) {
+                            countryData[countryName].paths.push(path);
+                        }
+                    }
+                });
+                this.currentGraph = new WorldMapGraph(this.container, countryData, this.settings);
+                this.updateTitles();
+                this.toggleGraphControls(type);
+                return;
+            }
 
             // Use appropriate data format based on graph type
             if (type.toLowerCase() === 'sunburst') {

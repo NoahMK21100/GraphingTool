@@ -4,32 +4,48 @@ import { MatrixInput as MatrixInputUtils } from './utils/MatrixInput.js';
 
 class GraphVisualizer {
     constructor() {
-        this.initializeContainers();
-        this.initializeSettings();
-        this.setupEventListeners();
-        this.setupThemeToggle();
-        this.initializeFromURL();
-    }
-
-    initializeContainers() {
+        // Initialize container reference
         this.container = document.getElementById('visualization-container');
-        this.currentGraph = null;
-        this.flowParser = new FlowParser();
-
-        const matrixContainer = document.querySelector('.matrix-container');
-        if (!matrixContainer) {
-            console.error('Matrix container not found');
-            return;
+        if (!this.container) {
+            throw new Error('Visualization container not found');
         }
-        this.matrixInput = new MatrixInput(matrixContainer);
-    }
 
-    initializeSettings() {
+        // Clear container
+        this.container.innerHTML = '';
+
+        // Create wrapper
+        this.wrapper = document.createElement('div');
+        this.wrapper.className = 'graph-wrapper';
+
+        // Create title container FIRST
+        const titleContainer = document.createElement('div');
+        titleContainer.className = 'title-container';
+
+        const title = document.createElement('h1');
+        title.className = 'main-title';
+        const subtitle = document.createElement('p');
+        subtitle.className = 'subtitle';
+
+        titleContainer.appendChild(title);
+        titleContainer.appendChild(subtitle);
+        this.wrapper.appendChild(titleContainer);
+
+        // Create chart container SECOND
+        this.chartContainer = document.createElement('div');
+        this.chartContainer.className = 'chart-container';
+        this.wrapper.appendChild(this.chartContainer);
+
+        // Append wrapper to container LAST
+        this.container.appendChild(this.wrapper);
+
+        // Initialize settings with default values
         this.settings = {
-            colors: this.initializeColors(),
-            opacity: {
-                nodes: 0.85,
-                links: 0.6
+            colors: {
+                level0: document.getElementById('nodeColor0')?.value || '#818cf8',
+                level1: document.getElementById('nodeColor1')?.value || '#a78bfa',
+                level2: document.getElementById('nodeColor2')?.value || '#ec4899',
+                level3: document.getElementById('nodeColor3')?.value || '#f43f5e',
+                level4: document.getElementById('nodeColor4')?.value || '#f59e0b'
             },
             sankey: {
                 nodePadding: 30
@@ -37,56 +53,36 @@ class GraphVisualizer {
             force: {
                 linkDistance: 100,
                 chargeStrength: -300
-            },
-            display: {
-                showOutlines: true
             }
         };
-    }
 
-    initializeColors() {
-        return {
-            level1: document.getElementById('nodeColor1')?.value || '#ff4d6a',
-            level2: document.getElementById('nodeColor2')?.value || '#ec4899',
-            level3: document.getElementById('nodeColor3')?.value || '#a78bfa',
-            level4: document.getElementById('nodeColor4')?.value || '#f59e0b',
-            level5: document.getElementById('nodeColor5')?.value || '#818cf8'
-        };
+        this.flowParser = new FlowParser();
+        this.setupEventListeners();
+        this.initializeFromURL();
+
+        // Initialize matrix input
+        const matrixContainer = document.querySelector('.matrix-container');
+        this.matrixInput = new MatrixInputUtils(matrixContainer);
+
+        // Initialize example data manager
+        this.exampleManager = new ExampleDataManager(this.matrixInput);
     }
 
     setupEventListeners() {
-        this.setupMatrixListeners();
-        this.setupGraphControls();
-        this.setupColorControls();
-        this.setupExportControls();
-        this.setupTitleControls();
-        this.setupResizeHandler();
-    }
-
-    setupMatrixListeners() {
+        // Matrix input listener
         this.matrixInput.container.addEventListener('matrixchange', (event) => {
             const matrixData = event.detail;
             const graphData = this.flowParser.parseMatrix(matrixData);
             this.updateGraph(graphData);
         });
 
+        // Graph type switching
         document.getElementById('graphType')?.addEventListener('change', (e) => {
             this.switchGraph(e.target.value);
             this.toggleGraphControls(e.target.value);
             this.updateURL();
         });
-    }
 
-    setupGraphControls() {
-        document.getElementById('nodePadding')?.addEventListener('input', (e) => {
-            this.settings.sankey.nodePadding = parseInt(e.target.value);
-            if (this.currentGraph instanceof SankeyGraph) {
-                this.updateGraph();
-            }
-        });
-    }
-
-    setupColorControls() {
         // Color preset listener
         document.getElementById('colorPreset')?.addEventListener('change', (e) => {
             const colors = this.colorPresets[e.target.value];
@@ -111,9 +107,15 @@ class GraphVisualizer {
                 this.updateURL();
             });
         });
-    }
 
-    setupExportControls() {
+        // Sankey-specific controls
+        document.getElementById('nodePadding')?.addEventListener('input', (e) => {
+            this.settings.sankey.nodePadding = parseInt(e.target.value);
+            if (this.currentGraph instanceof SankeyGraph) {
+                this.updateGraph();
+            }
+        });
+
         // Export controls
         document.getElementById('exportPNG')?.addEventListener('click', () => {
             if (this.currentGraph) {
@@ -126,9 +128,7 @@ class GraphVisualizer {
                 exportToSVG(this.currentGraph.wrapper);
             }
         });
-    }
 
-    setupTitleControls() {
         // Title updates
         ['companyName', 'techName'].forEach(id => {
             document.getElementById(id)?.addEventListener('input', () => {
@@ -136,9 +136,7 @@ class GraphVisualizer {
                 this.updateURL();
             });
         });
-    }
 
-    setupResizeHandler() {
         // Handle window resize
         window.addEventListener('resize', () => {
             if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
@@ -220,36 +218,48 @@ class GraphVisualizer {
     }
 
     switchGraph(type, data = null) {
+        // Clear container
         if (this.currentGraph) {
             this.currentGraph.destroy();
         }
 
         try {
             const matrixData = this.matrixInput.getData();
-            const graphTypeMap = {
-                sunburst: () => this.flowParser.parseSunburstData(matrixData),
-                chord: () => this.flowParser.parseChordData(matrixData),
-                circle: () => this.flowParser.parseCirclePackingData(matrixData),
-                default: () => this.flowParser.parseMatrix(matrixData)
-            };
+            let graphData;
 
-            const parser = graphTypeMap[type.toLowerCase()] || graphTypeMap.default;
-            const graphData = parser();
+            // Use appropriate data format based on graph type
+            if (type.toLowerCase() === 'sunburst') {
+                graphData = this.flowParser.parseSunburstData(matrixData);
+            } else if (type.toLowerCase() === 'chord') {
+                graphData = this.flowParser.parseChordData(matrixData);
+            } else if (type.toLowerCase() === 'circle') {
+                graphData = this.flowParser.parseCirclePackingData(matrixData);
+            } else {
+                graphData = this.flowParser.parseMatrix(matrixData);
+            }
 
             if (!graphData) {
                 throw new Error('Invalid data structure');
             }
 
-            const graphClassMap = {
-                sunburst: SunburstGraph,
-                force: ForceGraph,
-                chord: ChordGraph,
-                circle: CirclePackingGraph,
-                default: SankeyGraph
-            };
-
-            const GraphClass = graphClassMap[type.toLowerCase()] || graphClassMap.default;
-            this.currentGraph = new GraphClass(this.container, graphData, this.settings);
+            // Create new graph based on type
+            switch (type.toLowerCase()) {
+                case 'sunburst':
+                    this.currentGraph = new SunburstGraph(this.container, graphData, this.settings);
+                    break;
+                case 'force':
+                    this.currentGraph = new ForceGraph(this.container, graphData, this.settings);
+                    break;
+                case 'chord':
+                    this.currentGraph = new ChordGraph(this.container, graphData, this.settings);
+                    break;
+                case 'circle':
+                    this.currentGraph = new CirclePackingGraph(this.container, graphData, this.settings);
+                    break;
+                default:
+                    this.currentGraph = new SankeyGraph(this.container, graphData, this.settings);
+                    break;
+            }
 
             this.updateTitles();
             this.toggleGraphControls(type);

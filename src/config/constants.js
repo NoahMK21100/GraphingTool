@@ -12,5 +12,6 @@ export const VISUALIZATION_TYPES = {
     SANKEY: 'sankey',
     CHORD: 'chord',
     CIRCLE: 'circle',
-    SUNBURST: 'sunburst'
+    SUNBURST: 'sunburst',
+    WORLDMAP: 'worldmap'
 }; 
