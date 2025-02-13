@@ -99,12 +99,14 @@ export class ChordGraph extends BaseGraph {
 
     createGroups(svg, chords, arc, sortedNodes) {
         const group = svg.append('g')
+            .attr('class', 'groups')
             .selectAll('g')
             .data(chords.groups)
             .join('g');
 
         group.append('path')
             .attr('fill', d => this.getNodeColor(d))
+            .attr('fill-opacity', this.getNodeOpacity())
             .attr('d', arc);
 
         group.append('text')
@@ -131,7 +133,8 @@ export class ChordGraph extends BaseGraph {
 
     createRibbons(svg, chords, ribbon) {
         const ribbons = svg.append('g')
-            .attr('fill-opacity', 0.67)
+            .attr('class', 'ribbons')
+            .attr('fill-opacity', this.getNodeOpacity())
             .selectAll('path')
             .data(chords)
             .join('path')
@@ -154,7 +157,7 @@ export class ChordGraph extends BaseGraph {
                 const targetIndex = d.target.index;
 
                 // Highlight only this specific ribbon
-                d3.select(event.currentTarget).attr('fill-opacity', 0.8);
+                d3.select(event.currentTarget).attr('fill-opacity', this.getNodeOpacity());
 
                 // Highlight only the two connected groups
                 group.filter(g => g.index === sourceIndex || g.index === targetIndex)
@@ -168,7 +171,7 @@ export class ChordGraph extends BaseGraph {
                 );
 
                 // Highlight all connected ribbons
-                connectedRibbons.attr('fill-opacity', 0.8);
+                connectedRibbons.attr('fill-opacity', this.getNodeOpacity());
 
                 // Highlight the hovered group
                 group.filter(g => g.index === d.index)
@@ -190,21 +193,27 @@ export class ChordGraph extends BaseGraph {
         }
 
         function resetHighlight() {
-            ribbons.attr('fill-opacity', 0.67);
+            ribbons.attr('fill-opacity', this.getNodeOpacity());
             group.style('opacity', 1)
                 .selectAll('text')
                 .style('opacity', 1);
         }
 
+        // Bind the methods to this instance
+        const boundHighlight = highlightConnected.bind(this);
+        const boundReset = resetHighlight.bind(this);
+
         group
             .style('cursor', 'pointer')
-            .on('mouseover', (event, d) => highlightConnected(event, d, false))
-            .on('mouseout', resetHighlight);
+            .on('mouseover', (event, d) => boundHighlight(event, d, false))
+            .on('mouseout', boundReset);
 
         ribbons
             .style('cursor', 'pointer')
-            .on('mouseover', (event, d) => highlightConnected(event, d, true))
-            .on('mouseout', resetHighlight)
+            .on('mouseover', (event, d) => boundHighlight(event, d, true))
+            .on('mouseout', boundReset);
+
+        ribbons
             .append('title')
             .text(d =>
                 `${sortedNodes[d.source.index].name} ↔ ${sortedNodes[d.target.index].name}`
@@ -219,5 +228,17 @@ export class ChordGraph extends BaseGraph {
         this.innerRadius = this.outerRadius - 20;
 
         this.createChordDiagram();
+    }
+
+    update() {
+        if (!this.svg) return;
+
+        // Update ribbons opacity
+        this.svg.select('.ribbons')
+            .attr('fill-opacity', this.getNodeOpacity());
+
+        // Update groups opacity
+        this.svg.selectAll('.groups path')
+            .attr('fill-opacity', this.getNodeOpacity());
     }
 } 

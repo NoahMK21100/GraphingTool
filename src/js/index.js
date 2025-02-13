@@ -43,8 +43,8 @@ class GraphVisualizer {
                 level5: document.getElementById('nodeColor5')?.value || '#818cf8'
             },
             opacity: {
-                nodes: 0.85,
-                links: 0.6
+                nodes: 1.0,
+                links: 0.8
             },
             sankey: {
                 nodePadding: 30
@@ -323,7 +323,14 @@ class GraphVisualizer {
         // Show/hide opacity control based on graph type
         const opacityControl = document.querySelector('.slider-control:has(#opacitySlider)');
         if (opacityControl) {
-            opacityControl.style.display = ['sankey', 'force', 'circle', 'chord'].includes(type) ? 'flex' : 'none';
+            opacityControl.style.display = ['sankey', 'force', 'circle'].includes(type) ? 'flex' : 'none';
+        }
+
+        // Show/hide entire graph settings container
+        const graphSettings = document.querySelector('.graph-settings');
+        if (graphSettings) {
+            const hasSettings = ['sankey', 'force', 'circle'].includes(type);
+            graphSettings.style.display = hasSettings ? 'block' : 'none';
         }
     }
 
@@ -360,26 +367,30 @@ class GraphVisualizer {
 
             // Handle world map separately since it has a different data structure
             if (type.toLowerCase() === 'worldmap') {
+                this.matrixInput.setGraphType('worldmap');
                 const countryData = {};
                 matrixData.rows.forEach(row => {
-                    const countryName = row[0]?.value;
+                    // For world map, the first cell might be a select element
+                    const firstCell = row[0];
+                    const countryName = firstCell?.value;
                     if (countryName) {
                         if (!countryData[countryName]) {
                             countryData[countryName] = {
                                 paths: []
                             };
                         }
-                        // Create path from all non-empty values
-                        const path = row
-                            .slice(1) // Skip country name
-                            .map(cell => cell.value)
-                            .filter(value => value); // Remove empty values
+
+                        // Get all non-empty values from the remaining cells
+                        const path = row.slice(1)
+                            .filter(cell => cell && cell.value && cell.value.trim() !== '')
+                            .map(cell => cell.value.trim());
 
                         if (path.length > 0) {
                             countryData[countryName].paths.push(path);
                         }
                     }
                 });
+
                 this.currentGraph = new WorldMapGraph(this.container, countryData, this.settings);
                 this.updateTitles();
                 this.toggleGraphControls(type);
@@ -388,17 +399,17 @@ class GraphVisualizer {
 
             // Use appropriate data format based on graph type
             if (type.toLowerCase() === 'sunburst') {
+                this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseSunburstData(matrixData);
             } else if (type.toLowerCase() === 'chord') {
+                this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseChordData(matrixData);
             } else if (type.toLowerCase() === 'circle') {
+                this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseCirclePackingData(matrixData);
             } else {
+                this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseMatrix(matrixData);
-            }
-
-            if (!graphData) {
-                throw new Error('Invalid data structure');
             }
 
             // Create new graph based on type
@@ -423,8 +434,11 @@ class GraphVisualizer {
             this.updateTitles();
             this.toggleGraphControls(type);
         } catch (error) {
-            console.error('Error creating graph:', error);
-            this.container.innerHTML = `<div class="error">Error creating graph: ${error.message}</div>`;
+            console.warn('Graph initialization warning:', error);
+            // Clear the container without showing error message
+            if (this.container) {
+                this.container.innerHTML = '';
+            }
         }
     }
 

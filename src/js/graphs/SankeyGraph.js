@@ -7,8 +7,10 @@ export class SankeyGraph extends BaseGraph {
     constructor(container, data, settings) {
         super(container);
 
-        if (!data || !data.nodes || !data.links) {
-            throw new Error('Invalid data structure provided');
+        // Handle empty or invalid data
+        if (!data || !data.nodes || !data.links || data.nodes.length === 0) {
+            this.chartContainer.innerHTML = '';
+            return;
         }
 
         this.data = {

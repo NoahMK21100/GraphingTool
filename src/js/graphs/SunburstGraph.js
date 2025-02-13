@@ -5,8 +5,10 @@ export class SunburstGraph extends BaseGraph {
     constructor(container, data, settings) {
         super(container);
 
-        if (!data || !data.name || !data.children) {
-            throw new Error('Invalid data structure provided');
+        // Handle empty or invalid data
+        if (!data || !data.name || !data.children || data.children.length === 0) {
+            this.chartContainer.innerHTML = '';
+            return;
         }
 
         this.data = data;
