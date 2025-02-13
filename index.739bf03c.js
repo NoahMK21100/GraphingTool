@@ -2979,8 +2979,8 @@ class GraphVisualizer {
                 level5: document.getElementById('nodeColor5')?.value || '#818cf8'
             },
             opacity: {
-                nodes: 0.85,
-                links: 0.6
+                nodes: 1.0,
+                links: 0.8
             },
             sankey: {
                 nodePadding: 30
@@ -3236,9 +3236,18 @@ class GraphVisualizer {
         if (opacityControl) opacityControl.style.display = [
             'sankey',
             'force',
-            'circle',
-            'chord'
+            'circle'
         ].includes(type) ? 'flex' : 'none';
+        // Show/hide entire graph settings container
+        const graphSettings = document.querySelector('.graph-settings');
+        if (graphSettings) {
+            const hasSettings = [
+                'sankey',
+                'force',
+                'circle'
+            ].includes(type);
+            graphSettings.style.display = hasSettings ? 'block' : 'none';
+        }
     }
     updateTitles() {
         const companyName = document.getElementById('companyName')?.value || '';
@@ -3262,16 +3271,18 @@ class GraphVisualizer {
             let graphData;
             // Handle world map separately since it has a different data structure
             if (type.toLowerCase() === 'worldmap') {
+                this.matrixInput.setGraphType('worldmap');
                 const countryData = {};
                 matrixData.rows.forEach((row)=>{
-                    const countryName = row[0]?.value;
+                    // For world map, the first cell might be a select element
+                    const firstCell = row[0];
+                    const countryName = firstCell?.value;
                     if (countryName) {
                         if (!countryData[countryName]) countryData[countryName] = {
                             paths: []
                         };
-                        // Create path from all non-empty values
-                        const path = row.slice(1) // Skip country name
-                        .map((cell)=>cell.value).filter((value)=>value); // Remove empty values
+                        // Get all non-empty values from the remaining cells
+                        const path = row.slice(1).filter((cell)=>cell && cell.value && cell.value.trim() !== '').map((cell)=>cell.value.trim());
                         if (path.length > 0) countryData[countryName].paths.push(path);
                     }
                 });
@@ -3281,11 +3292,19 @@ class GraphVisualizer {
                 return;
             }
             // Use appropriate data format based on graph type
-            if (type.toLowerCase() === 'sunburst') graphData = this.flowParser.parseSunburstData(matrixData);
-            else if (type.toLowerCase() === 'chord') graphData = this.flowParser.parseChordData(matrixData);
-            else if (type.toLowerCase() === 'circle') graphData = this.flowParser.parseCirclePackingData(matrixData);
-            else graphData = this.flowParser.parseMatrix(matrixData);
-            if (!graphData) throw new Error('Invalid data structure');
+            if (type.toLowerCase() === 'sunburst') {
+                this.matrixInput.setGraphType('');
+                graphData = this.flowParser.parseSunburstData(matrixData);
+            } else if (type.toLowerCase() === 'chord') {
+                this.matrixInput.setGraphType('');
+                graphData = this.flowParser.parseChordData(matrixData);
+            } else if (type.toLowerCase() === 'circle') {
+                this.matrixInput.setGraphType('');
+                graphData = this.flowParser.parseCirclePackingData(matrixData);
+            } else {
+                this.matrixInput.setGraphType('');
+                graphData = this.flowParser.parseMatrix(matrixData);
+            }
             // Create new graph based on type
             switch(type.toLowerCase()){
                 case 'sunburst':
@@ -3307,8 +3326,9 @@ class GraphVisualizer {
             this.updateTitles();
             this.toggleGraphControls(type);
         } catch (error) {
-            console.error('Error creating graph:', error);
-            this.container.innerHTML = `<div class="error">Error creating graph: ${error.message}</div>`;
+            console.warn('Graph initialization warning:', error);
+            // Clear the container without showing error message
+            if (this.container) this.container.innerHTML = '';
         }
     }
     // URL state management
@@ -27296,7 +27316,11 @@ var _graphUtils = require("../utils/GraphUtils");
 class SankeyGraph extends (0, _baseGraph.BaseGraph) {
     constructor(container, data, settings){
         super(container);
-        if (!data || !data.nodes || !data.links) throw new Error('Invalid data structure provided');
+        // Handle empty or invalid data
+        if (!data || !data.nodes || !data.links || data.nodes.length === 0) {
+            this.chartContainer.innerHTML = '';
+            return;
+        }
         this.data = {
             nodes: data.nodes.map((node)=>({
                     ...node,
@@ -28471,7 +28495,11 @@ var _baseGraph = require("./BaseGraph");
 class SunburstGraph extends (0, _baseGraph.BaseGraph) {
     constructor(container, data, settings){
         super(container);
-        if (!data || !data.name || !data.children) throw new Error('Invalid data structure provided');
+        // Handle empty or invalid data
+        if (!data || !data.name || !data.children || data.children.length === 0) {
+            this.chartContainer.innerHTML = '';
+            return;
+        }
         this.data = data;
         this.settings = settings || {};
         // Get dimensions from chart container
@@ -28678,8 +28706,8 @@ class ChordGraph extends (0, _baseGraph.BaseGraph) {
         };
     }
     createGroups(svg, chords, arc, sortedNodes) {
-        const group = svg.append('g').selectAll('g').data(chords.groups).join('g');
-        group.append('path').attr('fill', (d)=>this.getNodeColor(d)).attr('d', arc);
+        const group = svg.append('g').attr('class', 'groups').selectAll('g').data(chords.groups).join('g');
+        group.append('path').attr('fill', (d)=>this.getNodeColor(d)).attr('fill-opacity', this.getNodeOpacity()).attr('d', arc);
         group.append('text').attr('dy', '.35em').attr('transform', (d)=>{
             const angle = (d.startAngle + d.endAngle) / 2;
             const radius = this.outerRadius + 10;
@@ -28696,7 +28724,7 @@ class ChordGraph extends (0, _baseGraph.BaseGraph) {
         return group;
     }
     createRibbons(svg, chords, ribbon) {
-        const ribbons = svg.append('g').attr('fill-opacity', 0.67).selectAll('path').data(chords).join('path').attr('d', ribbon).attr('fill', (d)=>this.getNodeColor(d.source)).attr('stroke', (d)=>_d3.rgb(this.getNodeColor(d.source)).darker());
+        const ribbons = svg.append('g').attr('class', 'ribbons').attr('fill-opacity', this.getNodeOpacity()).selectAll('path').data(chords).join('path').attr('d', ribbon).attr('fill', (d)=>this.getNodeColor(d.source)).attr('stroke', (d)=>_d3.rgb(this.getNodeColor(d.source)).darker());
         return ribbons;
     }
     setupInteractivity(group, ribbons, sortedNodes) {
@@ -28709,14 +28737,14 @@ class ChordGraph extends (0, _baseGraph.BaseGraph) {
                 const sourceIndex = d.source.index;
                 const targetIndex = d.target.index;
                 // Highlight only this specific ribbon
-                _d3.select(event.currentTarget).attr('fill-opacity', 0.8);
+                _d3.select(event.currentTarget).attr('fill-opacity', this.getNodeOpacity());
                 // Highlight only the two connected groups
                 group.filter((g)=>g.index === sourceIndex || g.index === targetIndex).style('opacity', 1).selectAll('text').style('opacity', 1);
             } else {
                 // When hovering over any node (including technology), highlight all its connections
                 const connectedRibbons = ribbons.filter((r)=>r.source.index === d.index || r.target.index === d.index);
                 // Highlight all connected ribbons
-                connectedRibbons.attr('fill-opacity', 0.8);
+                connectedRibbons.attr('fill-opacity', this.getNodeOpacity());
                 // Highlight the hovered group
                 group.filter((g)=>g.index === d.index).style('opacity', 1).selectAll('text').style('opacity', 1);
                 // Highlight connected groups
@@ -28728,11 +28756,15 @@ class ChordGraph extends (0, _baseGraph.BaseGraph) {
             }
         }
         function resetHighlight() {
-            ribbons.attr('fill-opacity', 0.67);
+            ribbons.attr('fill-opacity', this.getNodeOpacity());
             group.style('opacity', 1).selectAll('text').style('opacity', 1);
         }
-        group.style('cursor', 'pointer').on('mouseover', (event, d)=>highlightConnected(event, d, false)).on('mouseout', resetHighlight);
-        ribbons.style('cursor', 'pointer').on('mouseover', (event, d)=>highlightConnected(event, d, true)).on('mouseout', resetHighlight).append('title').text((d)=>`${sortedNodes[d.source.index].name} \u{2194} ${sortedNodes[d.target.index].name}`);
+        // Bind the methods to this instance
+        const boundHighlight = highlightConnected.bind(this);
+        const boundReset = resetHighlight.bind(this);
+        group.style('cursor', 'pointer').on('mouseover', (event, d)=>boundHighlight(event, d, false)).on('mouseout', boundReset);
+        ribbons.style('cursor', 'pointer').on('mouseover', (event, d)=>boundHighlight(event, d, true)).on('mouseout', boundReset);
+        ribbons.append('title').text((d)=>`${sortedNodes[d.source.index].name} \u{2194} ${sortedNodes[d.target.index].name}`);
     }
     handleResize() {
         const containerRect = this.chartContainer.getBoundingClientRect();
@@ -28741,6 +28773,13 @@ class ChordGraph extends (0, _baseGraph.BaseGraph) {
         this.outerRadius = Math.min(this.width, this.height) * 0.4;
         this.innerRadius = this.outerRadius - 20;
         this.createChordDiagram();
+    }
+    update() {
+        if (!this.svg) return;
+        // Update ribbons opacity
+        this.svg.select('.ribbons').attr('fill-opacity', this.getNodeOpacity());
+        // Update groups opacity
+        this.svg.selectAll('.groups path').attr('fill-opacity', this.getNodeOpacity());
     }
 }
 
@@ -37020,15 +37059,182 @@ class MatrixInput {
     constructor(container){
         this.container = container;
         this.columns = [
-            'Mission Type',
-            'Domain',
-            'Operation Type',
-            'System Type',
-            'Platform',
-            'Variant'
+            'Level 1',
+            'Level 2',
+            'Level 3',
+            'Level 4',
+            'Level 5'
         ];
         this.rows = [
             []
+        ];
+        this.currentGraphType = '';
+        this.countryList = [
+            "Afghanistan",
+            "Albania",
+            "Algeria",
+            "Angola",
+            "Argentina",
+            "Armenia",
+            "Australia",
+            "Austria",
+            "Azerbaijan",
+            "Bahrain",
+            "Bangladesh",
+            "Belarus",
+            "Belgium",
+            "Benin",
+            "Bhutan",
+            "Bolivia",
+            "Bosnia and Herzegovina",
+            "Botswana",
+            "Brazil",
+            "Brunei",
+            "Bulgaria",
+            "Burkina Faso",
+            "Burundi",
+            "Cambodia",
+            "Cameroon",
+            "Canada",
+            "Central African Republic",
+            "Chad",
+            "Chile",
+            "China",
+            "Colombia",
+            "Congo",
+            "Costa Rica",
+            "Croatia",
+            "Cuba",
+            "Cyprus",
+            "Czech Republic",
+            "Democratic Republic of the Congo",
+            "Denmark",
+            "Djibouti",
+            "Dominican Republic",
+            "Ecuador",
+            "Egypt",
+            "El Salvador",
+            "Equatorial Guinea",
+            "Eritrea",
+            "Estonia",
+            "Eswatini",
+            "Ethiopia",
+            "Fiji",
+            "Finland",
+            "France",
+            "Gabon",
+            "Gambia",
+            "Georgia",
+            "Germany",
+            "Ghana",
+            "Greece",
+            "Guatemala",
+            "Guinea",
+            "Guinea-Bissau",
+            "Guyana",
+            "Haiti",
+            "Honduras",
+            "Hungary",
+            "Iceland",
+            "India",
+            "Indonesia",
+            "Iran",
+            "Iraq",
+            "Ireland",
+            "Israel",
+            "Italy",
+            "Ivory Coast",
+            "Jamaica",
+            "Japan",
+            "Jordan",
+            "Kazakhstan",
+            "Kenya",
+            "Kuwait",
+            "Kyrgyzstan",
+            "Laos",
+            "Latvia",
+            "Lebanon",
+            "Lesotho",
+            "Liberia",
+            "Libya",
+            "Lithuania",
+            "Luxembourg",
+            "Madagascar",
+            "Malawi",
+            "Malaysia",
+            "Mali",
+            "Mauritania",
+            "Mexico",
+            "Moldova",
+            "Mongolia",
+            "Montenegro",
+            "Morocco",
+            "Mozambique",
+            "Myanmar",
+            "Namibia",
+            "Nepal",
+            "Netherlands",
+            "New Zealand",
+            "Nicaragua",
+            "Niger",
+            "Nigeria",
+            "North Korea",
+            "North Macedonia",
+            "Norway",
+            "Oman",
+            "Pakistan",
+            "Palestine",
+            "Panama",
+            "Papua New Guinea",
+            "Paraguay",
+            "Peru",
+            "Philippines",
+            "Poland",
+            "Portugal",
+            "Qatar",
+            "Romania",
+            "Russia",
+            "Rwanda",
+            "Saudi Arabia",
+            "Senegal",
+            "Serbia",
+            "Sierra Leone",
+            "Singapore",
+            "Slovakia",
+            "Slovenia",
+            "Somalia",
+            "South Africa",
+            "South Korea",
+            "South Sudan",
+            "Spain",
+            "Sri Lanka",
+            "Sudan",
+            "Suriname",
+            "Sweden",
+            "Switzerland",
+            "Syria",
+            "Taiwan",
+            "Tajikistan",
+            "Tanzania",
+            "Thailand",
+            "Timor-Leste",
+            "Togo",
+            "Trinidad and Tobago",
+            "Tunisia",
+            "Turkey",
+            "Turkmenistan",
+            "Uganda",
+            "Ukraine",
+            "United Arab Emirates",
+            "United Kingdom",
+            "United States of America",
+            "Uruguay",
+            "Uzbekistan",
+            "Venezuela",
+            "Vietnam",
+            "Yemen",
+            "Zambia",
+            "Zimbabwe"
         ];
         this.addRow(); // Add initial row
         this.initializeEventListeners();
@@ -37037,6 +37243,107 @@ class MatrixInput {
         const addButton = this.container.querySelector('.add-row-button');
         if (addButton) addButton.addEventListener('click', ()=>this.addRow());
     }
+    setGraphType(type) {
+        this.currentGraphType = type;
+        this.updateAllRows();
+    }
+    updateAllRows() {
+        const rows = this.container.querySelectorAll('.matrix-row');
+        rows.forEach((row)=>{
+            row.querySelectorAll('.matrix-cell').forEach((cell, columnIndex)=>{
+                const currentInput = cell.querySelector('input, select');
+                // If the input already exists and we're not switching to/from worldmap, just update its value
+                if (currentInput && (this.currentGraphType === 'worldmap' && currentInput.tagName === 'SELECT' || this.currentGraphType !== 'worldmap' && currentInput.tagName === 'INPUT')) return;
+                const currentValue = currentInput?.value || '';
+                const currentWeight = cell.querySelector('.link-weight')?.value || '1';
+                cell.innerHTML = '';
+                // Create the appropriate input type
+                if (columnIndex === 0 && this.currentGraphType === 'worldmap') cell.appendChild(this.createFirstColumnInput(currentValue));
+                else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentValue;
+                    input.style.width = '100%';
+                    input.style.padding = '4px';
+                    input.style.borderRadius = '4px';
+                    input.style.border = '1px solid var(--border-color)';
+                    input.style.backgroundColor = 'var(--input-bg)';
+                    input.style.color = 'var(--text-primary)';
+                    input.style.fontSize = '12px';
+                    input.setAttribute('data-column', this.columns[columnIndex]);
+                    // Use a debounced event listener for input changes
+                    let timeout;
+                    input.addEventListener('input', (e)=>{
+                        clearTimeout(timeout);
+                        timeout = setTimeout(()=>this.emitChange(), 100);
+                    });
+                    cell.appendChild(input);
+                }
+                // Add weight input
+                const weightInput = document.createElement('input');
+                weightInput.type = 'number';
+                weightInput.className = 'link-weight';
+                weightInput.min = '0.1';
+                weightInput.step = '0.1';
+                weightInput.value = currentWeight;
+                // Use a debounced event listener for weight changes
+                let timeout;
+                weightInput.addEventListener('input', (e)=>{
+                    clearTimeout(timeout);
+                    timeout = setTimeout(()=>this.emitChange(), 100);
+                });
+                cell.appendChild(weightInput);
+            });
+        });
+    }
+    createFirstColumnInput(value = '') {
+        let input;
+        if (this.currentGraphType === 'worldmap') {
+            input = document.createElement('select');
+            input.className = 'country-select';
+            input.style.width = '100%';
+            input.style.padding = '4px';
+            input.style.borderRadius = '4px';
+            input.style.border = '1px solid var(--border-color)';
+            input.style.backgroundColor = 'var(--input-bg)';
+            input.style.color = 'var(--text-primary)';
+            input.style.fontSize = '12px';
+            // Add empty option
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'Select a country...';
+            input.appendChild(emptyOption);
+            // Add country options
+            this.countryList.forEach((country)=>{
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                if (country === value) option.selected = true;
+                input.appendChild(option);
+            });
+            input.addEventListener('change', ()=>this.emitChange());
+        } else {
+            // For all other graph types, create a regular text input
+            input = document.createElement('input');
+            input.type = 'text';
+            input.value = value;
+            input.style.width = '100%';
+            input.style.padding = '4px';
+            input.style.borderRadius = '4px';
+            input.style.border = '1px solid var(--border-color)';
+            input.style.backgroundColor = 'var(--input-bg)';
+            input.style.color = 'var(--text-primary)';
+            input.style.fontSize = '12px';
+            input.setAttribute('data-column', this.columns[0]);
+            // Use a debounced event listener for input changes
+            let timeout;
+            input.addEventListener('input', (e)=>{
+                clearTimeout(timeout);
+                timeout = setTimeout(()=>this.emitChange(), 100);
+            });
+        }
+        return input;
+    }
     addRow() {
         const row = document.createElement('div');
         row.className = 'matrix-row';
@@ -37044,27 +37351,47 @@ class MatrixInput {
         this.columns.forEach((columnName, index)=>{
             const cell = document.createElement('div');
             cell.className = 'matrix-cell';
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.setAttribute('data-column', columnName);
-            input.addEventListener('input', ()=>this.emitChange());
-            cell.appendChild(input);
-            if (index < this.columns.length - 1) {
-                const weightInput = document.createElement('input');
-                weightInput.type = 'number';
-                weightInput.className = 'link-weight';
-                weightInput.min = '0.1';
-                weightInput.step = '0.1';
-                weightInput.value = '1';
-                weightInput.addEventListener('input', ()=>this.emitChange());
-                cell.appendChild(weightInput);
+            // Add main input (either select for first column in world map or text input)
+            if (index === 0 && this.currentGraphType === 'worldmap') cell.appendChild(this.createFirstColumnInput());
+            else {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.style.width = '100%';
+                input.style.padding = '4px';
+                input.style.borderRadius = '4px';
+                input.style.border = '1px solid var(--border-color)';
+                input.style.backgroundColor = 'var(--input-bg)';
+                input.style.color = 'var(--text-primary)';
+                input.style.fontSize = '12px';
+                input.setAttribute('data-column', columnName);
+                // Use a debounced event listener for input changes
+                let timeout;
+                input.addEventListener('input', (e)=>{
+                    clearTimeout(timeout);
+                    timeout = setTimeout(()=>this.emitChange(), 100);
+                });
+                cell.appendChild(input);
             }
+            // Add weight input
+            const weightInput = document.createElement('input');
+            weightInput.type = 'number';
+            weightInput.className = 'link-weight';
+            weightInput.min = '0.1';
+            weightInput.step = '0.1';
+            weightInput.value = '1';
+            // Use a debounced event listener for weight changes
+            let timeout;
+            weightInput.addEventListener('input', (e)=>{
+                clearTimeout(timeout);
+                timeout = setTimeout(()=>this.emitChange(), 100);
+            });
+            cell.appendChild(weightInput);
             row.appendChild(cell);
         });
         const rowContainer = document.createElement('div');
         rowContainer.className = 'row-container';
         rowContainer.appendChild(row);
-        // Create action buttons container
+        // Add action buttons
         const actionButtons = document.createElement('div');
         actionButtons.className = 'row-action-buttons';
         const duplicateBtn = document.createElement('button');
@@ -37096,14 +37423,15 @@ class MatrixInput {
         const newRowContainer = document.createElement('div');
         newRowContainer.className = 'row-container';
         const newRow = originalRow.cloneNode(true);
-        // Copy text input values
-        const originalInputs = originalRow.querySelectorAll('input[type="text"]');
-        const newInputs = newRow.querySelectorAll('input[type="text"]');
+        // Copy text/select input values
+        const originalInputs = originalRow.querySelectorAll('input[type="text"], select');
+        const newInputs = newRow.querySelectorAll('input[type="text"], select');
         newInputs.forEach((input, index)=>{
             input.value = originalInputs[index].value;
             input.addEventListener('input', ()=>this.emitChange());
+            if (input.tagName === 'SELECT') input.addEventListener('change', ()=>this.emitChange());
         });
-        // Copy weight input values
+        // Copy weight input values for all columns except the last
         const originalWeights = originalRow.querySelectorAll('.link-weight');
         const newWeights = newRow.querySelectorAll('.link-weight');
         newWeights.forEach((input, index)=>{
@@ -37165,22 +37493,21 @@ class MatrixInput {
     getData() {
         const data = [];
         const rows = this.container.querySelectorAll('.matrix-row');
-        console.log("Getting data from matrix rows:", rows.length); // Debug log
         rows.forEach((row)=>{
             const rowData = [];
             const cells = row.querySelectorAll('.matrix-cell');
             cells.forEach((cell)=>{
-                const textInput = cell.querySelector('input[type="text"]');
+                // Check for both input and select elements
+                const inputElement = cell.querySelector('input[type="text"], select');
                 const weightInput = cell.querySelector('.link-weight');
-                console.log("Cell value:", textInput?.value, "Weight:", weightInput?.value); // Debug log
                 rowData.push({
-                    value: textInput ? textInput.value : '',
+                    value: inputElement ? inputElement.value : '',
                     weight: weightInput ? parseFloat(weightInput.value) || 1 : 1
                 });
             });
-            if (rowData.some((item)=>item.value)) data.push(rowData);
+            // Only add row if it has at least one non-empty value
+            if (rowData.some((item)=>item.value.trim())) data.push(rowData);
         });
-        console.log("Final matrix data:", data); // Debug log
         return {
             columns: this.columns,
             rows: data
@@ -37191,27 +37518,57 @@ class MatrixInput {
         data.rows.forEach((rowData)=>{
             const row = document.createElement('div');
             row.className = 'matrix-row';
-            rowData.forEach((item)=>{
+            rowData.forEach((item, index)=>{
                 const cell = document.createElement('div');
                 cell.className = 'matrix-cell';
-                const textInput = document.createElement('input');
-                textInput.type = 'text';
-                textInput.value = item.value;
-                textInput.addEventListener('input', ()=>this.emitChange());
-                cell.appendChild(textInput);
-                if (item.weight !== undefined) {
-                    const weightInput = document.createElement('input');
-                    weightInput.type = 'number';
-                    weightInput.className = 'link-weight';
-                    weightInput.min = '0.1';
-                    weightInput.step = '0.1';
-                    weightInput.value = item.weight.toString();
-                    weightInput.addEventListener('input', ()=>this.emitChange());
-                    cell.appendChild(weightInput);
+                // Create main input (either select or text input)
+                if (index === 0 && this.currentGraphType === 'worldmap') cell.appendChild(this.createFirstColumnInput(item.value));
+                else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = item.value;
+                    input.addEventListener('input', ()=>this.emitChange());
+                    cell.appendChild(input);
                 }
+                // Add weight input for all columns
+                const weightInput = document.createElement('input');
+                weightInput.type = 'number';
+                weightInput.className = 'link-weight';
+                weightInput.min = '0.1';
+                weightInput.step = '0.1';
+                weightInput.value = item.weight ? item.weight.toString() : '1';
+                weightInput.addEventListener('input', ()=>this.emitChange());
+                cell.appendChild(weightInput);
                 row.appendChild(cell);
             });
-            this.container.appendChild(row);
+            const rowContainer = document.createElement('div');
+            rowContainer.className = 'row-container';
+            rowContainer.appendChild(row);
+            // Add action buttons
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'row-action-buttons';
+            const duplicateBtn = document.createElement('button');
+            duplicateBtn.className = 'row-btn duplicate';
+            duplicateBtn.textContent = 'Duplicate';
+            duplicateBtn.onclick = ()=>{
+                const newRowContainer = this.duplicateRow(rowContainer);
+                rowContainer.parentNode.insertBefore(newRowContainer, rowContainer.nextSibling);
+                this.emitChange();
+            };
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'row-btn delete';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = ()=>{
+                const allRows = this.container.querySelectorAll('.row-container');
+                if (allRows.length > 1) {
+                    rowContainer.remove();
+                    this.emitChange();
+                }
+            };
+            actionButtons.appendChild(duplicateBtn);
+            actionButtons.appendChild(deleteBtn);
+            rowContainer.appendChild(actionButtons);
+            this.container.appendChild(rowContainer);
         });
     }
     emitChange() {
