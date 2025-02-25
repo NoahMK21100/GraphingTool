@@ -405,11 +405,11 @@ select {
 
 /* Matrix Input */
 .matrix-header {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    flex-wrap: nowrap;
     gap: 8px;
-    margin-bottom: 3px;
-    padding: 0 0px;
+    margin-bottom: 12px;
+    width: 100%;
 }
 
 .matrix-container {
@@ -420,24 +420,21 @@ select {
 }
 
 .matrix-row {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 8px;
-    padding: 6px;
-    box-sizing: border-box;
-    background: var(--bg-secondary);
-    border-radius: 4px;
+    margin-bottom: 8px;
+    width: 100%;
 }
 
 .matrix-cell {
+    flex: 1;
     min-width: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
 }
 
-.matrix-cell input[type="text"] {
+.matrix-cell input[type="text"],
+.matrix-cell input[type="number"],
+.matrix-cell select {
     width: 100%;
     min-width: 0;
     padding: 4px;
@@ -449,7 +446,22 @@ select {
     color: var(--matrix-input-text);
 }
 
+.matrix-cell input[type="number"].link-weight {
+    margin-top: 4px;
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
+    opacity: 0.8;
+}
+
+.matrix-cell input[type="number"].link-weight:hover,
+.matrix-cell input[type="number"].link-weight:focus {
+    opacity: 1;
+    background-color: var(--input-bg);
+    border-color: var(--button-primary);
+}
+
 .header-cell {
+    flex: 1;
     min-width: 0;
 }
 
@@ -967,4 +979,64 @@ select,
 
 .input-group select:hover {
     border-color: var(--button-primary);
+}
+
+.matrix-input {
+    width: 100%;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 11px;
+    min-width: 0;
+}
+
+.matrix-input:hover {
+    border-color: var(--button-primary);
+}
+
+.matrix-input:focus {
+    outline: none;
+    border-color: var(--button-primary);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Style for select elements in matrix */
+select.matrix-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1em;
+    padding-right: 20px;
+    text-overflow: ellipsis;
+}
+
+select.matrix-input::-ms-expand {
+    display: none;
+}
+
+.link-weight {
+    width: 100%;
+    padding: 2px 4px;
+    margin-top: 2px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 11px;
+    min-width: 0;
+}
+
+.editable-header {
+    width: 100%;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
 }

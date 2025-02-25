@@ -6,6 +6,8 @@ export class FlowParser {
 
         // Create nodes from matrix data
         rows.forEach((row, rowIndex) => {
+            let lastValidNodeId = null;
+
             row.forEach((cell, colIndex) => {
                 if (!cell.value.trim()) return;
 
@@ -18,21 +20,17 @@ export class FlowParser {
                     });
                 }
 
-                // Create links between adjacent columns
-                if (colIndex > 0 && row[colIndex - 1]?.value.trim()) {
-                    const sourceId = `${row[colIndex - 1].value}_${colIndex - 1}`;
-                    const targetId = nodeId;
-                    const weight = parseFloat(row[colIndex - 1].weight) || 1;
-
-                    // Only add the link if both nodes exist
-                    if (nodes.some(n => n.id === sourceId) && nodes.some(n => n.id === targetId)) {
-                        links.push({
-                            source: sourceId,
-                            target: targetId,
-                            value: weight * 10 // Scale up the weight to make it more visible
-                        });
-                    }
+                // Create links to the last valid node we found
+                if (lastValidNodeId) {
+                    const weight = parseFloat(row[colIndex - 1]?.weight) || 1;
+                    links.push({
+                        source: lastValidNodeId,
+                        target: nodeId,
+                        value: weight * 10
+                    });
                 }
+
+                lastValidNodeId = nodeId;
             });
         });
 
@@ -41,6 +39,34 @@ export class FlowParser {
             links
         };
         return result;
+    }
+
+    parseWorldMapData(matrixData) {
+        const { rows } = matrixData;
+        const worldData = {};
+
+        rows.forEach(row => {
+            if (row.length < 2 || !row[0].value.trim()) return;
+
+            const country = row[0].value.trim();
+            if (!worldData[country]) {
+                worldData[country] = {
+                    paths: []
+                };
+            }
+
+            // Create a path array with all non-empty values from the row
+            const path = row
+                .map(cell => cell.value.trim())
+                .filter(value => value !== '');
+
+            if (path.length > 0) {
+                worldData[country].paths.push(path);
+            }
+        });
+
+        console.log('Processed World Map Data:', worldData);
+        return worldData;
     }
 
     parseSunburstData(matrixData) {

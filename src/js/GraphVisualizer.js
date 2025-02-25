@@ -234,6 +234,9 @@ class GraphVisualizer {
                 graphData = this.flowParser.parseChordData(matrixData);
             } else if (type.toLowerCase() === 'circle') {
                 graphData = this.flowParser.parseCirclePackingData(matrixData);
+            } else if (type.toLowerCase() === 'worldmap') {
+                graphData = this.flowParser.parseWorldMapData(matrixData);
+                console.log('World Map Data:', graphData);
             } else {
                 graphData = this.flowParser.parseMatrix(matrixData);
             }
@@ -255,6 +258,9 @@ class GraphVisualizer {
                     break;
                 case 'circle':
                     this.currentGraph = new CirclePackingGraph(this.container, graphData, this.settings);
+                    break;
+                case 'worldmap':
+                    this.currentGraph = new WorldMapGraph(this.container, graphData, this.settings);
                     break;
                 default:
                     this.currentGraph = new SankeyGraph(this.container, graphData, this.settings);

@@ -29,47 +29,68 @@ export const EXAMPLE_DATA = {
                         ["Multi-Target Engagement", "Air", "Strategic Strike", "Autonomous Systems", "Barracuda-250"],
                         ["Multi-Target Engagement", "Land", "Area Denial", "Artificial Intelligence", "Barracuda-10"]
                     ],
-                    weights: {
-                        "Precision Strike": 0.25,
-                        "Strategic Deterrence": 0.20,
-                        "Target Elimination": 0.20,
-                        "High Precision Impact": 0.15,
-                        "Multi-Target Engagement": 0.20,
-                        "Air": 0.20,
-                        "Land": 0.20,
-                        "Maritime": 0.20,
-                        "Stand-off Strike": 0.50,
-                        "Air Defense Suppression": 0.50,
-                        "Anti-Ship Strike": 0.50,
-                        "Strategic Strike": 0.50,
-                        "Area Denial": 0.50,
-                        "Artificial Intelligence": 0.50,
-                        "Autonomous Systems": 0.50,
-                        "Barracuda M": {
-                            "Barracuda-500": 0.34,
-                            "Barracuda-250": 0.33,
-                            "Barracuda-10": 0.33
-                        }
-                    }
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33]
+                    ]
                 },
                 lattice: {
                     name: "Lattice",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["Lattice", "C2", "Network Layer", "Secure Data Link", "USA"],
-                        ["Lattice", "ISR Processing", "Computer Vision", "AI Target Recognition Module", "Canada"],
-                        ["Lattice", "Tactical Edge AI", "Decision Support", "Neural Processing Unit", "UK"],
-                        ["Lattice", "ISR Processing", "Data Fusion Engine", "Multi-Source Sensor Integration", "USA"],
-                        ["Lattice", "AI & Autonomy", "Predictive Targeting", "Deep Learning Model", "Germany"],
-                        ["Lattice", "Communications", "Low-Latency Mesh Networking", "Edge Compute Module", "USA"],
-                        ["Lattice", "Cybersecurity", "AI-Based Intrusion Detection", "Neural Security Model", "Israel"],
-                        ["Lattice", "Electronic Warfare", "RF Spectrum Analysis", "Digital Signal Processor", "USA"]
+                        ["Enhanced Situational Awareness", "Air Domain", "Securing Borders", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Enhanced Situational Awareness", "Land Domain", "Inspecting and Securing Critical Infrastructure", "Software Platform", "Anduril Lattice"],
+                        ["Enhanced Situational Awareness", "Maritime Domain", "Wildfire Detection and Response", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Enhanced Situational Awareness", "Cyberspace Domain", "Military Command and Control", "Software Platform", "Anduril Lattice"],
+                        ["Improved Decision-Making", "Air Domain", "Search and Rescue", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Improved Decision-Making", "Land Domain", "Military Command and Control", "Software Platform", "Anduril Lattice"],
+                        ["Improved Decision-Making", "Maritime Domain", "Securing Borders", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Improved Decision-Making", "Cyberspace Domain", "Inspecting and Securing Critical Infrastructure", "Software Platform", "Anduril Lattice"],
+                        ["Force Multiplication", "Air Domain", "Wildfire Detection and Response", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Force Multiplication", "Land Domain", "Search and Rescue", "Software Platform", "Anduril Lattice"],
+                        ["Force Multiplication", "Maritime Domain", "Military Command and Control", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Force Multiplication", "Cyberspace Domain", "Securing Borders", "Software Platform", "Anduril Lattice"],
+                        ["Real-Time Data Integration", "Air Domain", "Inspecting and Securing Critical Infrastructure", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Real-Time Data Integration", "Land Domain", "Wildfire Detection and Response", "Software Platform", "Anduril Lattice"],
+                        ["Real-Time Data Integration", "Maritime Domain", "Search and Rescue", "Artificial Intelligence", "Anduril Lattice"],
+                        ["Real-Time Data Integration", "Cyberspace Domain", "Military Command and Control", "Software Platform", "Anduril Lattice"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.30, 0.25, 0.25, 0.50],
+                        [0.25, 0.30, 0.25, 0.25, 0.50],
+                        [0.25, 0.30, 0.25, 0.25, 0.50],
+                        [0.25, 0.30, 0.25, 0.25, 0.50],
+                        [0.25, 0.30, 0.25, 0.25, 0.50],
+                        [0.20, 0.30, 0.25, 0.25, 0.50],
+                        [0.20, 0.30, 0.25, 0.25, 0.50],
+                        [0.20, 0.30, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.25, 0.20, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.20, 0.20, 0.25, 0.25, 0.50],
+                        [0.15, 0.20, 0.25, 0.25, 0.50]
                     ]
                 },
                 ghost4: {
@@ -97,6 +118,275 @@ export const EXAMPLE_DATA = {
                         ["Anvil", "Avionics", "Real-Time Flight Path Optimization", "AI-Powered Navigation", "Canada"],
                         ["Anvil", "Weapons System", "Kinetic Interceptor", "High-Speed Launch System", "USA"]
                     ]
+                },
+                counterUAS: {
+                    name: "Counter-UAS",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
+                    data: [
+                        ["RF", "Land", "Unmanned Aircraft Detection", "Artificial Intelligence", "Counter-UAS System"],
+                        ["RF", "Air", "Unmanned Aircraft Detection", "Autonomous Systems", "Counter-UAS System"],
+                        ["RF", "Maritime", "Unmanned Aircraft Detection", "Software Platform", "Counter-UAS System"],
+                        ["EW", "Land", "Unmanned Aircraft Tracking", "Artificial Intelligence", "Counter-UAS System"],
+                        ["EW", "Air", "Unmanned Aircraft Tracking", "Autonomous Systems", "Counter-UAS System"],
+                        ["EW", "Maritime", "Unmanned Aircraft Tracking", "Software Platform", "Counter-UAS System"],
+                        ["Kinetic Effects", "Land", "Unmanned Aircraft Interception", "Artificial Intelligence", "Counter-UAS System"],
+                        ["Kinetic Effects", "Air", "Unmanned Aircraft Interception", "Autonomous Systems", "Counter-UAS System"],
+                        ["Kinetic Effects", "Maritime", "Unmanned Aircraft Interception", "Software Platform", "Counter-UAS System"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.33, 0.33, 0.33, 0.20],
+                        [0.50, 0.33, 0.33, 0.33, 0.20],
+                        [0.25, 0.34, 0.34, 0.34, 0.20],
+                        [0.30, 0.33, 0.33, 0.33, 0.20],
+                        [0.50, 0.33, 0.33, 0.33, 0.20],
+                        [0.20, 0.34, 0.34, 0.34, 0.20],
+                        [0.35, 0.33, 0.33, 0.33, 0.20],
+                        [0.50, 0.33, 0.33, 0.33, 0.20],
+                        [0.15, 0.34, 0.34, 0.34, 0.20]
+                    ]
+                },
+                diveld: {
+                    name: "Dive-LD",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
+                    data: [
+                        ["Intelligence Gathering", "Littoral", "Undersea ISR", "Autonomous Systems", "Dive-LD"],
+                        ["Intelligence Gathering", "Deep Water", "Undersea ISR", "Autonomous Systems", "Dive-LD"],
+                        ["Threat Neutralization", "Littoral", "Mine Counter-Warfare", "Autonomous Systems", "Dive-LD"],
+                        ["Threat Neutralization", "Deep Water", "Mine Counter-Warfare", "Autonomous Systems", "Dive-LD"],
+                        ["Environmental Awareness", "Littoral", "Anti-Submarine Warfare", "Autonomous Systems", "Dive-LD"],
+                        ["Environmental Awareness", "Deep Water", "Anti-Submarine Warfare", "Autonomous Systems", "Dive-LD"],
+                        ["Operational Endurance", "Littoral", "Survey and Inspection", "Autonomous Systems", "Dive-LD"],
+                        ["Operational Endurance", "Deep Water", "Seafloor Mapping", "Autonomous Systems", "Dive-LD"],
+                        ["Intelligence Gathering", "Littoral", "Survey and Inspection", "Autonomous Systems", "Dive-LD"],
+                        ["Threat Neutralization", "Deep Water", "Undersea ISR", "Autonomous Systems", "Dive-LD"],
+                        ["Environmental Awareness", "Littoral", "Mine Counter-Warfare", "Autonomous Systems", "Dive-LD"],
+                        ["Operational Endurance", "Deep Water", "Anti-Submarine Warfare", "Autonomous Systems", "Dive-LD"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20],
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20],
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20],
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20],
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20],
+                        [0.25, 0.25, 0.20, 0.20, 0.20],
+                        [0.25, 0.20, 0.20, 0.20, 0.20]
+                    ]
+                },
+                fury: {
+                    name: "Fury",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
+                    data: [
+                        ["Enhanced Operational Flexibility", "Medium Altitude", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Enhanced Operational Flexibility", "Low Altitude", "ISR", "Autonomous Systems", "Anduril Fury"],
+                        ["Enhanced Operational Flexibility", "Atmospheric Conditions", "Airborne Teaming Missions", "Artificial Intelligence", "Anduril Fury"],
+                        ["Enhanced Operational Flexibility", "Uncontrolled Airspace", "ISR", "Autonomous Systems", "Anduril Fury"],
+                        ["Enhanced Situational Awareness", "Medium Altitude", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Enhanced Situational Awareness", "Low Altitude", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Enhanced Situational Awareness", "Atmospheric Conditions", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Enhanced Situational Awareness", "Uncontrolled Airspace", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Force Multiplication", "Medium Altitude", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Force Multiplication", "Low Altitude", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Force Multiplication", "Atmospheric Conditions", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Force Multiplication", "Uncontrolled Airspace", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Reduced Human Risk", "Medium Altitude", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Reduced Human Risk", "Low Altitude", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Reduced Human Risk", "Atmospheric Conditions", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Reduced Human Risk", "Uncontrolled Airspace", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"],
+                        ["Reduced Pilot Risk", "Medium Altitude", "ISR", "Artificial Intelligence", "Anduril Fury"],
+                        ["Reduced Pilot Risk", "Low Altitude", "Airborne Teaming Missions", "Autonomous Systems", "Anduril Fury"]
+                    ],
+                    rowWeights: [
+                        [0.325, 0.30, 0.35, 0.50, 0.50],
+                        [0.452, 0.24, 0.35, 0.50, 0.50],
+                        [0.063, 0.084, 0.15, 0.50, 0.50],
+                        [0.027, 0.036, 0.35, 0.50, 0.50],
+                        [0.510, 0.30, 0.35, 0.50, 0.50],
+                        [0.510, 0.24, 0.15, 0.50, 0.50],
+                        [0.119, 0.196, 0.35, 0.50, 0.50],
+                        [0.051, 0.084, 0.15, 0.50, 0.50],
+                        [0.517, 0.30, 0.35, 0.50, 0.50],
+                        [0.329, 0.24, 0.15, 0.50, 0.50],
+                        [0.066, 0.196, 0.35, 0.50, 0.50],
+                        [0.028, 0.036, 0.15, 0.50, 0.50],
+                        [0.078, 0.30, 0.35, 0.50, 0.50],
+                        [0.169, 0.24, 0.15, 0.50, 0.50],
+                        [0.032, 0.196, 0.35, 0.50, 0.50],
+                        [0.014, 0.036, 0.15, 0.50, 0.50],
+                        [0.060, 0.30, 0.35, 0.50, 0.50],
+                        [0.140, 0.24, 0.15, 0.50, 0.50]
+                    ]
+                },
+                roadrunner: {
+                    name: "Roadrunner",
+                    columns: [
+                        ["Precision Strike", "Air", "Interception", "Artificial Intelligence", "Roadrunner"],
+                        ["Precision Strike", "Air", "Reconnaissance", "Artificial Intelligence", "Roadrunner-M"],
+                        ["Precision Strike", "Air", "Modular Payload Deployment", "Artificial Intelligence", "Nest"],
+                        ["Precision Strike", "Land", "Interception", "Artificial Intelligence", "Roadrunner"],
+                        ["Precision Strike", "Land", "Reconnaissance", "Artificial Intelligence", "Roadrunner-M"],
+                        ["Precision Strike", "Land", "Modular Payload Deployment", "Artificial Intelligence", "Nest"],
+                        ["Target Elimination", "Air", "Interception", "Autonomous Air Vehicle (AAV)", "Roadrunner"],
+                        ["Target Elimination", "Air", "Reconnaissance", "Autonomous Air Vehicle (AAV)", "Roadrunner-M"],
+                        ["Target Elimination", "Air", "Modular Payload Deployment", "Autonomous Air Vehicle (AAV)", "Nest"],
+                        ["Target Elimination", "Land", "Interception", "Autonomous Air Vehicle (AAV)", "Roadrunner"],
+                        ["Target Elimination", "Land", "Reconnaissance", "Autonomous Air Vehicle (AAV)", "Roadrunner-M"],
+                        ["Target Elimination", "Land", "Modular Payload Deployment", "Autonomous Air Vehicle (AAV)", "Nest"],
+                        ["Situational Awareness", "Air", "Interception", "Artificial Intelligence", "Roadrunner"],
+                        ["Situational Awareness", "Air", "Reconnaissance", "Artificial Intelligence", "Roadrunner-M"],
+                        ["Situational Awareness", "Air", "Modular Payload Deployment", "Artificial Intelligence", "Nest"],
+                        ["Situational Awareness", "Land", "Interception", "Artificial Intelligence", "Roadrunner"],
+                        ["Situational Awareness", "Land", "Reconnaissance", "Artificial Intelligence", "Roadrunner-M"],
+                        ["Situational Awareness", "Land", "Modular Payload Deployment", "Artificial Intelligence", "Nest"],
+                        ["Modular Adaptability", "Air", "Interception", "Autonomous Air Vehicle (AAV)", "Roadrunner"],
+                        ["Modular Adaptability", "Air", "Reconnaissance", "Autonomous Air Vehicle (AAV)", "Roadrunner-M"],
+                        ["Modular Adaptability", "Air", "Modular Payload Deployment", "Autonomous Air Vehicle (AAV)", "Nest"],
+                        ["Modular Adaptability", "Land", "Interception", "Autonomous Air Vehicle (AAV)", "Roadrunner"],
+                        ["Modular Adaptability", "Land", "Reconnaissance", "Autonomous Air Vehicle (AAV)", "Roadrunner-M"],
+                        ["Modular Adaptability", "Land", "Modular Payload Deployment", "Autonomous Air Vehicle (AAV)", "Nest"]
+                    ],
+                    rowWeights: [
+                        [0.40, 0.40, 0.25, 0.25, 0.40],
+                        [0.40, 0.30, 0.25, 0.25, 0.35],
+                        [0.40, 0.30, 0.25, 0.25, 0.25],
+                        [0.30, 0.50, 0.25, 0.25, 0.40],
+                        [0.30, 0.25, 0.25, 0.25, 0.35],
+                        [0.30, 0.25, 0.25, 0.25, 0.25],
+                        [0.35, 0.40, 0.25, 0.25, 0.40],
+                        [0.35, 0.30, 0.25, 0.25, 0.35],
+                        [0.35, 0.30, 0.25, 0.25, 0.25],
+                        [0.25, 0.50, 0.25, 0.25, 0.40],
+                        [0.25, 0.25, 0.25, 0.25, 0.35],
+                        [0.25, 0.25, 0.25, 0.25, 0.25],
+                        [0.50, 0.40, 0.25, 0.25, 0.40],
+                        [0.50, 0.30, 0.25, 0.25, 0.35],
+                        [0.50, 0.30, 0.25, 0.25, 0.25],
+                        [0.20, 0.50, 0.25, 0.25, 0.40],
+                        [0.20, 0.25, 0.25, 0.25, 0.35],
+                        [0.20, 0.25, 0.25, 0.25, 0.25],
+                        [0.45, 0.40, 0.25, 0.25, 0.40],
+                        [0.45, 0.30, 0.25, 0.25, 0.35],
+                        [0.45, 0.30, 0.25, 0.25, 0.25],
+                        [0.35, 0.50, 0.25, 0.25, 0.40],
+                        [0.35, 0.25, 0.25, 0.25, 0.35],
+                        [0.35, 0.25, 0.25, 0.25, 0.25]
+                    ]
+                }
+            }
+        },
+        flightwave: {
+            name: "FlightWave",
+            technologies: {
+                edge130: {
+                    name: "Edge130",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
+                    data: [
+                        ["Vertical Takeoff", "Air", "Surveillance", "Autonomous Systems", "Edge130"],
+                        ["Vertical Takeoff", "Air", "Reconnaissance", "Autonomous Systems", "Edge130"],
+                        ["Vertical Takeoff", "Maritime", "Search and Rescue", "Autonomous Systems", "Edge130"],
+                        ["Extended Range", "Air", "Surveillance", "Autonomous Systems", "Edge130"],
+                        ["Extended Range", "Air", "Reconnaissance", "Autonomous Systems", "Edge130"],
+                        ["Extended Range", "Maritime", "Search and Rescue", "Autonomous Systems", "Edge130"],
+                        ["All-Weather Operation", "Air", "Surveillance", "Autonomous Systems", "Edge130"],
+                        ["All-Weather Operation", "Air", "Reconnaissance", "Autonomous Systems", "Edge130"],
+                        ["All-Weather Operation", "Maritime", "Search and Rescue", "Autonomous Systems", "Edge130"],
+                        ["Payload Flexibility", "Air", "Surveillance", "Autonomous Systems", "Edge130"],
+                        ["Payload Flexibility", "Air", "Reconnaissance", "Autonomous Systems", "Edge130"],
+                        ["Payload Flexibility", "Maritime", "Search and Rescue", "Autonomous Systems", "Edge130"]
+                    ],
+                    rowWeights: [
+                        [0.30, 0.30, 0.30, 0.40, 0.50],
+                        [0.30, 0.30, 0.30, 0.40, 0.50],
+                        [0.30, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.25, 0.30, 0.30, 0.40, 0.50],
+                        [0.20, 0.30, 0.30, 0.40, 0.50],
+                        [0.20, 0.30, 0.30, 0.40, 0.50],
+                        [0.20, 0.30, 0.30, 0.40, 0.50]
+                    ]
+                }
+            }
+        },
+        tempest: {
+            name: "Tempest",
+            technologies: {
+                uas: {
+                    name: "Unmanned Aircraft System",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
+                    data: [
+                        ["Cost Efficiency", "Air", "Reconnaissance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Cost Efficiency", "Air", "Surveillance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Cost Efficiency", "Air", "Payload Delivery", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Cost Efficiency", "Air", "Loitering Missions", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Rapid Deployment", "Air", "Reconnaissance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Rapid Deployment", "Air", "Surveillance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Rapid Deployment", "Air", "Payload Delivery", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Rapid Deployment", "Air", "Loitering Missions", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Modular Adaptability", "Air", "Reconnaissance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Modular Adaptability", "Air", "Surveillance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Modular Adaptability", "Air", "Payload Delivery", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Modular Adaptability", "Air", "Loitering Missions", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Operational Flexibility", "Air", "Reconnaissance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Operational Flexibility", "Air", "Surveillance", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Operational Flexibility", "Air", "Payload Delivery", "Unmanned Aircraft System (UAS)", "Tempest"],
+                        ["Operational Flexibility", "Air", "Loitering Missions", "Unmanned Aircraft System (UAS)", "Tempest"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0],
+                        [0.25, 0.25, 0.25, 0.25, 1.0]
+                    ]
                 }
             }
         },
@@ -106,55 +396,107 @@ export const EXAMPLE_DATA = {
                 superHornet: {
                     name: "F/A-18 Super Hornet",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["F/A-18", "Avionics", "Radar System", "AN/APG-79 AESA Radar", "USA"],
-                        ["F/A-18", "Avionics", "Targeting System", "AN/ASQ-228 ATFLIR", "USA"],
-                        ["F/A-18", "Weapons System", "Missile Guidance", "AIM-9X Block II Sidewinder", "Germany"],
-                        ["F/A-18", "Weapons System", "Bomb Guidance", "JDAM GPS/INS Kit", "UK"],
-                        ["F/A-18", "Propulsion", "Jet Engine", "General Electric F414-GE-400", "USA"],
-                        ["F/A-18", "Electronic Warfare", "Countermeasures", "AN/ALQ-214 IDECM", "USA"],
-                        ["F/A-18", "ISR", "Electro-Optical Sensors", "DTP-N", "Canada"],
-                        ["F/A-18", "Survivability", "Composite Materials", "Low-RCS Airframe Coatings", "USA"]
+                        ["Air Superiority", "Air", "Air-to-Air Combat", "Artificial Intelligence", "F/A-18E"],
+                        ["Air Superiority", "Air", "Electronic Warfare", "Autonomous Systems", "F/A-18F"],
+                        ["Air Superiority", "Maritime", "Maritime Strike", "Neural Networks", "F/A-18E"],
+                        ["Precision Strike", "Air", "Ground Attack", "Artificial Intelligence", "F/A-18F"],
+                        ["Precision Strike", "Land", "Close Air Support", "Autonomous Systems", "F/A-18E"],
+                        ["Precision Strike", "Maritime", "Anti-Ship", "Neural Networks", "F/A-18F"],
+                        ["Force Protection", "Air", "Escort", "Artificial Intelligence", "F/A-18E"],
+                        ["Force Protection", "Land", "Battlefield Support", "Autonomous Systems", "F/A-18F"],
+                        ["Force Protection", "Maritime", "Fleet Defense", "Neural Networks", "F/A-18E"],
+                        ["ISR Operations", "Air", "Reconnaissance", "Artificial Intelligence", "F/A-18F"],
+                        ["ISR Operations", "Land", "Surveillance", "Autonomous Systems", "F/A-18E"],
+                        ["ISR Operations", "Maritime", "Maritime Patrol", "Neural Networks", "F/A-18F"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33]
                     ]
                 },
                 stingray: {
                     name: "MQ-25 Stingray",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["MQ-25", "AI & Autonomy", "Autonomous Flight Control", "AI Flight Management System", "USA"],
-                        ["MQ-25", "Avionics", "Navigation System", "GPS/INS Integration", "UK"],
-                        ["MQ-25", "ISR", "Situational Awareness", "Multi-Spectral Sensor Suite", "Canada"],
-                        ["MQ-25", "Aerial Refueling", "Fuel Transfer System", "Advanced Drogue System", "USA"],
-                        ["MQ-25", "Communications", "Data Link System", "Secure Network Protocol", "Germany"]
+                        ["Aerial Refueling", "Air", "Carrier Operations", "Autonomous Systems", "MQ-25A"],
+                        ["Aerial Refueling", "Maritime", "Fleet Support", "AI-Enhanced", "MQ-25A"],
+                        ["ISR Collection", "Air", "Reconnaissance", "Autonomous Systems", "MQ-25A"],
+                        ["ISR Collection", "Maritime", "Surveillance", "AI-Enhanced", "MQ-25A"],
+                        ["Force Multiplier", "Air", "Extended Operations", "Autonomous Systems", "MQ-25A"],
+                        ["Force Multiplier", "Maritime", "Maritime Support", "AI-Enhanced", "MQ-25A"],
+                        ["Carrier Integration", "Air", "Deck Operations", "Autonomous Systems", "MQ-25A"],
+                        ["Carrier Integration", "Maritime", "Fleet Mobility", "AI-Enhanced", "MQ-25A"],
+                        ["Mission Support", "Air", "Combat Support", "Autonomous Systems", "MQ-25A"],
+                        ["Mission Support", "Maritime", "Naval Operations", "AI-Enhanced", "MQ-25A"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34]
                     ]
                 },
                 poseidon: {
                     name: "P-8A Poseidon",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["P-8A", "Maritime Patrol", "ASW Systems", "Acoustic Processor", "USA"],
-                        ["P-8A", "ISR", "Radar Systems", "AN/APY-10 Maritime Radar", "USA"],
-                        ["P-8A", "Weapons", "Torpedo Systems", "Mk 54 Integration", "UK"],
-                        ["P-8A", "Communications", "Data Links", "Multi-band Secure Comms", "Canada"],
-                        ["P-8A", "Navigation", "INS/GPS", "Enhanced Navigation System", "Germany"]
+                        ["Maritime Patrol", "Air", "Anti-Submarine Warfare", "AI-Enhanced", "P-8A"],
+                        ["Maritime Patrol", "Maritime", "Surface Warfare", "Neural Networks", "P-8A"],
+                        ["ISR Operations", "Air", "Reconnaissance", "AI-Enhanced", "P-8A"],
+                        ["ISR Operations", "Maritime", "Surveillance", "Neural Networks", "P-8A"],
+                        ["Search and Rescue", "Air", "Combat SAR", "AI-Enhanced", "P-8A"],
+                        ["Search and Rescue", "Maritime", "Maritime SAR", "Neural Networks", "P-8A"],
+                        ["Command and Control", "Air", "Battle Management", "AI-Enhanced", "P-8A"],
+                        ["Command and Control", "Maritime", "Fleet Coordination", "Neural Networks", "P-8A"],
+                        ["Multi-Mission", "Air", "Intelligence Collection", "AI-Enhanced", "P-8A"],
+                        ["Multi-Mission", "Maritime", "Maritime Security", "Neural Networks", "P-8A"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34]
                     ]
                 }
             }
@@ -165,47 +507,107 @@ export const EXAMPLE_DATA = {
                 f35: {
                     name: "F-35 Lightning II",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["F-35", "Avionics", "Sensor Fusion AI", "Neural Network Processor", "UK"],
-                        ["F-35", "Electronic Warfare", "Radar Warning Receiver", "Advanced EW Suite", "Germany"],
-                        ["F-35", "Stealth Technology", "Low-Observability Coating", "Radar Absorbent Material", "USA"],
-                        ["F-35", "Weapons System", "Internal Missile Bay", "AIM-120D AMRAAM", "USA"],
-                        ["F-35", "Propulsion", "Engine", "Pratt & Whitney F135", "USA"],
-                        ["F-35", "AI & Autonomy", "Predictive Maintenance", "AI Diagnostic System", "USA"],
-                        ["F-35", "Survivability", "IR Signature Reduction", "Advanced Cooling System", "Canada"]
+                        ["Air Dominance", "Air", "Air-to-Air Combat", "AI-Enhanced", "F-35A"],
+                        ["Air Dominance", "Maritime", "Fleet Defense", "Neural Networks", "F-35B"],
+                        ["Strike Operations", "Air", "Deep Strike", "AI-Enhanced", "F-35C"],
+                        ["Strike Operations", "Land", "Close Air Support", "Neural Networks", "F-35A"],
+                        ["ISR Collection", "Air", "Reconnaissance", "AI-Enhanced", "F-35B"],
+                        ["ISR Collection", "Maritime", "Surveillance", "Neural Networks", "F-35C"],
+                        ["Electronic Warfare", "Air", "Signal Intelligence", "AI-Enhanced", "F-35A"],
+                        ["Electronic Warfare", "Land", "Communications Intel", "Neural Networks", "F-35B"],
+                        ["Network Operations", "Air", "Data Fusion", "AI-Enhanced", "F-35C"],
+                        ["Network Operations", "Maritime", "Battle Networks", "Neural Networks", "F-35A"],
+                        ["Stealth Operations", "Air", "Penetration", "AI-Enhanced", "F-35B"],
+                        ["Stealth Operations", "Land", "Strategic Strike", "Neural Networks", "F-35C"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33]
                     ]
                 },
                 sr72: {
                     name: "SR-72 Darkstar",
                     columns: [
-                        'Technology',
-                        'Tech Type',
-                        'Subsystem',
-                        'Component',
-                        'Country of Manufacture'
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
                     ],
                     data: [
-                        ["SR-72", "Propulsion", "Hypersonic Engine", "Combined Cycle Propulsion", "USA"],
-                        ["SR-72", "Thermal Management", "Heat Dissipation", "Advanced Cooling System", "Germany"],
-                        ["SR-72", "Avionics", "Navigation System", "Inertial Guidance Unit", "UK"],
-                        ["SR-72", "ISR", "Sensor Suite", "Multi-Spectral Imaging System", "Canada"],
-                        ["SR-72", "Materials", "Heat-Resistant Structure", "Advanced Composites", "USA"]
+                        ["Strategic Reconnaissance", "Air", "High-Altitude Intel", "AI-Enhanced", "SR-72"],
+                        ["Strategic Reconnaissance", "Space", "Orbital Support", "Neural Networks", "SR-72"],
+                        ["Global Strike", "Air", "Hypersonic Strike", "AI-Enhanced", "SR-72"],
+                        ["Global Strike", "Space", "Strategic Operations", "Neural Networks", "SR-72"],
+                        ["ISR Collection", "Air", "Advanced Sensing", "AI-Enhanced", "SR-72"],
+                        ["ISR Collection", "Space", "Space Reconnaissance", "Neural Networks", "SR-72"],
+                        ["Rapid Response", "Air", "Global Reach", "AI-Enhanced", "SR-72"],
+                        ["Rapid Response", "Space", "Orbital Operations", "Neural Networks", "SR-72"],
+                        ["Tech Demonstration", "Air", "Hypersonic Research", "AI-Enhanced", "SR-72"],
+                        ["Tech Demonstration", "Space", "Advanced Propulsion", "Neural Networks", "SR-72"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34]
                     ]
                 },
                 orion: {
                     name: "Orion Spacecraft",
+                    columns: [
+                        'Mission Type',
+                        'Domain',
+                        'Operation Type',
+                        'System Type',
+                        'Platform'
+                    ],
                     data: [
-                        ["Orion", "Navigation", "Star Tracking", "Optical Sensor Array", "Japan"],
-                        ["Orion", "Life Support", "Water Recovery", "Filtration System", "France"],
-                        ["Orion", "Avionics", "Flight Computer", "Radiation-Hardened Processor", "USA"],
-                        ["Orion", "Propulsion", "Deep Space", "Ion Thruster Array", "UK"],
-                        ["Orion", "Communications", "Space Relay", "High-Gain Antenna", "Canada"]
+                        ["Space Exploration", "Space", "Deep Space Transit", "AI-Enhanced", "Orion"],
+                        ["Space Exploration", "Lunar", "Lunar Operations", "Neural Networks", "Orion"],
+                        ["Crew Transport", "Space", "Life Support", "AI-Enhanced", "Orion"],
+                        ["Crew Transport", "Lunar", "Surface Operations", "Neural Networks", "Orion"],
+                        ["Scientific Research", "Space", "Zero-G Studies", "AI-Enhanced", "Orion"],
+                        ["Scientific Research", "Lunar", "Lunar Science", "Neural Networks", "Orion"],
+                        ["Space Operations", "Space", "Orbital Maneuvers", "AI-Enhanced", "Orion"],
+                        ["Space Operations", "Lunar", "Landing Support", "Neural Networks", "Orion"],
+                        ["Emergency Response", "Space", "Space Rescue", "AI-Enhanced", "Orion"],
+                        ["Emergency Response", "Lunar", "Surface Rescue", "Neural Networks", "Orion"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.20, 0.50, 0.50, 0.34],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.25, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.34],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.20, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.33],
+                        [0.15, 0.20, 0.50, 0.50, 0.34]
                     ]
                 }
             }
@@ -228,6 +630,13 @@ export const EXAMPLE_DATA = {
                         ["Gotham", "Integration", "Data Fusion", "Multi-source Analyzer", "Canada"],
                         ["Gotham", "Visualization", "3D Mapping", "Real-time Renderer", "Germany"],
                         ["Gotham", "Security", "Encryption", "Quantum-resistant Protocols", "USA"]
+                    ],
+                    rowWeights: [
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.40, 0.45, 0.50, 0.50, 0.40]
                     ]
                 },
                 foundry: {
@@ -245,6 +654,13 @@ export const EXAMPLE_DATA = {
                         ["Foundry", "Integration", "API Management", "Service Mesh", "Germany"],
                         ["Foundry", "Security", "Access Control", "Zero Trust Framework", "Canada"],
                         ["Foundry", "Analytics", "Real-time Processing", "Stream Processing Engine", "USA"]
+                    ],
+                    rowWeights: [
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.35, 0.40, 0.45, 0.45, 0.35]
                     ]
                 }
             }
@@ -267,6 +683,13 @@ export const EXAMPLE_DATA = {
                         ["Global Hawk", "Navigation", "Flight Control", "Advanced Flight Computer", "Germany"],
                         ["Global Hawk", "Propulsion", "Engine Control", "Turbofan Management System", "Canada"],
                         ["Global Hawk", "Mission Systems", "Payload Management", "Multi-Intelligence Platform", "USA"]
+                    ],
+                    rowWeights: [
+                        [0.40, 0.45, 0.50, 0.50, 0.40],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.35, 0.40, 0.45, 0.45, 0.35],
+                        [0.40, 0.45, 0.50, 0.50, 0.40]
                     ]
                 }
             }

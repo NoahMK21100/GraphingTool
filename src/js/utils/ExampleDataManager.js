@@ -76,10 +76,19 @@ export class ExampleDataManager {
                 }
             });
 
-            // Set all weights to 1
-            weights.forEach(weight => {
-                weight.value = 1;
-            });
+            // Set weights if they exist in the tech data
+            if (tech.rowWeights && tech.rowWeights[index]) {
+                tech.rowWeights[index].forEach((weight, i) => {
+                    if (weights[i]) {
+                        weights[i].value = weight;
+                    }
+                });
+            } else {
+                // Set all weights to 1 if no specific weights are defined
+                weights.forEach(weight => {
+                    weight.value = 1;
+                });
+            }
         });
 
         this.matrixInput.emitChange();

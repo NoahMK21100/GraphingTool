@@ -99,15 +99,8 @@ export class SankeyGraph extends BaseGraph {
         // Clear existing content
         this.svg.selectAll('*').remove();
 
-        // Create the SVG container
-        const svg = this.svg.append('svg')
-            .attr('width', this.width + this.margin.left + this.margin.right)
-            .attr('height', this.height + this.margin.top + this.margin.bottom)
-            .append('g')
-            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
-
         // Create main group with adjusted transform
-        const g = svg.append('g')
+        const g = this.svg.append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
         try {
@@ -183,8 +176,36 @@ export class SankeyGraph extends BaseGraph {
                     .attr('x', x)
                     .attr('y', (d.y1 - d.y0) / 2)
                     .attr('dy', '0.35em')
-                    .attr('text-anchor', isLeftSide ? 'end' : 'start')
-                    .text(d.name);
+                    .attr('text-anchor', isLeftSide ? 'end' : 'start');
+
+                // Simple text wrapping - split into two lines if text is too long
+                const maxLength = 25; // characters before wrapping
+                if (d.name.length > maxLength) {
+                    const words = d.name.split(' ');
+                    let firstLine = [];
+                    let secondLine = [];
+                    let currentLength = 0;
+
+                    words.forEach(word => {
+                        if (currentLength + word.length <= maxLength) {
+                            firstLine.push(word);
+                            currentLength += word.length + 1;
+                        } else {
+                            secondLine.push(word);
+                        }
+                    });
+
+                    text.append('tspan')
+                        .attr('x', x)
+                        .text(firstLine.join(' '));
+
+                    text.append('tspan')
+                        .attr('x', x)
+                        .attr('dy', '1.2em')
+                        .text(secondLine.join(' '));
+                } else {
+                    text.text(d.name);
+                }
 
                 // Add background with padding
                 const bbox = text.node().getBBox();

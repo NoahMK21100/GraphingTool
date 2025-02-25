@@ -5,6 +5,7 @@ import { SunburstGraph } from './graphs/SunburstGraph';
 import { ChordGraph } from './graphs/ChordGraph';
 import { CirclePackingGraph } from './graphs/CirclePackingGraph';
 import { WorldMapGraph } from './graphs/WorldMapGraph';
+import { AukusMapGraph } from './graphs/AukusMapGraph';
 import { FlowParser } from './utils/FlowParser';
 import { exportToSVG, exportToPNG } from './utils/exportUtils';
 import { MatrixInput } from './utils/MatrixInput';
@@ -55,6 +56,9 @@ class GraphVisualizer {
             },
             display: {
                 showOutlines: true
+            },
+            aukus: {
+                visualizationType: 'default'
             }
         };
 
@@ -197,12 +201,27 @@ class GraphVisualizer {
             }
         });
 
+        // Show state labels toggle
+        document.getElementById('showStateLabels')?.addEventListener('change', (e) => {
+            if (this.currentGraph instanceof AukusMapGraph) {
+                this.currentGraph.toggleLabels(e.target.checked);
+            }
+        });
+
         // Initialize slider values
         document.getElementById('nodePaddingValue').textContent = this.settings.sankey.nodePadding;
         document.getElementById('opacityValue').textContent = this.settings.opacity.nodes.toFixed(2);
 
         // Initialize example data manager
         this.exampleManager = new ExampleDataManager(this.matrixInput);
+
+        // AUKUS visualization type change
+        document.getElementById('aukusVizType')?.addEventListener('change', (e) => {
+            this.settings.aukus.visualizationType = e.target.value;
+            if (this.currentGraph instanceof AukusMapGraph) {
+                this.currentGraph.update();
+            }
+        });
     }
 
     setupEventListeners() {
@@ -326,11 +345,23 @@ class GraphVisualizer {
             opacityControl.style.display = ['sankey', 'force', 'circle'].includes(type) ? 'flex' : 'none';
         }
 
+        // Show/hide state labels toggle based on graph type
+        const stateLabelsControl = document.querySelector('.slider-control:has(#showStateLabels)');
+        if (stateLabelsControl) {
+            stateLabelsControl.style.display = type === 'aukusmap' ? 'flex' : 'none';
+        }
+
         // Show/hide entire graph settings container
         const graphSettings = document.querySelector('.graph-settings');
         if (graphSettings) {
-            const hasSettings = ['sankey', 'force', 'circle'].includes(type);
+            const hasSettings = ['sankey', 'force', 'circle', 'aukusmap'].includes(type);
             graphSettings.style.display = hasSettings ? 'block' : 'none';
+        }
+
+        // Show/hide AUKUS visualization type selector
+        const aukusVizControl = document.querySelector('.aukus-viz-type');
+        if (aukusVizControl) {
+            aukusVizControl.style.display = type === 'aukusmap' ? 'flex' : 'none';
         }
     }
 
@@ -407,6 +438,9 @@ class GraphVisualizer {
             } else if (type.toLowerCase() === 'circle') {
                 this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseCirclePackingData(matrixData);
+            } else if (type.toLowerCase() === 'aukusmap') {
+                this.matrixInput.setGraphType('aukusmap');
+                graphData = matrixData; // Pass the raw matrix data directly to AukusMapGraph
             } else {
                 this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseMatrix(matrixData);
@@ -425,6 +459,10 @@ class GraphVisualizer {
                     break;
                 case 'circle':
                     this.currentGraph = new CirclePackingGraph(this.container, graphData, this.settings);
+                    break;
+                case 'aukusmap':
+                    this.matrixInput.setGraphType('aukusmap');
+                    this.currentGraph = new AukusMapGraph(this.container, graphData, this.settings);
                     break;
                 default:
                     this.currentGraph = new SankeyGraph(this.container, graphData, this.settings);

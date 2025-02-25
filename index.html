@@ -5,8 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Graph Visualization Tool</title>
-  <link rel="stylesheet" href="./styles/main.css" />
-  <link rel="stylesheet" href="./components/ControlPanel/ControlPanel.css" />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+  <link rel="stylesheet" href="./src/components/ControlPanel/ControlPanel.css" />
 </head>
 
 <body>
@@ -15,21 +15,12 @@
       <div class="input-section">
         <h3>Input Data</h3>
         <div class="matrix-header">
-          <div class="header-cell">
-            <input type="text" value="Technology" class="editable-header" />
-          </div>
-          <div class="header-cell">
-            <input type="text" value="Tech Type" class="editable-header" />
-          </div>
-          <div class="header-cell">
-            <input type="text" value="Subsystem" class="editable-header" />
-          </div>
-          <div class="header-cell">
-            <input type="text" value="Component" class="editable-header" />
-          </div>
-          <div class="header-cell">
-            <input type="text" value="Manufacturer" class="editable-header" />
-          </div>
+          <div class="header-cell"></div>
+          <div class="header-cell"></div>
+          <div class="header-cell"></div>
+          <div class="header-cell"></div>
+          <div class="header-cell"></div>
+          <div class="header-cell"></div>
         </div>
         <div class="matrix-container">
           <!-- Dynamic rows will be added here -->
@@ -59,6 +50,7 @@
             <option value="chord">Chord Diagram</option>
             <option value="circle">Circle Packing</option>
             <option value="worldmap">World Map</option>
+            <option value="aukusmap">AUKUS Map</option>
           </select>
         </div>
 
@@ -124,6 +116,18 @@
             <label>Show Node Outlines</label>
             <input type="checkbox" id="showOutlines" checked />
           </div>
+          <div class="slider-control">
+            <label>Show State Labels</label>
+            <input type="checkbox" id="showStateLabels" />
+          </div>
+          <div class="slider-control aukus-viz-type" style="display: none;">
+            <label>Visualization Style</label>
+            <select id="aukusVizType">
+              <option value="default">Default</option>
+              <option value="spike">Spike Map</option>
+              <option value="bubble">Bubble Map</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -152,7 +156,7 @@
     </div>
     <div id="visualization-container" class="visualization-container"></div>
   </div>
-  <script type="module" src="./js/index.js"></script>
+  <script type="module" src="./src/js/index.js"></script>
 </body>
 
 </html>
