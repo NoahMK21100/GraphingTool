@@ -39694,7 +39694,7 @@ class ExampleDataManager {
     }
 }
 
-},{"../../config/exampleData.js":"7v6BC","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7v6BC":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../config/exampleData.js":"7v6BC"}],"7v6BC":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "EXAMPLE_DATA", ()=>EXAMPLE_DATA);
@@ -39704,7 +39704,7 @@ const EXAMPLE_DATA = {
             name: "Anduril",
             technologies: {
                 barracuda: {
-                    name: "Barracuda",
+                    name: "Barracuda Effect",
                     columns: [
                         'Mission Type',
                         'Domain',
@@ -39924,6 +39924,199 @@ const EXAMPLE_DATA = {
                             0.50,
                             0.50,
                             0.33
+                        ]
+                    ]
+                },
+                barracudaSystem: {
+                    name: "Barracuda System",
+                    columns: [
+                        'System',
+                        'Subsystem',
+                        'Component',
+                        'Location of Component'
+                    ],
+                    data: [
+                        [
+                            "Barracuda-500",
+                            "Airframe",
+                            "Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-500",
+                            "Airframe",
+                            "Wings",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-500",
+                            "Propulsion",
+                            "Turbojet Engine",
+                            "Germany"
+                        ],
+                        [
+                            "Barracuda-500",
+                            "Avionics",
+                            "Flight Control System",
+                            "Japan"
+                        ],
+                        [
+                            "Barracuda-500",
+                            "Payload",
+                            "Electro-Optical Sensor",
+                            "Israel"
+                        ],
+                        [
+                            "Barracuda-250",
+                            "Airframe",
+                            "Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-250",
+                            "Airframe",
+                            "Wings",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-250",
+                            "Propulsion",
+                            "Turbojet Engine",
+                            "Germany"
+                        ],
+                        [
+                            "Barracuda-250",
+                            "Avionics",
+                            "Flight Control System",
+                            "Japan"
+                        ],
+                        [
+                            "Barracuda-250",
+                            "Payload",
+                            "Synthetic Aperture Radar",
+                            "Israel"
+                        ],
+                        [
+                            "Barracuda-10",
+                            "Airframe",
+                            "Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-10",
+                            "Airframe",
+                            "Wings",
+                            "USA"
+                        ],
+                        [
+                            "Barracuda-10",
+                            "Propulsion",
+                            "Turbojet Engine",
+                            "Germany"
+                        ],
+                        [
+                            "Barracuda-10",
+                            "Avionics",
+                            "Flight Control System",
+                            "Japan"
+                        ],
+                        [
+                            "Barracuda-10",
+                            "Payload",
+                            "Electronic Warfare Suite",
+                            "Israel"
+                        ]
+                    ],
+                    rowWeights: [
+                        [
+                            0.25,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.15,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.15,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.15,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.15,
+                            0.20,
+                            0.50,
+                            0.50
+                        ],
+                        [
+                            0.15,
+                            0.20,
+                            0.50,
+                            0.50
                         ]
                     ]
                 },
@@ -41611,8 +41804,8 @@ const EXAMPLE_DATA = {
         boeing: {
             name: "Boeing",
             technologies: {
-                superHornet: {
-                    name: "F/A-18 Super Hornet",
+                superHornetEffect: {
+                    name: "F/A-18 Super Hornet Effect",
                     columns: [
                         'Mission Type',
                         'Domain',
@@ -41790,6 +41983,163 @@ const EXAMPLE_DATA = {
                             0.50,
                             0.50,
                             0.33
+                        ]
+                    ]
+                },
+                superHornetSystem: {
+                    name: "F/A-18 Super Hornet System",
+                    columns: [
+                        "System",
+                        "Subsystem",
+                        "Component",
+                        "Country"
+                    ],
+                    data: [
+                        [
+                            "Airframe",
+                            "Fuselage",
+                            "Center/Aft fuselage with vertical tails",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Aerostructures",
+                            "Various structural components",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Pylons",
+                            "Centerline Pylon assembly",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Electronic Systems",
+                            "Advanced Electronic Warfare (ADVEW) system",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Targeting Systems",
+                            "LITENING Targeting Pod",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Power Systems",
+                            "Integrated power distribution",
+                            "USA"
+                        ],
+                        [
+                            "Propulsion",
+                            "Engines",
+                            "F414-GE-400 turbofan engines",
+                            "USA"
+                        ],
+                        [
+                            "Propulsion",
+                            "Power Systems",
+                            "Onboard power generation",
+                            "USA"
+                        ],
+                        [
+                            "Sensors",
+                            "Targeting",
+                            "LITENING Targeting Pod",
+                            "USA"
+                        ],
+                        [
+                            "Sensors",
+                            "Radar",
+                            "AN/APG-79 AESA Radar",
+                            "USA"
+                        ],
+                        [
+                            "Structural Components",
+                            "Aerostructures",
+                            "Various structural components",
+                            "USA"
+                        ],
+                        [
+                            "Structural Components",
+                            "Electrical Systems",
+                            "Electrical wiring and power distribution",
+                            "USA"
+                        ]
+                    ],
+                    rowWeights: [
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.20,
+                            0.15,
+                            0.30,
+                            0.35
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.30,
+                            0.25
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.30,
+                            0.25
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.20,
+                            0.15,
+                            0.30,
+                            0.35
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
                         ]
                     ]
                 },
@@ -42106,8 +42456,8 @@ const EXAMPLE_DATA = {
         lockheedMartin: {
             name: "Lockheed Martin",
             technologies: {
-                f35: {
-                    name: "F-35 Lightning II",
+                f35Effect: {
+                    name: "F-35 Lightning II Effect",
                     columns: [
                         'Mission Type',
                         'Domain',
@@ -42285,6 +42635,181 @@ const EXAMPLE_DATA = {
                             0.50,
                             0.50,
                             0.33
+                        ]
+                    ]
+                },
+                f35System: {
+                    name: "F-35 Lightning II System",
+                    columns: [
+                        "System",
+                        "Subsystem",
+                        "Component",
+                        "Country"
+                    ],
+                    data: [
+                        [
+                            "Airframe",
+                            "Fuselage",
+                            "Center Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Fuselage",
+                            "Center/Aft fuselage with vertical tails",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Fuselage",
+                            "Center Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Aerostructures",
+                            "Various structural components",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Aerostructures",
+                            "Various structural components",
+                            "USA"
+                        ],
+                        [
+                            "Airframe",
+                            "Pylons",
+                            "Centerline Pylon assembly",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Electronic Systems",
+                            "Advanced Electronic Warfare (ADVEW) system",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Electronic Systems",
+                            "Advanced Electronic Warfare (ADVEW) system",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Targeting Systems",
+                            "LITENING Targeting Pod",
+                            "USA"
+                        ],
+                        [
+                            "Avionics",
+                            "Power Systems",
+                            "Integrated power distribution",
+                            "USA"
+                        ],
+                        [
+                            "Propulsion",
+                            "Engines",
+                            "F414-GE-400 turbofan engines",
+                            "USA"
+                        ],
+                        [
+                            "Propulsion",
+                            "Engines",
+                            "F414-GE-400 turbofan engines",
+                            "USA"
+                        ],
+                        [
+                            "Propulsion",
+                            "Power Systems",
+                            "Onboard power generation",
+                            "USA"
+                        ],
+                        [
+                            "Sensors",
+                            "Targeting",
+                            "LITENING Targeting Pod",
+                            "USA"
+                        ],
+                        [
+                            "Sensors",
+                            "Radar",
+                            "AN/APG-79 AESA Radar",
+                            "USA"
+                        ]
+                    ],
+                    rowWeights: [
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.20,
+                            0.15,
+                            0.30,
+                            0.35
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.30,
+                            0.25
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.25,
+                            0.20,
+                            0.30,
+                            0.25
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.28
+                        ],
+                        [
+                            0.20,
+                            0.15,
+                            0.30,
+                            0.35
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
                         ]
                     ]
                 },
