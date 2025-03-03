@@ -168,8 +168,16 @@ body {
 }
 
 .label-background {
-    fill: white;
+    fill: #fff;
     opacity: 0.95;
+}
+
+/* Ensure text containers don't clip */
+.node text {
+    pointer-events: none;
+    font-size: 12px;
+    fill: var(--text-primary);
+    transition: opacity 0.2s ease-in-out;
 }
 
 /* Graph visibility */
@@ -187,13 +195,6 @@ body {
     stroke-width: 1px;
     transition: opacity 0.2s ease-in-out;
     opacity: 0.8;
-}
-
-.node text {
-    pointer-events: none;
-    font-size: 12px;
-    fill: var(--text-primary);
-    transition: opacity 0.2s ease-in-out;
 }
 
 /* Force Graph specific styles */

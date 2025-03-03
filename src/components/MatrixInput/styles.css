@@ -1,0 +1,136 @@
+.matrix-input {
+    background: white;
+    border: none;
+    padding: 0;
+    width: 100%;
+}
+
+.matrix-header {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-right: 8px;
+}
+
+.matrix-header th {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.header-cell input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.matrix-container {
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+.matrix-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-right: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.matrix-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    width: 100%;
+}
+
+.matrix-cell input[type="text"] {
+    width: 100%;
+    min-width: 0;
+    padding: 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.delete-row {
+    background: #fee2e2;
+    border: none;
+    border-radius: 4px;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.matrix-controls {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.matrix-controls button {
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.matrix-controls button:hover {
+    background: #4f46e5;
+}
+
+.row-action-buttons {
+    display: flex;
+    gap: 8px;
+    padding: 0 8px;
+    width: calc(100% - 16px);
+}
+
+button.row-btn-duplicate,
+button.row-btn-delete {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+}
+
+button.row-btn-duplicate {
+    background-color: #22c55e !important;
+    color: white !important;
+}
+
+button.row-btn-delete {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
+
+.add-row-button {
+    width: calc(100% - 16px);
+    margin: 8px;
+    padding: 8px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

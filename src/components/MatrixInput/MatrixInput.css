@@ -1,0 +1,75 @@
+.matrix-input {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 1rem;
+    width: 100%;
+}
+
+.matrix-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.header-cell input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.matrix-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.matrix-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 8px;
+}
+
+.matrix-cell input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+}
+
+.delete-row {
+    background: #fee2e2;
+    border: none;
+    border-radius: 4px;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.matrix-controls {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.matrix-controls button {
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.matrix-controls button:hover {
+    background: #4f46e5;
+}

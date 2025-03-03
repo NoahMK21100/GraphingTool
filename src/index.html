@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graph Visualization Tool</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="stylesheet" href="./components/ControlPanel/ControlPanel.css" />
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="input-section">
+        <h3>Input Data</h3>
+        <div class="matrix-header">
+          <div class="header-cell">
+            <input type="text" value="Technology" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Tech Type" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Subsystem" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Component" class="editable-header" />
+          </div>
+          <div class="header-cell">
+            <input type="text" value="Manufacturer" class="editable-header" />
+          </div>
+        </div>
+        <div class="matrix-container">
+          <!-- Dynamic rows will be added here -->
+        </div>
+        <button class="add-row-button">Add Row</button>
+        <div class="input-controls">
+          <button id="generateBtn">Update Diagram</button>
+          <button id="clearBtn">Clear</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="theme-toggle">
+          <h3>Theme</h3>
+          <button id="themeToggle" class="theme-toggle-btn">
+            <span class="light-icon">☀️</span>
+            <span class="dark-icon">🌙</span>
+          </button>
+        </div>
+
+        <div class="graph-type-selector">
+          <h3>Visualization Type</h3>
+          <select id="graphType">
+            <option value="sankey">Sankey Diagram</option>
+            <option value="force">Force Graph</option>
+            <option value="sunburst">Sunburst</option>
+            <option value="chord">Chord Diagram</option>
+            <option value="circle">Circle Packing</option>
+          </select>
+        </div>
+
+        <div class="color-scheme-selector">
+          <h3>Color Scheme</h3>
+          <select id="colorPreset">
+            <option value="default">Default</option>
+            <option value="aukus">AUKUS Theme</option>
+            <option value="freshMint">Fresh Mint</option>
+            <option value="vibrantJewel">Vibrant Jewel</option>
+            <option value="earthTones">Earth Tones</option>
+            <option value="deepOcean">Deep Ocean</option>
+            <option value="emeraldDream">Emerald Dream</option>
+            <option value="royalPurple">Royal Purple</option>
+            <option value="sunsetGlow">Sunset Glow</option>
+            <option value="modernMuted">Modern Muted</option>
+            <option value="nordic">Nordic</option>
+            <option value="crimsonShades">Crimson Shades</option>
+            <option value="deepForest">Deep Forest</option>
+            <option value="midnightBlue">Midnight Blue</option>
+          </select>
+        </div>
+
+        <div class="color-settings">
+          <h3>Node Colors</h3>
+          <div class="color-pickers">
+            <div class="color-picker">
+              <label>Level 1</label>
+              <input type="color" id="nodeColor1" value="#818cf8" />
+            </div>
+            <div class="color-picker">
+              <label>Level 2</label>
+              <input type="color" id="nodeColor2" value="#a78bfa" />
+            </div>
+            <div class="color-picker">
+              <label>Level 3</label>
+              <input type="color" id="nodeColor3" value="#ec4899" />
+            </div>
+            <div class="color-picker">
+              <label>Level 4</label>
+              <input type="color" id="nodeColor4" value="#f43f5e" />
+            </div>
+            <div class="color-picker">
+              <label>Level 5</label>
+              <input type="color" id="nodeColor5" value="#f59e0b" />
+            </div>
+          </div>
+        </div>
+
+        <div class="graph-settings">
+          <h3>Graph Settings</h3>
+          <div class="slider-control">
+            <label>Node Padding</label>
+            <input type="range" id="nodePadding" min="0" max="100" value="30" />
+            <span class="slider-value" id="nodePaddingValue">30</span>
+          </div>
+          <div class="slider-control">
+            <label>Color Opacity</label>
+            <input type="range" id="opacitySlider" min="0.3" max="1" step="0.05" value="0.85" />
+            <span class="slider-value" id="opacityValue">0.85</span>
+          </div>
+          <div class="slider-control">
+            <label>Show Node Outlines</label>
+            <input type="checkbox" id="showOutlines" checked />
+          </div>
+        </div>
+      </div>
+
+      <div class="title-inputs-section">
+        <div class="title-inputs-container">
+          <div class="input-group">
+            <label for="exampleData">Example Data</label>
+            <select id="exampleData">
+              <option value="">Select an example...</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" placeholder="Company Name" />
+          </div>
+          <div class="input-group">
+            <label for="techName">Technology Name</label>
+            <input type="text" id="techName" placeholder="Technology Name" />
+          </div>
+        </div>
+        <div class="export-controls">
+          <button id="exportPNG">Export PNG</button>
+          <button id="exportSVG">Export SVG</button>
+        </div>
+      </div>
+    </div>
+    <div id="visualization-container" class="visualization-container"></div>
+  </div>
+  <script type="module" src="./js/index.js"></script>
+</body>
+
+</html>
