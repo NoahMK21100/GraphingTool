@@ -2,7 +2,7 @@ class MatrixInput {
     constructor(container) {
         this.container = container;
         this.columns = ['Tech Type', 'Subsystem', 'Component', 'Manufacturing'];
-        this.rows = [[]]; // Start with one empty row
+        this.rows = [[]];
         this.init();
     }
 

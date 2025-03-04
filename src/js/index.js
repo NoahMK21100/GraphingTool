@@ -71,11 +71,11 @@ class GraphVisualizer {
                 level5: '#f59e0b'   // Amber
             },
             aukus: {
-                level1: '#002868',  // Navy Blue (US Flag Blue)
-                level2: '#012169',  // Royal Blue (UK Flag Blue)
-                level3: '#00247d',  // Royal Blue (Australian Flag Blue)
-                level4: '#C8102E',  // Red (Common in all flags)
-                level5: '#FFFFFF'   // White (Common in all flags)
+                level1: '#002868',  // Navy Blue
+                level2: '#012169',  // Royal Blue
+                level3: '#00247d',  // Royal Blue
+                level4: '#C8102E',  // Red
+                level5: '#FFFFFF'   // White
             },
             vibrantJewel: {
                 level1: '#0ea5e9',  // Vivid Sky Blue

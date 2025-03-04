@@ -1,4 +1,3 @@
-/* Fix for text colors and inputs */
 .header-cell input.editable-header,
 .matrix-cell input[type="text"],
 input[type="text"],
@@ -11,14 +10,12 @@ select,
     border: 1px solid var(--border-color);
 }
 
-/* Fix for dropdowns */
 select {
     background-color: var(--select-bg);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
 }
 
-/* Fix for section headers and labels */
 h3,
 label,
 .color-picker label,
@@ -29,19 +26,16 @@ label,
     color: var(--text-primary);
 }
 
-/* Fix for matrix header text */
 .matrix-header input {
     color: var(--text-primary);
     background-color: var(--input-bg);
 }
 
-/* Fix for highlighted text */
 ::selection {
     background-color: var(--button-primary);
     color: white;
 }
 
-/* Fix for section titles */
 .theme-toggle h3,
 .graph-type-selector h3,
 .color-scheme-selector h3,
@@ -51,13 +45,11 @@ label,
     font-weight: 500;
 }
 
-/* Fix for level labels */
 .color-settings label,
 .color-picker label {
     color: var(--text-primary);
 }
 
-/* Fix for dropdown backgrounds */
 #graphType,
 #colorPreset {
     background-color: var(--select-bg);
@@ -226,7 +218,6 @@ h3 {
     gap: 8px;
 }
 
-/* Settings Section */
 .settings-section {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -300,7 +291,6 @@ input[type="color"]::-webkit-color-swatch {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* Title Inputs */
 .title-inputs {
     display: flex;
     gap: 24px;
@@ -328,7 +318,6 @@ input[type="color"]::-webkit-color-swatch {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* Buttons */
 button,
 input,
 select {
@@ -371,7 +360,6 @@ select {
     border-color: #cbd5e1;
 }
 
-/* Control Panel Container */
 .sidebar {
     width: 500px;
     min-width: 400px;
@@ -385,7 +373,6 @@ select {
     max-height: calc(100vh - 48px);
 }
 
-/* Input Section */
 .input-section {
     background: var(--bg-secondary);
     border-radius: 8px;
@@ -403,7 +390,6 @@ select {
     text-align: center;
 }
 
-/* Matrix Input */
 .matrix-header {
     display: flex;
     flex-wrap: nowrap;
@@ -488,7 +474,6 @@ select {
     outline: none;
 }
 
-/* Matrix Controls */
 .add-row-button {
     width: 100%;
     padding: 8px;
@@ -539,7 +524,6 @@ select {
     background: var(--button-secondary-hover);
 }
 
-/* Settings Section */
 .settings-section {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -551,7 +535,6 @@ select {
     gap: 8px;
 }
 
-/* Theme Toggle */
 .theme-toggle {
     display: flex;
     align-items: center;
@@ -576,7 +559,6 @@ select {
     background: var(--button-secondary-hover);
 }
 
-/* Color Scheme Selector */
 .color-scheme-selector {
     margin: 0;
     padding: 0;
@@ -593,7 +575,6 @@ select {
     color: var(--text-primary);
 }
 
-/* Title Inputs Section */
 .title-inputs-section {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -653,7 +634,6 @@ select {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-/* Export Controls */
 .export-controls {
     display: flex;
     flex-direction: column;
@@ -679,7 +659,6 @@ select {
     transform: none;
 }
 
-/* Row Action Buttons */
 .row-action-buttons {
     display: flex;
     gap: 8px;
@@ -714,7 +693,6 @@ select {
     background-color: #f87171 !important;
 }
 
-/* Button base styles */
 button {
     border: none;
     border-radius: 6px;
@@ -733,7 +711,6 @@ button:active {
     transform: translateY(0);
 }
 
-/* Section Headers */
 h3,
 .theme-toggle h3,
 .graph-type-selector h3,
@@ -747,13 +724,11 @@ h3,
     margin-bottom: 8px;
 }
 
-/* Remove border and adjust spacing */
 .color-settings {
     padding-top: 8px;
     margin-top: 8px;
 }
 
-/* Fix for section headers and labels */
 label,
 .color-picker label,
 .spacing-control label,
@@ -761,7 +736,6 @@ label,
     color: var(--text-primary);
 }
 
-/* Fix for dropdowns */
 select,
 #graphType,
 #colorPreset,
@@ -1002,7 +976,6 @@ select,
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
-/* Style for select elements in matrix */
 select.matrix-input {
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
