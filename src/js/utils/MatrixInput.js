@@ -43,13 +43,16 @@ export class MatrixInput {
             ]
         };
         this.masterEffects = [
-            'Attrite', 'Block', 'Breach', 'Canalise', 'Clear', 'Coerce', 'Contain',
-            'Control', 'Damage', 'Deceive', 'Defeat', 'Defend', 'Degrade', 'Delay',
-            'Deny', 'Destroy', 'Deter', 'Dimish', 'Disrupt', 'Divert', 'Educate',
-            'Enhance', 'Exploit', 'Expose', 'Guard', 'Harass', 'Influence', 'Inform',
-            'Interdict', 'Isolate', 'Know', 'Limit', 'Mislead', 'Neutralise',
-            'Penetrate', 'Persuade', 'Prevent', 'Protect', 'Retain', 'Secure',
-            'Shape', 'Stabilise', 'Suppress', 'Undermine', 'Understand', 'Usurp'
+            'Ambush', 'Arrest', 'Attrite', 'Block', 'Breach', 'Bypass', 'Canalize',
+            'Clear', 'Coerce', 'Contain', 'Control', 'Corrupt', 'Counter', 'Damage',
+            'Deceive', 'Defeat', 'Defend', 'Degrade', 'Delay', 'Demonstate', 'Deny',
+            'Destroy', 'Deter', 'Disrupt', 'Disseminate', 'Divert', 'Educate',
+            'Enhance', 'Envelope', 'Exploit', 'Expose', 'Feint', 'Fix', 'Guard',
+            'Harass', 'Infiltrate', 'Influence', 'Inform', 'Interdict', 'Isolate',
+            'Know', 'Limit', 'Mislead', 'Monitor', 'Neutralize', 'Occupy',
+            'Penetrate', 'Persuade', 'Prevent', 'Protect', 'Retain', 'Screen',
+            'Secure', 'Shape', 'Stabilize', 'Suppress', 'Undermine', 'Understand',
+            'Usurp'
         ];
         this.addRow(); // Add initial row
         this.initializeEventListeners();
