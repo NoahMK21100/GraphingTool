@@ -82,12 +82,6 @@ class MatrixInput {
     createControls() {
         const controls = document.createElement('div');
         controls.className = 'matrix-controls';
-
-        const addRowBtn = document.createElement('button');
-        addRowBtn.textContent = 'Add Row';
-        addRowBtn.addEventListener('click', () => this.addRow());
-
-        controls.appendChild(addRowBtn);
         return controls;
     }
 

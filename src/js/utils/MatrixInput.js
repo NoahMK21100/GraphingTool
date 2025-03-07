@@ -45,7 +45,7 @@ export class MatrixInput {
         this.masterEffects = [
             'Ambush', 'Arrest', 'Attrite', 'Block', 'Breach', 'Bypass', 'Canalize',
             'Clear', 'Coerce', 'Contain', 'Control', 'Corrupt', 'Counter', 'Damage',
-            'Deceive', 'Defeat', 'Defend', 'Degrade', 'Delay', 'Demonstate', 'Deny',
+            'Deceive', 'Defeat', 'Defend', 'Degrade', 'Delay', 'Demonstrate', 'Deny',
             'Destroy', 'Deter', 'Disrupt', 'Disseminate', 'Divert', 'Educate',
             'Enhance', 'Envelope', 'Exploit', 'Expose', 'Feint', 'Fix', 'Guard',
             'Harass', 'Infiltrate', 'Influence', 'Inform', 'Interdict', 'Isolate',

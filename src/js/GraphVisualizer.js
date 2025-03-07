@@ -66,6 +66,17 @@ class GraphVisualizer {
 
         // Initialize example data manager
         this.exampleManager = new ExampleDataManager(this.matrixInput);
+
+        // Add resize observer for responsive updates
+        this.resizeObserver = new ResizeObserver(entries => {
+            if (this.currentGraph && this.currentGraph.handleResize) {
+                // Get the actual container dimensions
+                const containerRect = this.container.getBoundingClientRect();
+                this.currentGraph.handleResize(containerRect.width, containerRect.height);
+            }
+        });
+
+        this.resizeObserver.observe(this.container);
     }
 
     setupEventListeners() {
@@ -137,14 +148,18 @@ class GraphVisualizer {
             });
         });
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
-            this.resizeTimeout = setTimeout(() => {
+        // Update sidebar toggle handler
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('collapsed');
+
+            // Force graph resize after sidebar animation
+            setTimeout(() => {
                 if (this.currentGraph) {
+                    // Trigger resize on the current graph
                     this.currentGraph.handleResize();
                 }
-            }, 250);
+            }, 300);  // Match the CSS transition duration
         });
     }
 

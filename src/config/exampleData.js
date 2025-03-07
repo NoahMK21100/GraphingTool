@@ -584,44 +584,76 @@ export const EXAMPLE_DATA = {
         lockheedMartin: {
             name: "Lockheed Martin",
             technologies: {
+                f35Domain: {
+                    name: "F-35 Lightning II Domain",
+                    columns: [
+                        'Domain',
+                        'Use',
+                        'Subsystem',
+                        'Tech Type',
+                        'Tech Name'
+                    ],
+                    data: [
+                        ["Air Domain", "Accelerate", "F414-GE-400 Turbofan Engine", "Positioning and Navigation", "F-35A"],
+                        ["Air Domain", "Intelligence", "LITENING Advanced Targeting Pod", "Sensors and Detection", "F-35B"],
+                        ["Air Domain", "Offense", "Centerline Pylon Assembly", "Weapon Systems", "F-35C"],
+                        ["Air Domain", "Defense", "Advanced Electronic Warfare System", "Electronic Warfare (EW)", "F-35A"],
+                        ["Land Domain", "Precision", "AN/APG-81 AESA Radar", "Sensors and Detection", "F-35B"],
+                        ["Land Domain", "Communication", "Integrated Power Distribution", "Communications Systems", "F-35C"],
+                        ["Electromagnetic Spectrum Domain", "Information Operations", "Advanced Electronic Warfare System", "Electronic Warfare (EW)", "F-35A"],
+                        ["Electromagnetic Spectrum Domain", "Analysis", "LITENING Advanced Targeting Pod", "Sensors and Detection", "F-35B"],
+                        ["Electromagnetic Spectrum Domain", "Defense", "Advanced Electronic Warfare System", "Weapon Systems", "F-35C"],
+                        ["Maritime Domain", "Intelligence", "AN/APG-81 AESA Radar", "Sensors and Detection", "F-35A"],
+                        ["Maritime Domain", "Offense", "Centerline Pylon Assembly", "Weapon Systems", "F-35B"],
+                        ["Maritime Domain", "Communication", "Integrated Power Distribution", "Communications Systems", "F-35C"]
+                    ],
+                    rowWeights: [
+                        [0.25, 0.22, 0.18, 0.20, 0.15],
+                        [0.25, 0.28, 0.20, 0.16, 0.11],
+                        [0.25, 0.30, 0.18, 0.15, 0.12],
+                        [0.25, 0.20, 0.22, 0.18, 0.15],
+                        [0.25, 0.30, 0.18, 0.15, 0.12],
+                        [0.25, 0.22, 0.25, 0.18, 0.10],
+                        [0.25, 0.28, 0.20, 0.15, 0.12],
+                        [0.25, 0.18, 0.28, 0.17, 0.12],
+                        [0.25, 0.22, 0.20, 0.20, 0.13],
+                        [0.25, 0.28, 0.20, 0.15, 0.12],
+                        [0.25, 0.30, 0.18, 0.15, 0.12],
+                        [0.25, 0.22, 0.25, 0.18, 0.10]
+                    ]
+                },
                 f35Effect: {
                     name: "F-35 Lightning II Effect",
                     columns: [
-                        'Mission Type',
+                        'Detailed Effect',
+                        'Master Effect',
                         'Domain',
-                        'Operation Type',
-                        'System Type',
-                        'Platform'
+                        'Use'
                     ],
                     data: [
-                        ["Air Dominance", "Air", "Air-to-Air Combat", "AI-Enhanced", "F-35A"],
-                        ["Air Dominance", "Maritime", "Fleet Defense", "Neural Networks", "F-35B"],
-                        ["Strike Operations", "Air", "Deep Strike", "AI-Enhanced", "F-35C"],
-                        ["Strike Operations", "Land", "Close Air Support", "Neural Networks", "F-35A"],
-                        ["ISR Collection", "Air", "Reconnaissance", "AI-Enhanced", "F-35B"],
-                        ["ISR Collection", "Maritime", "Surveillance", "Neural Networks", "F-35C"],
-                        ["Electronic Warfare", "Air", "Signal Intelligence", "AI-Enhanced", "F-35A"],
-                        ["Electronic Warfare", "Land", "Communications Intel", "Neural Networks", "F-35B"],
-                        ["Network Operations", "Air", "Data Fusion", "AI-Enhanced", "F-35C"],
-                        ["Network Operations", "Maritime", "Battle Networks", "Neural Networks", "F-35A"],
-                        ["Stealth Operations", "Air", "Penetration", "AI-Enhanced", "F-35B"],
-                        ["Stealth Operations", "Land", "Strategic Strike", "Neural Networks", "F-35C"]
+                        ["Air Dominance", "Neutralize", "Air Domain", "Offense"],
+                        ["Air Dominance", "Neutralize", "Electromagnetic Spectrum Domain", "Information Operations"],
+                        ["Strike Operations", "Destroy", "Land Domain", "Precision"],
+                        ["Strike Operations", "Destroy", "Maritime Domain", "Offense"],
+                        ["ISR Collection", "Understand", "Air Domain", "Intelligence"],
+                        ["Electronic Warfare", "Disrupt", "Electromagnetic Spectrum Domain", "Analysis"],
+                        ["Electronic Warfare", "Suppress", "Land Domain", "Defense"],
+                        ["Network Operations", "Control", "Information Domain", "Communication"],
+                        ["Network Operations", "Control", "Cyberspace Domain", "Coordination"]
                     ],
                     rowWeights: [
-                        [0.25, 0.20, 0.50, 0.50, 0.34],
-                        [0.25, 0.20, 0.50, 0.50, 0.33],
-                        [0.25, 0.20, 0.50, 0.50, 0.33],
-                        [0.20, 0.20, 0.50, 0.50, 0.34],
-                        [0.20, 0.20, 0.50, 0.50, 0.33],
-                        [0.20, 0.20, 0.50, 0.50, 0.33],
-                        [0.15, 0.20, 0.50, 0.50, 0.34],
-                        [0.15, 0.20, 0.50, 0.50, 0.33],
-                        [0.15, 0.20, 0.50, 0.50, 0.33],
-                        [0.15, 0.20, 0.50, 0.50, 0.34],
-                        [0.15, 0.20, 0.50, 0.50, 0.33],
-                        [0.15, 0.20, 0.50, 0.50, 0.33]
+                        [0.18, 0.15, 0.35, 0.32],
+                        [0.18, 0.15, 0.35, 0.32],
+                        [0.20, 0.15, 0.30, 0.35],
+                        [0.20, 0.20, 0.30, 0.25],
+                        [0.22, 0.18, 0.32, 0.20],
+                        [0.22, 0.18, 0.32, 0.20],
+                        [0.25, 0.20, 0.30, 0.25],
+                        [0.22, 0.18, 0.20, 0.22],
+                        [0.22, 0.18, 0.15, 0.22]
                     ]
                 },
+
                 f35System: {
                     name: "F-35 Lightning II System",
                     columns: [
@@ -631,35 +663,36 @@ export const EXAMPLE_DATA = {
                         "Country"
                     ],
                     data: [
-                        ["Airframe", "Fuselage", "Center Fuselage", "USA"],
-                        ["Airframe", "Fuselage", "Center/Aft fuselage with vertical tails", "USA"],
-                        ["Airframe", "Fuselage", "Center Fuselage", "USA"],
-                        ["Airframe", "Aerostructures", "Various structural components", "USA"],
-                        ["Airframe", "Aerostructures", "Various structural components", "USA"],
-                        ["Airframe", "Pylons", "Centerline Pylon assembly", "USA"],
-                        ["Avionics", "Electronic Systems", "Advanced Electronic Warfare (ADVEW) system", "USA"],
-                        ["Avionics", "Electronic Systems", "Advanced Electronic Warfare (ADVEW) system", "USA"],
-                        ["Avionics", "Targeting Systems", "LITENING Targeting Pod", "USA"],
-                        ["Avionics", "Power Systems", "Integrated power distribution", "USA"],
-                        ["Propulsion", "Engines", "F414-GE-400 turbofan engines", "USA"],
-                        ["Propulsion", "Engines", "F414-GE-400 turbofan engines", "USA"],
-                        ["Propulsion", "Power Systems", "Onboard power generation", "USA"],
-                        ["Sensors", "Targeting", "LITENING Targeting Pod", "USA"],
-                        ["Sensors", "Radar", "AN/APG-79 AESA Radar", "USA"],
+                        ["F-35", "F414-GE-400 Turbofan Engine", "High-Pressure Compressor (HPC)", "USA"],
+                        ["F-35", "F414-GE-400 Turbofan Engine", "High-Pressure Turbine (HPT)", "USA"],
+                        ["F-35", "Advanced Electronic Warfare System", "AN/APG-81 Active Electronically Scanned Array Radar (AESA)", "USA"],
+                        ["F-35", "Advanced Electronic Warfare System", "AN/AAQ-37 Distributed Aperture System (DAS)", "USA"],
+                        ["F-35", "LITENING Advanced Targeting Pod", "Electro-Optical and Infrared Sensors", "USA"],
+                        ["F-35", "LITENING Advanced Targeting Pod", "Electro-Optical and Infrared Sensors", "Israel"],
+                        ["F-35", "LITENING Advanced Targeting Pod", "Laser Designator and Rangefinder", "USA"],
+                        ["F-35", "LITENING Advanced Targeting Pod", "Laser Designator and Rangefinder", "Israel"],
+                        ["F-35", "Fuselage", "Forward Fuselage", "USA"],
+                        ["F-35", "Fuselage", "Center Fuselage", "USA"],
+                        ["F-35", "Fuselage", "Aft Fuselage with vertical tails", "USA"],
+                        ["F-35", "Integrated Power Distribution", "Power Management System", "USA"],
+                        ["F-35", "AN/APG-81 AESA Radar", "Radar Processing Unit", "USA"],
+                        ["F-35", "Centerline Pylon Assembly", "Weapons Interface Unit", "USA"]
                     ],
                     rowWeights: [
-                        [0.18, 0.15, 0.35, 0.32],
-                        [0.18, 0.15, 0.35, 0.32],
-                        [0.20, 0.15, 0.30, 0.35],
-                        [0.25, 0.20, 0.30, 0.25],
-                        [0.22, 0.18, 0.32, 0.28],
-                        [0.22, 0.18, 0.32, 0.28],
-                        [0.25, 0.20, 0.30, 0.25],
-                        [0.22, 0.18, 0.32, 0.28],
-                        [0.22, 0.18, 0.32, 0.28],
-                        [0.20, 0.15, 0.30, 0.35],
-                        [0.18, 0.15, 0.35, 0.32],
-                        [0.18, 0.15, 0.35, 0.32]
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20],
+                        [0.20, 0.25, 0.35, 0.20]
                     ]
                 },
                 sr72: {

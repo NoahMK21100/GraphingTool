@@ -44,7 +44,7 @@ export class SankeyGraph extends BaseGraph {
             top: 20,    // Reduced from 40
             right: 80,  // Reduced from 120
             bottom: 20, // Reduced from 40
-            left: 80    // Reduced from 100
+            left: 120   // Increased from 80 to 120
         };
 
         // Initialize visualization
@@ -87,7 +87,7 @@ export class SankeyGraph extends BaseGraph {
     }
 
     createSankeyDiagram() {
-        const margin = { top: 20, right: 80, bottom: 20, left: 80 };
+        const margin = { top: 20, right: 80, bottom: 20, left: 120 };
 
         // Calculate dimensions
         const width = this.wrapper.clientWidth - margin.left - margin.right;
@@ -165,11 +165,11 @@ export class SankeyGraph extends BaseGraph {
             // Add labels
             node.each(function (d) {
                 const g = d3.select(this);
-                const padding = 6;
+                const padding = 20;
 
                 // Position text based on node position
                 const isLeftSide = d.x0 < width / 2;
-                const x = isLeftSide ? -padding : d.x1 - d.x0 + padding;
+                const x = isLeftSide ? -padding : (d.x1 - d.x0 + padding);
 
                 // Create text element with proper positioning
                 const text = g.append('text')
@@ -267,10 +267,22 @@ export class SankeyGraph extends BaseGraph {
         this.width = containerRect.width;
         this.height = containerRect.height;
 
+        // Update SVG dimensions
         this.svg
-            .attr('width', this.width + this.margin.left + this.margin.right)
-            .attr('height', this.height + this.margin.top + this.margin.bottom);
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', [0, 0, this.width, this.height]);
 
+        // Recalculate margins based on container size
+        const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
+        this.margin = {
+            top: 20,
+            right: isSidebarCollapsed ? 40 : 80,
+            bottom: 20,
+            left: isSidebarCollapsed ? 60 : 120
+        };
+
+        // Recreate the diagram with new dimensions
         this.createSankeyDiagram();
     }
 

@@ -86,12 +86,8 @@ body {
 
 #visualization-container {
     flex: 1;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
     display: flex;
     overflow: hidden;
-    margin-top: 60px;
 }
 
 .visualization-container {
@@ -101,18 +97,20 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
-    padding-top: 60px;
+    padding: 100px 24px 24px 24px;
+    box-sizing: border-box;
 }
 
 /* Graph container */
 .graph-wrapper {
     width: 100%;
-    height: 100vh;
-    padding: 40px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    padding: 0 20px;
+    margin: 0 auto;
 }
 
 .chart-container {
@@ -131,9 +129,9 @@ body {
 .chart-container svg {
     width: 100%;
     height: 100%;
-    max-height: calc(100vh - 300px);
     display: block;
-    margin-top: 60px;
+    transition: all 0.3s ease;
+    margin: 0 auto;
 }
 
 /* Graph elements */
@@ -218,7 +216,7 @@ body {
     left: 0;
     right: 0;
     text-align: center;
-    padding: 16px;
+    padding: 24px;
     background: var(--bg-primary);
     z-index: 2;
 }
@@ -245,4 +243,19 @@ body {
 
 .highlighted {
     opacity: 1 !important;
+}
+
+/* Adjust container when sidebar is collapsed */
+.sidebar.collapsed {
+    margin-left: -500px;
+}
+
+.sidebar.collapsed+.visualization-container {
+    margin-left: 0;
+}
+
+/* Ensure graph fits in both states */
+.sidebar.collapsed~.visualization-container .graph-wrapper {
+    width: 85%;
+    margin: 0 auto;
 }

@@ -183,10 +183,34 @@ export class BaseGraph {
     }
 
     handleResize() {
-        const { width, height } = GraphUtils.calculateDimensions(this.wrapper, this.margin);
-        this.width = width;
-        this.height = height;
-        this.update();
+        // Get new dimensions accounting for margin
+        const containerRect = this.chartContainer.getBoundingClientRect();
+        this.width = containerRect.width;
+        this.height = containerRect.height;
+
+        // Update SVG dimensions and viewBox
+        if (this.svg) {
+            this.svg
+                .attr('width', '100%')
+                .attr('height', '100%')
+                .attr('viewBox', [0, 0, this.width, this.height])
+                .attr('preserveAspectRatio', 'xMidYMid meet');
+
+            // Center the content group if it exists
+            const g = this.svg.select('g');
+            if (g.node()) {
+                const gBBox = g.node().getBBox();
+                const scale = Math.min(
+                    this.width / gBBox.width,
+                    this.height / gBBox.height
+                ) * 0.95;
+
+                const translateX = (this.width - gBBox.width * scale) / 2 - gBBox.x * scale;
+                const translateY = (this.height - gBBox.height * scale) / 2 - gBBox.y * scale;
+
+                g.attr('transform', `translate(${translateX},${translateY}) scale(${scale})`);
+            }
+        }
     }
 
     setupBaseInteractions(nodes, links) {

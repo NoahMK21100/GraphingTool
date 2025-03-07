@@ -222,6 +222,11 @@ class GraphVisualizer {
                 this.currentGraph.update();
             }
         });
+
+        // Add this to your existing JavaScript
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
     }
 
     setupEventListeners() {
