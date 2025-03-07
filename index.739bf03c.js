@@ -3138,6 +3138,10 @@ class GraphVisualizer {
             this.settings.aukus.visualizationType = e.target.value;
             if (this.currentGraph instanceof (0, _aukusMapGraph.AukusMapGraph)) this.currentGraph.update();
         });
+        // Add this to your existing JavaScript
+        document.getElementById('sidebarToggle').addEventListener('click', ()=>{
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
     }
     setupEventListeners() {
         // Matrix input listener
@@ -27210,10 +27214,28 @@ class BaseGraph {
         return (0, _graphUtils.GraphUtils).createSvgContainer(this.chartContainer, this.width, this.height);
     }
     handleResize() {
-        const { width, height } = (0, _graphUtils.GraphUtils).calculateDimensions(this.wrapper, this.margin);
-        this.width = width;
-        this.height = height;
-        this.update();
+        // Get new dimensions accounting for margin
+        const containerRect = this.chartContainer.getBoundingClientRect();
+        this.width = containerRect.width;
+        this.height = containerRect.height;
+        // Update SVG dimensions and viewBox
+        if (this.svg) {
+            this.svg.attr('width', '100%').attr('height', '100%').attr('viewBox', [
+                0,
+                0,
+                this.width,
+                this.height
+            ]).attr('preserveAspectRatio', 'xMidYMid meet');
+            // Center the content group if it exists
+            const g = this.svg.select('g');
+            if (g.node()) {
+                const gBBox = g.node().getBBox();
+                const scale = Math.min(this.width / gBBox.width, this.height / gBBox.height) * 0.95;
+                const translateX = (this.width - gBBox.width * scale) / 2 - gBBox.x * scale;
+                const translateY = (this.height - gBBox.height * scale) / 2 - gBBox.y * scale;
+                g.attr('transform', `translate(${translateX},${translateY}) scale(${scale})`);
+            }
+        }
     }
     setupBaseInteractions(nodes, links) {
         const tooltip = (0, _graphUtils.GraphUtils).createTooltip();
@@ -27376,7 +27398,7 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             top: 20,
             right: 80,
             bottom: 20,
-            left: 80 // Reduced from 100
+            left: 120 // Increased from 80 to 120
         };
         // Initialize visualization
         this.svg = _d3.select(this.chartContainer).append('svg').attr('width', '100%').attr('height', '100%').attr('viewBox', [
@@ -27415,7 +27437,7 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             top: 20,
             right: 80,
             bottom: 20,
-            left: 80
+            left: 120
         };
         // Calculate dimensions
         const width = this.wrapper.clientWidth - margin.left - margin.right;
@@ -27456,7 +27478,7 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             // Add labels
             node.each(function(d) {
                 const g = _d3.select(this);
-                const padding = 6;
+                const padding = 20;
                 // Position text based on node position
                 const isLeftSide = d.x0 < width / 2;
                 const x = isLeftSide ? -padding : d.x1 - d.x0 + padding;
@@ -27517,7 +27539,22 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
         const containerRect = this.chartContainer.getBoundingClientRect();
         this.width = containerRect.width;
         this.height = containerRect.height;
-        this.svg.attr('width', this.width + this.margin.left + this.margin.right).attr('height', this.height + this.margin.top + this.margin.bottom);
+        // Update SVG dimensions
+        this.svg.attr('width', '100%').attr('height', '100%').attr('viewBox', [
+            0,
+            0,
+            this.width,
+            this.height
+        ]);
+        // Recalculate margins based on container size
+        const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
+        this.margin = {
+            top: 20,
+            right: isSidebarCollapsed ? 40 : 80,
+            bottom: 20,
+            left: isSidebarCollapsed ? 60 : 120
+        };
+        // Recreate the diagram with new dimensions
         this.createSankeyDiagram();
     }
     update() {
@@ -38828,7 +38865,7 @@ class MatrixInput {
             'Defend',
             'Degrade',
             'Delay',
-            'Demonstate',
+            'Demonstrate',
             'Deny',
             'Destroy',
             'Deter',
@@ -42467,185 +42504,306 @@ const EXAMPLE_DATA = {
         lockheedMartin: {
             name: "Lockheed Martin",
             technologies: {
-                f35Effect: {
-                    name: "F-35 Lightning II Effect",
+                f35Domain: {
+                    name: "F-35 Lightning II Domain",
                     columns: [
-                        'Mission Type',
                         'Domain',
-                        'Operation Type',
-                        'System Type',
-                        'Platform'
+                        'Use',
+                        'Subsystem',
+                        'Tech Type',
+                        'Tech Name'
                     ],
                     data: [
                         [
-                            "Air Dominance",
-                            "Air",
-                            "Air-to-Air Combat",
-                            "AI-Enhanced",
+                            "Air Domain",
+                            "Accelerate",
+                            "F414-GE-400 Turbofan Engine",
+                            "Positioning and Navigation",
                             "F-35A"
                         ],
                         [
-                            "Air Dominance",
-                            "Maritime",
-                            "Fleet Defense",
-                            "Neural Networks",
+                            "Air Domain",
+                            "Intelligence",
+                            "LITENING Advanced Targeting Pod",
+                            "Sensors and Detection",
                             "F-35B"
                         ],
                         [
-                            "Strike Operations",
-                            "Air",
-                            "Deep Strike",
-                            "AI-Enhanced",
+                            "Air Domain",
+                            "Offense",
+                            "Centerline Pylon Assembly",
+                            "Weapon Systems",
                             "F-35C"
                         ],
                         [
-                            "Strike Operations",
-                            "Land",
-                            "Close Air Support",
-                            "Neural Networks",
+                            "Air Domain",
+                            "Defense",
+                            "Advanced Electronic Warfare System",
+                            "Electronic Warfare (EW)",
                             "F-35A"
                         ],
                         [
-                            "ISR Collection",
-                            "Air",
-                            "Reconnaissance",
-                            "AI-Enhanced",
+                            "Land Domain",
+                            "Precision",
+                            "AN/APG-81 AESA Radar",
+                            "Sensors and Detection",
                             "F-35B"
                         ],
                         [
-                            "ISR Collection",
-                            "Maritime",
-                            "Surveillance",
-                            "Neural Networks",
+                            "Land Domain",
+                            "Communication",
+                            "Integrated Power Distribution",
+                            "Communications Systems",
                             "F-35C"
                         ],
                         [
-                            "Electronic Warfare",
-                            "Air",
-                            "Signal Intelligence",
-                            "AI-Enhanced",
+                            "Electromagnetic Spectrum Domain",
+                            "Information Operations",
+                            "Advanced Electronic Warfare System",
+                            "Electronic Warfare (EW)",
                             "F-35A"
                         ],
                         [
-                            "Electronic Warfare",
-                            "Land",
-                            "Communications Intel",
-                            "Neural Networks",
+                            "Electromagnetic Spectrum Domain",
+                            "Analysis",
+                            "LITENING Advanced Targeting Pod",
+                            "Sensors and Detection",
                             "F-35B"
                         ],
                         [
-                            "Network Operations",
-                            "Air",
-                            "Data Fusion",
-                            "AI-Enhanced",
+                            "Electromagnetic Spectrum Domain",
+                            "Defense",
+                            "Advanced Electronic Warfare System",
+                            "Weapon Systems",
                             "F-35C"
                         ],
                         [
-                            "Network Operations",
-                            "Maritime",
-                            "Battle Networks",
-                            "Neural Networks",
+                            "Maritime Domain",
+                            "Intelligence",
+                            "AN/APG-81 AESA Radar",
+                            "Sensors and Detection",
                             "F-35A"
                         ],
                         [
-                            "Stealth Operations",
-                            "Air",
-                            "Penetration",
-                            "AI-Enhanced",
+                            "Maritime Domain",
+                            "Offense",
+                            "Centerline Pylon Assembly",
+                            "Weapon Systems",
                             "F-35B"
                         ],
                         [
-                            "Stealth Operations",
-                            "Land",
-                            "Strategic Strike",
-                            "Neural Networks",
+                            "Maritime Domain",
+                            "Communication",
+                            "Integrated Power Distribution",
+                            "Communications Systems",
                             "F-35C"
                         ]
                     ],
                     rowWeights: [
                         [
                             0.25,
+                            0.22,
+                            0.18,
                             0.20,
-                            0.50,
-                            0.50,
-                            0.34
+                            0.15
+                        ],
+                        [
+                            0.25,
+                            0.28,
+                            0.20,
+                            0.16,
+                            0.11
+                        ],
+                        [
+                            0.25,
+                            0.30,
+                            0.18,
+                            0.15,
+                            0.12
                         ],
                         [
                             0.25,
                             0.20,
-                            0.50,
-                            0.50,
-                            0.33
+                            0.22,
+                            0.18,
+                            0.15
+                        ],
+                        [
+                            0.25,
+                            0.30,
+                            0.18,
+                            0.15,
+                            0.12
+                        ],
+                        [
+                            0.25,
+                            0.22,
+                            0.25,
+                            0.18,
+                            0.10
+                        ],
+                        [
+                            0.25,
+                            0.28,
+                            0.20,
+                            0.15,
+                            0.12
+                        ],
+                        [
+                            0.25,
+                            0.18,
+                            0.28,
+                            0.17,
+                            0.12
+                        ],
+                        [
+                            0.25,
+                            0.22,
+                            0.20,
+                            0.20,
+                            0.13
+                        ],
+                        [
+                            0.25,
+                            0.28,
+                            0.20,
+                            0.15,
+                            0.12
+                        ],
+                        [
+                            0.25,
+                            0.30,
+                            0.18,
+                            0.15,
+                            0.12
+                        ],
+                        [
+                            0.25,
+                            0.22,
+                            0.25,
+                            0.18,
+                            0.10
+                        ]
+                    ]
+                },
+                f35Effect: {
+                    name: "F-35 Lightning II Effect",
+                    columns: [
+                        'Detailed Effect',
+                        'Master Effect',
+                        'Domain',
+                        'Use'
+                    ],
+                    data: [
+                        [
+                            "Air Dominance",
+                            "Neutralize",
+                            "Air Domain",
+                            "Offense"
+                        ],
+                        [
+                            "Air Dominance",
+                            "Neutralize",
+                            "Electromagnetic Spectrum Domain",
+                            "Information Operations"
+                        ],
+                        [
+                            "Strike Operations",
+                            "Destroy",
+                            "Land Domain",
+                            "Precision"
+                        ],
+                        [
+                            "Strike Operations",
+                            "Destroy",
+                            "Maritime Domain",
+                            "Offense"
+                        ],
+                        [
+                            "ISR Collection",
+                            "Understand",
+                            "Air Domain",
+                            "Intelligence"
+                        ],
+                        [
+                            "Electronic Warfare",
+                            "Disrupt",
+                            "Electromagnetic Spectrum Domain",
+                            "Analysis"
+                        ],
+                        [
+                            "Electronic Warfare",
+                            "Suppress",
+                            "Land Domain",
+                            "Defense"
+                        ],
+                        [
+                            "Network Operations",
+                            "Control",
+                            "Information Domain",
+                            "Communication"
+                        ],
+                        [
+                            "Network Operations",
+                            "Control",
+                            "Cyberspace Domain",
+                            "Coordination"
+                        ]
+                    ],
+                    rowWeights: [
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.18,
+                            0.15,
+                            0.35,
+                            0.32
+                        ],
+                        [
+                            0.20,
+                            0.15,
+                            0.30,
+                            0.35
+                        ],
+                        [
+                            0.20,
+                            0.20,
+                            0.30,
+                            0.25
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.20
+                        ],
+                        [
+                            0.22,
+                            0.18,
+                            0.32,
+                            0.20
                         ],
                         [
                             0.25,
                             0.20,
-                            0.50,
-                            0.50,
-                            0.33
+                            0.30,
+                            0.25
                         ],
                         [
+                            0.22,
+                            0.18,
                             0.20,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.34
+                            0.22
                         ],
                         [
-                            0.20,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
-                        ],
-                        [
-                            0.20,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
-                        ],
-                        [
+                            0.22,
+                            0.18,
                             0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.34
-                        ],
-                        [
-                            0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
-                        ],
-                        [
-                            0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
-                        ],
-                        [
-                            0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.34
-                        ],
-                        [
-                            0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
-                        ],
-                        [
-                            0.15,
-                            0.20,
-                            0.50,
-                            0.50,
-                            0.33
+                            0.22
                         ]
                     ]
                 },
@@ -42659,168 +42817,174 @@ const EXAMPLE_DATA = {
                     ],
                     data: [
                         [
-                            "Airframe",
+                            "F-35",
+                            "F414-GE-400 Turbofan Engine",
+                            "High-Pressure Compressor (HPC)",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "F414-GE-400 Turbofan Engine",
+                            "High-Pressure Turbine (HPT)",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "Advanced Electronic Warfare System",
+                            "AN/APG-81 Active Electronically Scanned Array Radar (AESA)",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "Advanced Electronic Warfare System",
+                            "AN/AAQ-37 Distributed Aperture System (DAS)",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "LITENING Advanced Targeting Pod",
+                            "Electro-Optical and Infrared Sensors",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "LITENING Advanced Targeting Pod",
+                            "Electro-Optical and Infrared Sensors",
+                            "Israel"
+                        ],
+                        [
+                            "F-35",
+                            "LITENING Advanced Targeting Pod",
+                            "Laser Designator and Rangefinder",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
+                            "LITENING Advanced Targeting Pod",
+                            "Laser Designator and Rangefinder",
+                            "Israel"
+                        ],
+                        [
+                            "F-35",
+                            "Fuselage",
+                            "Forward Fuselage",
+                            "USA"
+                        ],
+                        [
+                            "F-35",
                             "Fuselage",
                             "Center Fuselage",
                             "USA"
                         ],
                         [
-                            "Airframe",
+                            "F-35",
                             "Fuselage",
-                            "Center/Aft fuselage with vertical tails",
+                            "Aft Fuselage with vertical tails",
                             "USA"
                         ],
                         [
-                            "Airframe",
-                            "Fuselage",
-                            "Center Fuselage",
+                            "F-35",
+                            "Integrated Power Distribution",
+                            "Power Management System",
                             "USA"
                         ],
                         [
-                            "Airframe",
-                            "Aerostructures",
-                            "Various structural components",
+                            "F-35",
+                            "AN/APG-81 AESA Radar",
+                            "Radar Processing Unit",
                             "USA"
                         ],
                         [
-                            "Airframe",
-                            "Aerostructures",
-                            "Various structural components",
-                            "USA"
-                        ],
-                        [
-                            "Airframe",
-                            "Pylons",
-                            "Centerline Pylon assembly",
-                            "USA"
-                        ],
-                        [
-                            "Avionics",
-                            "Electronic Systems",
-                            "Advanced Electronic Warfare (ADVEW) system",
-                            "USA"
-                        ],
-                        [
-                            "Avionics",
-                            "Electronic Systems",
-                            "Advanced Electronic Warfare (ADVEW) system",
-                            "USA"
-                        ],
-                        [
-                            "Avionics",
-                            "Targeting Systems",
-                            "LITENING Targeting Pod",
-                            "USA"
-                        ],
-                        [
-                            "Avionics",
-                            "Power Systems",
-                            "Integrated power distribution",
-                            "USA"
-                        ],
-                        [
-                            "Propulsion",
-                            "Engines",
-                            "F414-GE-400 turbofan engines",
-                            "USA"
-                        ],
-                        [
-                            "Propulsion",
-                            "Engines",
-                            "F414-GE-400 turbofan engines",
-                            "USA"
-                        ],
-                        [
-                            "Propulsion",
-                            "Power Systems",
-                            "Onboard power generation",
-                            "USA"
-                        ],
-                        [
-                            "Sensors",
-                            "Targeting",
-                            "LITENING Targeting Pod",
-                            "USA"
-                        ],
-                        [
-                            "Sensors",
-                            "Radar",
-                            "AN/APG-79 AESA Radar",
+                            "F-35",
+                            "Centerline Pylon Assembly",
+                            "Weapons Interface Unit",
                             "USA"
                         ]
                     ],
                     rowWeights: [
                         [
-                            0.18,
-                            0.15,
-                            0.35,
-                            0.32
-                        ],
-                        [
-                            0.18,
-                            0.15,
-                            0.35,
-                            0.32
-                        ],
-                        [
                             0.20,
-                            0.15,
-                            0.30,
-                            0.35
-                        ],
-                        [
                             0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
                             0.20,
-                            0.30,
-                            0.25
-                        ],
-                        [
-                            0.22,
-                            0.18,
-                            0.32,
-                            0.28
-                        ],
-                        [
-                            0.22,
-                            0.18,
-                            0.32,
-                            0.28
-                        ],
-                        [
                             0.25,
-                            0.20,
-                            0.30,
-                            0.25
-                        ],
-                        [
-                            0.22,
-                            0.18,
-                            0.32,
-                            0.28
-                        ],
-                        [
-                            0.22,
-                            0.18,
-                            0.32,
-                            0.28
+                            0.35,
+                            0.20
                         ],
                         [
                             0.20,
-                            0.15,
-                            0.30,
-                            0.35
+                            0.25,
+                            0.35,
+                            0.20
                         ],
                         [
-                            0.18,
-                            0.15,
+                            0.20,
+                            0.25,
                             0.35,
-                            0.32
+                            0.20
                         ],
                         [
-                            0.18,
-                            0.15,
+                            0.20,
+                            0.25,
                             0.35,
-                            0.32
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
+                        ],
+                        [
+                            0.20,
+                            0.25,
+                            0.35,
+                            0.20
                         ]
                     ]
                 },

@@ -311,6 +311,14 @@ button, input, select {
   border-color: #cbd5e1;
 }
 
+.main-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
 .sidebar {
   background: var(--sidebar-bg);
   width: 500px;
@@ -321,7 +329,85 @@ button, input, select {
   max-height: calc(100vh - 48px);
   margin: 24px;
   padding: 32px;
+  transition: transform .3s, margin .3s;
   overflow-y: auto;
+}
+
+.sidebar.collapsed {
+  margin-right: 0;
+  transform: translateX(-100%);
+}
+
+.visualization-container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 24px;
+  transition: all .3s;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar.collapsed + .visualization-container {
+  margin-left: 24px;
+}
+
+.graph-wrapper {
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.chart-container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.sidebar.collapsed ~ .visualization-container svg {
+  max-width: 2000px;
+  margin: 0 auto;
+  width: 95% !important;
+  height: 95% !important;
+}
+
+.title-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.main-title {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+.sidebar-toggle {
+  z-index: 1000;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px 12px;
+  transition: all .2s;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+.sidebar-toggle:hover {
+  background: var(--button-secondary-hover);
 }
 
 .input-section {
@@ -422,20 +508,24 @@ button, input, select {
   outline: none;
 }
 
+.matrix-controls {
+  margin-top: 12px;
+}
+
 .add-row-button {
+  background-color: var(--button-secondary);
+  width: 100%;
+  color: var(--text-primary);
   border: 1px solid var(--border-color);
   cursor: pointer;
   border-radius: 4px;
-  width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 12px;
   padding: 8px;
   transition: background-color .2s;
-  background-color: var(--button-secondary) !important;
-  color: var(--text-primary) !important;
 }
 
 .add-row-button:hover {
-  background-color: var(--button-secondary-hover) !important;
+  background-color: var(--button-secondary-hover);
 }
 
 .input-controls {
