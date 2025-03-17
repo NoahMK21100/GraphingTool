@@ -27267,6 +27267,34 @@ class BaseGraph {
     destroy() {
         if (this.chartContainer) this.chartContainer.innerHTML = '';
     }
+    resize() {
+        // Get new container dimensions
+        const bounds = this.chartContainer.getBoundingClientRect();
+        this.width = bounds.width;
+        this.height = bounds.height;
+        // Update SVG dimensions
+        this.svg.attr('width', '100%').attr('height', '100%').attr('viewBox', [
+            0,
+            0,
+            this.width,
+            this.height
+        ]).attr('preserveAspectRatio', 'xMidYMid meet');
+        // Get the main content group
+        const g = this.svg.select('g');
+        if (g.node()) {
+            const gBBox = g.node().getBBox();
+            // Calculate scale to fit content while maintaining aspect ratio
+            const scale = Math.min(this.width / gBBox.width, this.height / gBBox.height) * 0.95; // 95% to add some padding
+            // Calculate translation to center the content
+            const translateX = (this.width - gBBox.width * scale) / 2 - gBBox.x * scale;
+            const translateY = (this.height - gBBox.height * scale) / 2 - gBBox.y * scale;
+            // Apply transform smoothly
+            g.transition().duration(300) // Match sidebar transition duration
+            .attr('transform', `translate(${translateX},${translateY}) scale(${scale})`);
+        }
+        // Force redraw if needed
+        if (this.draw) this.draw();
+    }
 }
 
 },{"d3":"17XFv","../utils/GraphUtils":"200RG","../../config/constants":"lUTQ5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"200RG":[function(require,module,exports,__globalThis) {
@@ -27389,17 +27417,6 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
                 linkOpacity: 0.5
             }
         };
-        // Get dimensions from chart container
-        const containerRect = this.chartContainer.getBoundingClientRect();
-        this.width = containerRect.width;
-        this.height = containerRect.height;
-        // Adjust margins to be more compact
-        this.margin = {
-            top: 20,
-            right: 80,
-            bottom: 20,
-            left: 120 // Increased from 80 to 120
-        };
         // Initialize visualization
         this.svg = _d3.select(this.chartContainer).append('svg').attr('width', '100%').attr('height', '100%').attr('viewBox', [
             0,
@@ -27433,33 +27450,37 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
         return 0.9;
     }
     createSankeyDiagram() {
-        const margin = {
-            top: 20,
-            right: 80,
-            bottom: 20,
-            left: 120
-        };
-        // Calculate dimensions
-        const width = this.wrapper.clientWidth - margin.left - margin.right;
-        const height = Math.min(this.wrapper.clientHeight - margin.top - margin.bottom, this.data.nodes.length * 30 // Reduced node spacing
-        );
         // Clear existing content
         this.svg.selectAll('*').remove();
+        // Get the actual container dimensions
+        const containerRect = this.chartContainer.getBoundingClientRect();
+        this.width = containerRect.width;
+        this.height = containerRect.height;
+        // Calculate margins based on container size
+        const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
+        this.margin = {
+            top: 20,
+            right: 40,
+            bottom: 20,
+            left: 40 // Reduced fixed margin
+        };
+        // Calculate actual diagram dimensions
+        const width = this.width - this.margin.left - this.margin.right;
+        const height = this.height - this.margin.top - this.margin.bottom;
         // Create main group with adjusted transform
-        const g = this.svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+        const g = this.svg.append('g').attr('transform', `translate(${this.margin.left},${this.margin.top})`);
         try {
             // Setup sankey generator with adjusted settings
-            const sankeyLayout = (0, _d3Sankey.sankey)().nodeId((d)=>d.id).nodeWidth(15) // Slightly reduced from original
-            .nodePadding(this.settings.sankey.nodePadding).extent([
+            const sankeyLayout = (0, _d3Sankey.sankey)().nodeId((d)=>d.id).nodeWidth(15).nodePadding(this.settings.sankey.nodePadding).extent([
                 [
                     0,
                     0
                 ],
                 [
-                    width * 0.85,
+                    width,
                     height
                 ]
-            ]); // Reduced width to 85%
+            ]);
             // Process the data
             const { nodes, links } = sankeyLayout(this.data);
             // Create gradients
@@ -27510,6 +27531,13 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             console.error('Error in createSankeyDiagram:', error);
             throw error;
         }
+        // Update SVG dimensions and viewBox
+        this.svg.attr('width', '100%').attr('height', '100%').attr('viewBox', [
+            0,
+            0,
+            this.width,
+            this.height
+        ]).attr('preserveAspectRatio', 'xMidYMid meet');
     }
     setupInteractions(node, link) {
         const highlight = (d)=>{
@@ -27603,6 +27631,11 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             nodes: connected,
             links: connectedLinks
         };
+    }
+    // Override the resize method specifically for Sankey
+    resize() {
+        // Recreate the diagram with new dimensions
+        this.createSankeyDiagram();
     }
 }
 
@@ -43566,6 +43599,7 @@ const EXAMPLE_DATA = {
                             "Tempest 50"
                         ]
                     ],
+                    // Standardize weights to sum to 1.0 for each row
                     rowWeights: [
                         [
                             0.30,
