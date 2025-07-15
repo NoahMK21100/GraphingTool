@@ -258,4 +258,44 @@ export class BaseGraph {
             this.chartContainer.innerHTML = '';
         }
     }
+
+    resize() {
+        // Get new container dimensions
+        const bounds = this.chartContainer.getBoundingClientRect();
+        this.width = bounds.width;
+        this.height = bounds.height;
+
+        // Update SVG dimensions
+        this.svg
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', [0, 0, this.width, this.height])
+            .attr('preserveAspectRatio', 'xMidYMid meet');
+
+        // Get the main content group
+        const g = this.svg.select('g');
+        if (g.node()) {
+            const gBBox = g.node().getBBox();
+
+            // Calculate scale to fit content while maintaining aspect ratio
+            const scale = Math.min(
+                this.width / gBBox.width,
+                this.height / gBBox.height
+            ) * 0.95; // 95% to add some padding
+
+            // Calculate translation to center the content
+            const translateX = (this.width - gBBox.width * scale) / 2 - gBBox.x * scale;
+            const translateY = (this.height - gBBox.height * scale) / 2 - gBBox.y * scale;
+
+            // Apply transform smoothly
+            g.transition()
+                .duration(300) // Match sidebar transition duration
+                .attr('transform', `translate(${translateX},${translateY}) scale(${scale})`);
+        }
+
+        // Force redraw if needed
+        if (this.draw) {
+            this.draw();
+        }
+    }
 }

@@ -77,6 +77,9 @@ class GraphVisualizer {
         });
 
         this.resizeObserver.observe(this.container);
+
+        // Add a resize observer to handle sidebar collapse/expand
+        this.initResizeHandling();
     }
 
     setupEventListeners() {
@@ -156,10 +159,12 @@ class GraphVisualizer {
             // Force graph resize after sidebar animation
             setTimeout(() => {
                 if (this.currentGraph) {
-                    // Trigger resize on the current graph
-                    this.currentGraph.handleResize();
+                    const bounds = this.container.getBoundingClientRect();
+                    this.currentGraph.width = bounds.width;
+                    this.currentGraph.height = bounds.height;
+                    this.currentGraph.resize();
                 }
-            }, 300);  // Match the CSS transition duration
+            }, 300); // Match the CSS transition duration
         });
     }
 
@@ -288,5 +293,25 @@ class GraphVisualizer {
             console.error('Error creating graph:', error);
             this.container.innerHTML = `<div class="error">Error creating graph: ${error.message}</div>`;
         }
+    }
+
+    // Add a resize observer to handle sidebar collapse/expand
+    initResizeHandling() {
+        // Create resize observer to handle container size changes
+        const resizeObserver = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                if (entry.target === this.container) {
+                    // Add small delay to ensure DOM updates are complete
+                    setTimeout(() => {
+                        if (this.currentGraph) {
+                            this.currentGraph.resize();
+                        }
+                    }, 100);
+                }
+            }
+        });
+
+        // Observe the container
+        resizeObserver.observe(this.container);
     }
 }

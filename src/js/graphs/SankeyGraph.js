@@ -34,19 +34,6 @@ export class SankeyGraph extends BaseGraph {
             }
         };
 
-        // Get dimensions from chart container
-        const containerRect = this.chartContainer.getBoundingClientRect();
-        this.width = containerRect.width;
-        this.height = containerRect.height;
-
-        // Adjust margins to be more compact
-        this.margin = {
-            top: 20,    // Reduced from 40
-            right: 80,  // Reduced from 120
-            bottom: 20, // Reduced from 40
-            left: 120   // Increased from 80 to 120
-        };
-
         // Initialize visualization
         this.svg = d3.select(this.chartContainer)
             .append('svg')
@@ -87,29 +74,38 @@ export class SankeyGraph extends BaseGraph {
     }
 
     createSankeyDiagram() {
-        const margin = { top: 20, right: 80, bottom: 20, left: 120 };
-
-        // Calculate dimensions
-        const width = this.wrapper.clientWidth - margin.left - margin.right;
-        const height = Math.min(
-            this.wrapper.clientHeight - margin.top - margin.bottom,
-            (this.data.nodes.length * 30)  // Reduced node spacing
-        );
-
         // Clear existing content
         this.svg.selectAll('*').remove();
 
+        // Get the actual container dimensions
+        const containerRect = this.chartContainer.getBoundingClientRect();
+        this.width = containerRect.width;
+        this.height = containerRect.height;
+
+        // Calculate margins based on container size
+        const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
+        this.margin = {
+            top: 20,
+            right: 40,  // Reduced fixed margin
+            bottom: 20,
+            left: 40    // Reduced fixed margin
+        };
+
+        // Calculate actual diagram dimensions
+        const width = this.width - this.margin.left - this.margin.right;
+        const height = this.height - this.margin.top - this.margin.bottom;
+
         // Create main group with adjusted transform
         const g = this.svg.append('g')
-            .attr('transform', `translate(${margin.left},${margin.top})`);
+            .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
         try {
             // Setup sankey generator with adjusted settings
             const sankeyLayout = sankey()
                 .nodeId(d => d.id)
-                .nodeWidth(15)  // Slightly reduced from original
+                .nodeWidth(15)
                 .nodePadding(this.settings.sankey.nodePadding)
-                .extent([[0, 0], [width * 0.85, height]]);  // Reduced width to 85%
+                .extent([[0, 0], [width, height]]);
 
             // Process the data
             const { nodes, links } = sankeyLayout(this.data);
@@ -226,6 +222,13 @@ export class SankeyGraph extends BaseGraph {
             console.error('Error in createSankeyDiagram:', error);
             throw error;
         }
+
+        // Update SVG dimensions and viewBox
+        this.svg
+            .attr('width', '100%')
+            .attr('height', '100%')
+            .attr('viewBox', [0, 0, this.width, this.height])
+            .attr('preserveAspectRatio', 'xMidYMid meet');
     }
 
     setupInteractions(node, link) {
@@ -339,5 +342,11 @@ export class SankeyGraph extends BaseGraph {
         traceFullPath(d.id, false);  // Trace backward
 
         return { nodes: connected, links: connectedLinks };
+    }
+
+    // Override the resize method specifically for Sankey
+    resize() {
+        // Recreate the diagram with new dimensions
+        this.createSankeyDiagram();
     }
 }

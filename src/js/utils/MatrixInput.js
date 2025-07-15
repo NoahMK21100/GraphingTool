@@ -66,8 +66,24 @@ export class MatrixInput {
     }
 
     setGraphType(type) {
-        this.currentGraphType = type;
-        this.updateAllRows();
+        const effectCells = this.container.querySelectorAll('.effect-cell');
+        const valueCells = this.container.querySelectorAll('.value-cell');
+
+        if (type === 'tree') {
+            // For tree graph, hide effect cells and adjust value cells
+            effectCells.forEach(cell => cell.style.display = 'none');
+            valueCells.forEach(cell => {
+                cell.style.width = '100%';
+                cell.querySelector('input').style.width = '100%';
+            });
+        } else {
+            // For other graphs, show effect cells and restore value cells
+            effectCells.forEach(cell => cell.style.display = '');
+            valueCells.forEach(cell => {
+                cell.style.width = '';
+                cell.querySelector('input').style.width = '';
+            });
+        }
     }
 
     updateAllRows() {

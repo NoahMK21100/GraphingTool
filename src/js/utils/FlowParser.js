@@ -265,4 +265,58 @@ export class FlowParser {
         cleanNode(root);
         return root;
     }
+
+    parseTreeData(matrixData) {
+        let firstRow = matrixData.rows[0] || [];
+        let firstValue = firstRow[0]?.value?.trim() || "root";
+
+        const root = {
+            name: firstValue,
+            children: []
+        };
+
+        // Helper function to find or create a node at a specific level
+        const findOrCreateNode = (parent, name) => {
+            // Check if we already have this node as a child
+            const existingNode = parent.children.find(child => child.name === name);
+            if (existingNode) {
+                return existingNode;
+            }
+
+            // If not, create a new node
+            const newNode = {
+                name: name,
+                children: []
+            };
+            parent.children.push(newNode);
+            return newNode;
+        };
+
+        // Process each row to build the tree structure
+        matrixData.rows.forEach(row => {
+            let parentNode = root;
+
+            row.slice(1).forEach((cell, colIndex) => {
+                if (!cell.value.trim()) return;
+
+                const nodeName = cell.value.trim();
+                // Find or create node at this level
+                parentNode = findOrCreateNode(parentNode, nodeName);
+            });
+        });
+
+        const cleanNode = (node) => {
+            if (node.children) {
+                // Remove empty children arrays
+                if (node.children.length === 0) {
+                    delete node.children;
+                } else {
+                    node.children.forEach(cleanNode);
+                }
+            }
+        };
+
+        cleanNode(root);
+        return root;
+    }
 }

@@ -10,6 +10,7 @@ import { FlowParser } from './utils/FlowParser';
 import { exportToSVG, exportToPNG } from './utils/exportUtils';
 import { MatrixInput } from './utils/MatrixInput';
 import { ExampleDataManager } from './utils/ExampleDataManager.js';
+import { CollapsibleTreeGraph } from './graphs/CollapsibleTreeGraph.js';
 
 function initTheme() {
     // Check for saved theme preference or default to light
@@ -167,7 +168,6 @@ class GraphVisualizer {
         this.setupThemeToggle();
         this.initializeFromURL();
 
-        // Add this to your initialization code
         document.querySelector('.add-row-button').addEventListener('click', () => {
             this.matrixInput.addRow();
         });
@@ -446,6 +446,9 @@ class GraphVisualizer {
             } else if (type.toLowerCase() === 'aukusmap') {
                 this.matrixInput.setGraphType('aukusmap');
                 graphData = matrixData; // Pass the raw matrix data directly to AukusMapGraph
+            } else if (type.toLowerCase() === 'tree') {
+                this.matrixInput.setGraphType('tree');
+                graphData = this.flowParser.parseTreeData(matrixData);
             } else {
                 this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseMatrix(matrixData);
@@ -468,6 +471,9 @@ class GraphVisualizer {
                 case 'aukusmap':
                     this.matrixInput.setGraphType('aukusmap');
                     this.currentGraph = new AukusMapGraph(this.container, graphData, this.settings);
+                    break;
+                case 'tree':
+                    this.currentGraph = new CollapsibleTreeGraph(this.container, graphData, this.settings);
                     break;
                 default:
                     this.currentGraph = new SankeyGraph(this.container, graphData, this.settings);
