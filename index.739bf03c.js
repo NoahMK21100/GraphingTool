@@ -2951,6 +2951,7 @@ var _flowParser = require("./utils/FlowParser");
 var _exportUtils = require("./utils/exportUtils");
 var _matrixInput = require("./utils/MatrixInput");
 var _exampleDataManagerJs = require("./utils/ExampleDataManager.js");
+var _collapsibleTreeGraphJs = require("./graphs/CollapsibleTreeGraph.js");
 function initTheme() {
     // Check for saved theme preference or default to light
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -3100,7 +3101,6 @@ class GraphVisualizer {
         this.setupEventListeners();
         this.setupThemeToggle();
         this.initializeFromURL();
-        // Add this to your initialization code
         document.querySelector('.add-row-button').addEventListener('click', ()=>{
             this.matrixInput.addRow();
         });
@@ -3141,6 +3141,10 @@ class GraphVisualizer {
         // Add this to your existing JavaScript
         document.getElementById('sidebarToggle').addEventListener('click', ()=>{
             document.querySelector('.sidebar').classList.toggle('collapsed');
+            // Force graph resize after sidebar animation
+            setTimeout(()=>{
+                if (this.currentGraph && this.currentGraph.handleResize) this.currentGraph.handleResize();
+            }, 300); // Match the CSS transition duration
         });
     }
     setupEventListeners() {
@@ -3213,11 +3217,11 @@ class GraphVisualizer {
             if (this.currentGraph instanceof (0, _sankeyGraph.SankeyGraph)) this.updateGraph();
         });
         // Export controls
-        document.getElementById('exportPNG')?.addEventListener('click', ()=>{
-            if (this.currentGraph) (0, _exportUtils.exportToPNG)(this.currentGraph.wrapper);
+        document.getElementById('exportPNG')?.addEventListener('click', async ()=>{
+            if (this.currentGraph) await (0, _exportUtils.exportToPNG)(this.currentGraph.wrapper);
         });
-        document.getElementById('exportSVG')?.addEventListener('click', ()=>{
-            if (this.currentGraph) (0, _exportUtils.exportToSVG)(this.currentGraph.wrapper);
+        document.getElementById('exportSVG')?.addEventListener('click', async ()=>{
+            if (this.currentGraph) await (0, _exportUtils.exportToSVG)(this.currentGraph.wrapper);
         });
         // Title updates
         [
@@ -3328,6 +3332,9 @@ class GraphVisualizer {
             } else if (type.toLowerCase() === 'aukusmap') {
                 this.matrixInput.setGraphType('aukusmap');
                 graphData = matrixData; // Pass the raw matrix data directly to AukusMapGraph
+            } else if (type.toLowerCase() === 'tree') {
+                this.matrixInput.setGraphType('tree');
+                graphData = this.flowParser.parseTreeData(matrixData);
             } else {
                 this.matrixInput.setGraphType('');
                 graphData = this.flowParser.parseMatrix(matrixData);
@@ -3349,6 +3356,9 @@ class GraphVisualizer {
                 case 'aukusmap':
                     this.matrixInput.setGraphType('aukusmap');
                     this.currentGraph = new (0, _aukusMapGraph.AukusMapGraph)(this.container, graphData, this.settings);
+                    break;
+                case 'tree':
+                    this.currentGraph = new (0, _collapsibleTreeGraphJs.CollapsibleTreeGraph)(this.container, graphData, this.settings);
                     break;
                 default:
                     this.currentGraph = new (0, _sankeyGraph.SankeyGraph)(this.container, graphData, this.settings);
@@ -3424,7 +3434,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     new GraphVisualizer();
 });
 
-},{"./graphs/ForceGraph":"aXaJm","./graphs/SankeyGraph":"jrmAK","./graphs/SunburstGraph":"34XTM","./graphs/ChordGraph":"436RY","./graphs/CirclePackingGraph":"jDZUH","./graphs/WorldMapGraph":"bXbT1","./graphs/AukusMapGraph":"aPrwF","./utils/FlowParser":"dOYzI","./utils/exportUtils":"3f3Xg","./utils/MatrixInput":"aTVmd","./utils/ExampleDataManager.js":"dxH0W"}],"aXaJm":[function(require,module,exports,__globalThis) {
+},{"./graphs/ForceGraph":"aXaJm","./graphs/SankeyGraph":"jrmAK","./graphs/SunburstGraph":"34XTM","./graphs/ChordGraph":"436RY","./graphs/CirclePackingGraph":"jDZUH","./graphs/WorldMapGraph":"bXbT1","./graphs/AukusMapGraph":"aPrwF","./utils/FlowParser":"dOYzI","./utils/exportUtils":"3f3Xg","./utils/MatrixInput":"aTVmd","./utils/ExampleDataManager.js":"dxH0W","./graphs/CollapsibleTreeGraph.js":"g4JA9"}],"aXaJm":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ForceGraph", ()=>ForceGraph);
@@ -27460,9 +27470,9 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
         const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
         this.margin = {
             top: 20,
-            right: 40,
+            right: isSidebarCollapsed ? 60 : 100,
             bottom: 20,
-            left: 40 // Reduced fixed margin
+            left: isSidebarCollapsed ? 60 : 120
         };
         // Calculate actual diagram dimensions
         const width = this.width - this.margin.left - this.margin.right;
@@ -27502,9 +27512,9 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
                 const padding = 20;
                 // Position text based on node position
                 const isLeftSide = d.x0 < width / 2;
-                const x = isLeftSide ? -padding : d.x1 - d.x0 + padding;
+                const x = isLeftSide ? -padding - 15 : d.x1 - d.x0 + padding;
                 // Create text element with proper positioning
-                const text = g.append('text').attr('x', x).attr('y', (d.y1 - d.y0) / 2).attr('dy', '0.35em').attr('text-anchor', isLeftSide ? 'end' : 'start');
+                const text = g.append('text').attr('x', x).attr('y', (d.y1 - d.y0) / 2).attr('dy', '0.35em').attr('text-anchor', isLeftSide ? 'end' : 'start').attr('font-weight', '600');
                 // Simple text wrapping - split into two lines if text is too long
                 const maxLength = 25; // characters before wrapping
                 if (d.name.length > maxLength) {
@@ -27521,9 +27531,6 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
                     text.append('tspan').attr('x', x).text(firstLine.join(' '));
                     text.append('tspan').attr('x', x).attr('dy', '1.2em').text(secondLine.join(' '));
                 } else text.text(d.name);
-                // Add background with padding
-                const bbox = text.node().getBBox();
-                g.insert('rect', 'text').attr('class', 'label-background').attr('x', isLeftSide ? bbox.x - 4 : x - 4).attr('y', bbox.y - 2).attr('width', bbox.width + 8).attr('height', bbox.height + 4).attr('fill', 'white').attr('opacity', 0.8);
             });
             // Setup interactions
             this.setupInteractions(node, link);
@@ -27531,11 +27538,11 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
             console.error('Error in createSankeyDiagram:', error);
             throw error;
         }
-        // Update SVG dimensions and viewBox
+        // Update SVG dimensions and viewBox with extra space for labels
         this.svg.attr('width', '100%').attr('height', '100%').attr('viewBox', [
+            -50,
             0,
-            0,
-            this.width,
+            this.width + 100,
             this.height
         ]).attr('preserveAspectRatio', 'xMidYMid meet');
     }
@@ -27578,7 +27585,7 @@ class SankeyGraph extends (0, _baseGraph.BaseGraph) {
         const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
         this.margin = {
             top: 20,
-            right: isSidebarCollapsed ? 40 : 80,
+            right: isSidebarCollapsed ? 60 : 100,
             bottom: 20,
             left: isSidebarCollapsed ? 60 : 120
         };
@@ -30681,6 +30688,46 @@ class FlowParser {
         cleanNode(root);
         return root;
     }
+    parseTreeData(matrixData) {
+        let firstRow = matrixData.rows[0] || [];
+        let firstValue = firstRow[0]?.value?.trim() || "root";
+        const root = {
+            name: firstValue,
+            children: []
+        };
+        // Helper function to find or create a node at a specific level
+        const findOrCreateNode = (parent, name)=>{
+            // Check if we already have this node as a child
+            const existingNode = parent.children.find((child)=>child.name === name);
+            if (existingNode) return existingNode;
+            // If not, create a new node
+            const newNode = {
+                name: name,
+                children: []
+            };
+            parent.children.push(newNode);
+            return newNode;
+        };
+        // Process each row to build the tree structure
+        matrixData.rows.forEach((row)=>{
+            let parentNode = root;
+            row.slice(1).forEach((cell, colIndex)=>{
+                if (!cell.value.trim()) return;
+                const nodeName = cell.value.trim();
+                // Find or create node at this level
+                parentNode = findOrCreateNode(parentNode, nodeName);
+            });
+        });
+        const cleanNode = (node)=>{
+            if (node.children) {
+                // Remove empty children arrays
+                if (node.children.length === 0) delete node.children;
+                else node.children.forEach(cleanNode);
+            }
+        };
+        cleanNode(root);
+        return root;
+    }
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3f3Xg":[function(require,module,exports,__globalThis) {
@@ -30692,7 +30739,19 @@ var _html2Canvas = require("html2canvas");
 var _html2CanvasDefault = parcelHelpers.interopDefault(_html2Canvas);
 var _d3 = require("d3");
 async function exportToPNG(wrapper) {
+    // Temporarily hide sidebar for full-width export
+    const sidebar = document.querySelector('.sidebar');
+    const wasCollapsed = sidebar.classList.contains('collapsed');
     try {
+        sidebar.classList.add('collapsed');
+        // Force a resize to update the graph dimensions
+        const resizeEvent = new Event('resize');
+        window.dispatchEvent(resizeEvent);
+        // Also trigger the graph's resize method directly
+        const currentGraph = window.currentGraph || document.querySelector('[data-graph-type]')?.__graph;
+        if (currentGraph && currentGraph.handleResize) currentGraph.handleResize();
+        // Wait for the sidebar transition to complete (300ms) plus extra time for graph resize
+        await new Promise((resolve)=>setTimeout(resolve, 400));
         // Get the SVG element and its dimensions
         const svg = wrapper.querySelector('svg');
         if (!svg) throw new Error('No SVG element found');
@@ -30733,6 +30792,8 @@ async function exportToPNG(wrapper) {
         });
         // Clean up
         document.body.removeChild(container);
+        // Restore sidebar state
+        if (!wasCollapsed) sidebar.classList.remove('collapsed');
         // Create download link
         const link = document.createElement('a');
         link.download = `${companyName}-${techName}.png`.replace(/\s+/g, '-');
@@ -30743,10 +30804,26 @@ async function exportToPNG(wrapper) {
     } catch (error) {
         console.error('Error exporting PNG:', error);
         alert('Failed to export PNG. Please try again.');
+    } finally{
+        // Ensure sidebar is restored even if there's an error
+        const sidebar = document.querySelector('.sidebar');
+        if (!wasCollapsed) sidebar.classList.remove('collapsed');
     }
 }
-function exportToSVG(wrapper) {
+async function exportToSVG(wrapper) {
+    // Temporarily hide sidebar for full-width export
+    const sidebar = document.querySelector('.sidebar');
+    const wasCollapsed = sidebar.classList.contains('collapsed');
     try {
+        sidebar.classList.add('collapsed');
+        // Force a resize to update the graph dimensions
+        const resizeEvent = new Event('resize');
+        window.dispatchEvent(resizeEvent);
+        // Also trigger the graph's resize method directly
+        const currentGraph = window.currentGraph || document.querySelector('[data-graph-type]')?.__graph;
+        if (currentGraph && currentGraph.handleResize) currentGraph.handleResize();
+        // Wait for the sidebar transition to complete (300ms) plus extra time for graph resize
+        await new Promise((resolve)=>setTimeout(resolve, 400));
         // Get the SVG element
         const svg = wrapper.querySelector('svg');
         if (!svg) throw new Error('No SVG element found');
@@ -30805,6 +30882,8 @@ function exportToSVG(wrapper) {
         // Convert to string and create download link
         const serializer = new XMLSerializer();
         const svgString = serializer.serializeToString(containerSvg);
+        // Restore sidebar state
+        if (!wasCollapsed) sidebar.classList.remove('collapsed');
         const link = document.createElement('a');
         link.download = `${companyName}-${techName}.svg`.replace(/\s+/g, '-');
         link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
@@ -30814,6 +30893,10 @@ function exportToSVG(wrapper) {
     } catch (error) {
         console.error('Error exporting SVG:', error);
         alert('Failed to export SVG. Please try again.');
+    } finally{
+        // Ensure sidebar is restored even if there's an error
+        const sidebar = document.querySelector('.sidebar');
+        if (!wasCollapsed) sidebar.classList.remove('collapsed');
     }
 }
 
@@ -38947,8 +39030,23 @@ class MatrixInput {
         if (addButton) addButton.addEventListener('click', ()=>this.addRow());
     }
     setGraphType(type) {
-        this.currentGraphType = type;
-        this.updateAllRows();
+        const effectCells = this.container.querySelectorAll('.effect-cell');
+        const valueCells = this.container.querySelectorAll('.value-cell');
+        if (type === 'tree') {
+            // For tree graph, hide effect cells and adjust value cells
+            effectCells.forEach((cell)=>cell.style.display = 'none');
+            valueCells.forEach((cell)=>{
+                cell.style.width = '100%';
+                cell.querySelector('input').style.width = '100%';
+            });
+        } else {
+            // For other graphs, show effect cells and restore value cells
+            effectCells.forEach((cell)=>cell.style.display = '');
+            valueCells.forEach((cell)=>{
+                cell.style.width = '';
+                cell.querySelector('input').style.width = '';
+            });
+        }
     }
     updateAllRows() {
         const rows = this.container.querySelectorAll('.matrix-row');
@@ -46306,10 +46404,2593 @@ const EXAMPLE_DATA = {
                     ]
                 }
             }
+        },
+        natsec_sankey_1: {
+            name: "NatSec100 Company Flow",
+            technologies: {
+                main: {
+                    name: "NatSec100 Company Flow Example",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "Communications Systems",
+                            "TX"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "Space/Hypersonic Technology",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "Sensors And Detection",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "Cyber And Information Systems",
+                            "CO"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "Virtual/Augmented Reality (VR/AR)",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "Transportation & Vehicle Tech",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Snorkel Flow",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Snorkel Evaluate",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Expert Data-aaS",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP Series",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP120",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP102",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Dataminr",
+                            "First Alert",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "Pulse",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "AI Alert System",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "Quantum Technologies",
+                            "CA"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "Quantum Technologies",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "Artificial Intelligence",
+                            "NY"
+                        ]
+                    ]
+                },
+                andurilIndustries: {
+                    name: "Anduril Industries Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Artificial Intelligence",
+                            "CA"
+                        ]
+                    ]
+                },
+                spaceX: {
+                    name: "SpaceX Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "Communications Systems",
+                            "TX"
+                        ]
+                    ]
+                },
+                shieldAI: {
+                    name: "Shield AI Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "Artificial Intelligence",
+                            "CA"
+                        ]
+                    ]
+                },
+                trueAnomaly: {
+                    name: "True Anomaly Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "Space/Hypersonic Technology",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "Sensors And Detection",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "Cyber And Information Systems",
+                            "CO"
+                        ]
+                    ]
+                },
+                impulseSpace: {
+                    name: "Impulse Space Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ]
+                    ]
+                },
+                saronicTechnologies: {
+                    name: "Saronic Technologies Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Maritime Systems",
+                            "TX"
+                        ]
+                    ]
+                },
+                epirus: {
+                    name: "Epirus Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ]
+                    ]
+                },
+                xEnergy: {
+                    name: "X-Energy Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ]
+                    ]
+                },
+                databricks: {
+                    name: "Databricks Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "Data And Infrastructure",
+                            "CA"
+                        ]
+                    ]
+                },
+                groq: {
+                    name: "Groq Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ]
+                    ]
+                },
+                appliedIntuition: {
+                    name: "Applied Intuition Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "Virtual/Augmented Reality (VR/AR)",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "Transportation & Vehicle Tech",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ]
+                    ]
+                },
+                cerebrasSystems: {
+                    name: "Cerebras Systems Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ]
+                    ]
+                },
+                snorkelAI: {
+                    name: "Snorkel AI Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Snorkel AI",
+                            "Snorkel Flow",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Snorkel Evaluate",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Expert Data-aaS",
+                            "Artificial Intelligence",
+                            "CA"
+                        ]
+                    ]
+                },
+                syntiant: {
+                    name: "Syntiant Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Syntiant",
+                            "NDP Series",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP120",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP102",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ]
+                    ]
+                },
+                dataminr: {
+                    name: "Dataminr Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Dataminr",
+                            "First Alert",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "Pulse",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "AI Alert System",
+                            "Artificial Intelligence",
+                            "NY"
+                        ]
+                    ]
+                },
+                armis: {
+                    name: "Armis Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ]
+                    ]
+                },
+                psiQuantum: {
+                    name: "PsiQuantum Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "Quantum Technologies",
+                            "CA"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "Quantum Technologies",
+                            "CA"
+                        ]
+                    ]
+                },
+                lambda: {
+                    name: "Lambda Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ]
+                    ]
+                },
+                basePower: {
+                    name: "Base Power Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ]
+                    ]
+                },
+                apex: {
+                    name: "APEX Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "APEX",
+                            "Aries",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ]
+                    ]
+                },
+                nominal: {
+                    name: "Nominal Company Flow",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Tech Category',
+                        'Location of HQ'
+                    ],
+                    data: [
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "Artificial Intelligence",
+                            "NY"
+                        ]
+                    ]
+                }
+            }
+        },
+        natsec_sankey_2: {
+            name: "NatSec100 Subsystem Flow",
+            technologies: {
+                main: {
+                    name: "NatSec100 Subsystem Flow Example",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Subsystem',
+                        'Tech Category',
+                        'Location of HQ (State)'
+                    ],
+                    data: [
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Loitering Munition",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Interceptor System",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Autonomous UUV",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Autonomous UUV",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Autonomous UUV",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Autonomous UUV",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Autonomous UAV",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Reconnaissance Drone",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Counter-Drone System",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Surveillance System",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Command & Control",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "Launch Vehicle",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "Heavy Launch Vehicle",
+                            "Space/Hypersonic Technology",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "Rocket Engine",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "Spacecraft Thruster",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "Crew/Cargo Capsule",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "Next-Gen Launch System",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "Satellite Constellation",
+                            "Aerospace And Propulsion",
+                            "TX"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "Military Satellite Network",
+                            "Communications Systems",
+                            "TX"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "AI Pilot Software",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "VTOL Drone",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "Quadcopter Drone",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "Sensor Payload",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "AI Development Platform",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "Orbital Vehicle",
+                            "Space/Hypersonic Technology",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "Space Awareness Software",
+                            "Sensors And Detection",
+                            "CO"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "Space Security Platform",
+                            "Cyber And Information Systems",
+                            "CO"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "Orbital Transfer Vehicle",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "Mars Transfer Vehicle",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "Planetary Lander",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Autonomous Surface Vessel",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "High-Power Microwave System",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "Maritime HPM System",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "Power Management System",
+                            "Electronic Warfare (EW)",
+                            "CA"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "Small Modular Reactor",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "Ceramic-Coated Fuel",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "Deployable Reactor",
+                            "Energy & Infrastructure",
+                            "MD"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "Data Platform",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "Data Lake Storage",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "Data Warehouse",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "ML Lifecycle Platform",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "Data Governance",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "Data Exchange",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "AI Data Agent",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "Data Ingestion",
+                            "Data And Infrastructure",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "Inference Chip",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "Datacenter Accelerator",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "Cloud Inference API",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "Virtual Testing",
+                            "Virtual/Augmented Reality (VR/AR)",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "Autonomy Stack",
+                            "Transportation & Vehicle Tech",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "Analytics Platform",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "Defense Kit",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "Wafer-Scale Processor",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "AI Supercomputer",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "Managed Clusters",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Snorkel Flow",
+                            "Labeling Platform",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Snorkel Evaluate",
+                            "LLM Evaluation",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Snorkel AI",
+                            "Expert Data-aaS",
+                            "Labeling Service",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP Series",
+                            "Neural Processors",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP120",
+                            "Voice/Sensor Chip",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Syntiant",
+                            "NDP102",
+                            "Multi-Sensor MCM",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Dataminr",
+                            "First Alert",
+                            "Event Detection",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "Pulse",
+                            "Security Alerts",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Dataminr",
+                            "AI Alert System",
+                            "Intelligence Feeds",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "Asset Visibility",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "Anomaly Engine",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "Risk Dashboard",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "Device Census",
+                            "Cyber And Information Systems",
+                            "CA"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "Quantum Computer",
+                            "Quantum Technologies",
+                            "CA"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "Qubit Fabrication",
+                            "Quantum Technologies",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "AI Dev Boxes",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "NVIDIA Clusters",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "AI Platform",
+                            "Electronics & Semiconductors",
+                            "CA"
+                        ],
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "Residential Storage",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "Virtual Power Plant",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "Retail Power",
+                            "Energy & Infrastructure",
+                            "TX"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "Small Satellite Bus",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "Medium Satellite Bus",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "Satellite Manufacturing",
+                            "Space/Hypersonic Technology",
+                            "CA"
+                        ],
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "Accounting Platform",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "Business Logic AI",
+                            "Artificial Intelligence",
+                            "NY"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "Global Close Tool",
+                            "Artificial Intelligence",
+                            "NY"
+                        ]
+                    ]
+                },
+                andurilIndustries: {
+                    name: "Anduril Industries Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        // Altius-600/700
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "wings"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "fuselage"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "turbojet engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "piston engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "flight control computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "datalink radio"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "EO/IR seeker"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "warhead payload"
+                        ],
+                        // Anvil
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "multi-rotor airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "electric motors"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "propellers"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "flight controller"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "inertial navigation"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "radio link"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "optical sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "detonation device"
+                        ],
+                        // Barracuda
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "aerodynamic airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "turbofan engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "flight control system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "INS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "radio communication module"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "seeker head"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "onboard mission computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "warhead"
+                        ],
+                        // Bolt
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "quadcopter airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "electric motors"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "propellers"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "autopilot module"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "INS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "onboard computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "EO/IR camera"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "radio datalink"
+                        ],
+                        // Copperhead
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "underwater hull"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "propeller drive"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "electric motor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "battery module"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "sonar system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "inertial navigation"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "depth sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "onboard mission computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "warhead payload"
+                        ],
+                        // Dive-LD/Dive-XL
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "submersible hull"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "electric thrusters"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "inertial measurement unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "depth sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "buoyancy control system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "navigation computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "payload interface"
+                        ],
+                        // Fury
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "fixed-wing airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "turbofan engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "fuel tanks"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "flight computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "INS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "EO/IR sensor suite"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "radar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "datalink radio"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "mission payload bays"
+                        ],
+                        // Ghost 4/X
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "rotor airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "main rotor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "tail rotor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "fuel system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "flight control computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "GPS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "INS unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "EO/IR camera"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "radio datalink"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "modular payload rail"
+                        ],
+                        // Roadrunner/Roadrunner-M
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "delta-wing airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "twin turbojets"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "fuel tanks"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "vectoring thrust system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "flight control computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "GPS unit"
+                        ],
+                        // Sentry Towers
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "telescoping mast"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "solar panels"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "radar sensors"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "optical cameras"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "IR sensors"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "communications antennas"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "power management module"
+                        ],
+                        // Lattice OS
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "secure servers"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "data processing units"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "AI model hosts"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "network interfaces"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "secure communications modules"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "storage infrastructure"
+                        ]
+                    ]
+                }
+            }
         }
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aQL8O","8G2QE","ebWYT"], "ebWYT", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"g4JA9":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CollapsibleTreeGraph", ()=>CollapsibleTreeGraph);
+var _d3 = require("d3");
+var _baseGraph = require("./BaseGraph");
+class CollapsibleTreeGraph extends (0, _baseGraph.BaseGraph) {
+    constructor(container, data, settings){
+        super(container);
+        this.data = data;
+        this.settings = settings || {};
+        this.createTreeDiagram();
+    }
+    createTreeDiagram() {
+        this.chartContainer.innerHTML = '';
+        const containerRect = this.chartContainer.getBoundingClientRect();
+        const width = containerRect.width;
+        const height = containerRect.height;
+        // Simple margins
+        this.margin = {
+            top: 40,
+            right: 40,
+            bottom: 40,
+            left: 40
+        };
+        // Create hierarchy and calculate size
+        const root = _d3.hierarchy(this.data);
+        // Make nodes a reasonable size
+        const nodeWidth = 180;
+        const nodeHeight = 45;
+        // Calculate spacing based on container size
+        const dx = nodeHeight * 2; // Vertical spacing between nodes
+        const dy = nodeWidth * 1.2; // Reduced horizontal spacing between levels
+        // Create tree layout with fixed node sizes
+        const tree = _d3.tree().nodeSize([
+            dx,
+            dy
+        ]).separation((a, b)=>a.parent == b.parent ? 1 : 1.2);
+        // Center the root node
+        root.x0 = height / 2;
+        root.y0 = 0; // Start from the left edge
+        // Create SVG that fills the container
+        this.svg = _d3.select(this.chartContainer).append('svg').attr('width', '100%').attr('height', '100%')// Simple viewBox that matches container dimensions
+        .attr('viewBox', [
+            0,
+            0,
+            width,
+            height
+        ]).style('font', '16px sans-serif').style('user-select', 'none');
+        // Add a centered group for all content
+        const g = this.svg.append('g').attr('transform', `translate(${width * 0.2},${height / 2})`);
+        const gLink = g.append('g').attr('fill', 'none').attr('stroke', '#555').attr('stroke-opacity', 0.4).attr('stroke-width', 1.5);
+        const gNode = g.append('g').attr('cursor', 'pointer').attr('pointer-events', 'all');
+        const update = (source)=>{
+            const duration = 250;
+            const nodes = root.descendants().reverse();
+            const links = root.links();
+            // Update the tree layout
+            tree(root);
+            const transition = this.svg.transition().duration(duration);
+            // Update nodes
+            const node = gNode.selectAll('g').data(nodes, (d)=>d.id);
+            const nodeEnter = node.enter().append('g').attr('transform', (d)=>`translate(${source.y0},${source.x0})`).attr('class', 'node').on('click', (event, d)=>{
+                // Toggle children visibility on click
+                if (d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                } else {
+                    d.children = d._children;
+                    d._children = null;
+                }
+                update(d);
+            });
+            nodeEnter.append('rect').attr('x', -nodeWidth / 2).attr('y', -nodeHeight / 2).attr('width', nodeWidth).attr('height', nodeHeight).attr('rx', 15) // More rounded corners
+            .attr('fill', (d)=>this.settings.colors[`level${d.depth + 1}`] || '#999')// Add visual indicator if node has hidden children
+            .attr('stroke-width', (d)=>d._children && d._children.length > 0 ? 2 : 1).attr('stroke', '#666');
+            nodeEnter.append('text').attr('dy', '0.31em').attr('x', 0).attr('text-anchor', 'middle').text((d)=>d.data.name).style('fill', 'white').style('font-size', '15px') // Bigger text
+            .call(wrap, nodeWidth - 30); // More text padding
+            // Update existing nodes
+            node.merge(nodeEnter).transition(transition).attr('transform', (d)=>`translate(${d.y},${d.x})`);
+            // Remove exiting nodes
+            node.exit().transition(transition).remove().attr('transform', (d)=>`translate(${source.y},${source.x})`);
+            // Update links
+            const link = gLink.selectAll('path').data(links, (d)=>d.target.id);
+            link.enter().append('path').attr('d', (d)=>{
+                const o = {
+                    x: source.x0,
+                    y: source.y0
+                };
+                return diagonal({
+                    source: o,
+                    target: o
+                });
+            }).merge(link).transition(transition).attr('d', diagonal);
+            link.exit().transition(transition).remove().attr('d', (d)=>{
+                const o = {
+                    x: source.x,
+                    y: source.y
+                };
+                return diagonal({
+                    source: o,
+                    target: o
+                });
+            });
+            // Store old positions
+            root.eachBefore((d)=>{
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+        };
+        // Text wrapping function
+        function wrap(text, width) {
+            text.each(function() {
+                const node = _d3.select(this);
+                const words = node.text().split(/\s+/);
+                if (words.length > 2) node.text(words.slice(0, 2).join(' ') + '...');
+            });
+        }
+        // Define diagonal link path
+        const diagonal = _d3.linkHorizontal().x((d)=>d.y).y((d)=>d.x);
+        // Initialize the display
+        root.descendants().forEach((d, i)=>{
+            d.id = i;
+        });
+        // Initial update
+        update(root);
+    }
+    handleResize() {
+        // Add a small delay to ensure the container size is updated
+        setTimeout(()=>{
+            this.createTreeDiagram();
+        }, 100);
+    }
+}
+
+},{"d3":"17XFv","./BaseGraph":"ioqvX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aQL8O","8G2QE","ebWYT"], "ebWYT", "parcelRequire94c2")
 
 //# sourceMappingURL=index.739bf03c.js.map
