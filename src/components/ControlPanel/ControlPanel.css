@@ -398,16 +398,13 @@ select {
     align-items: center;
 }
 
-.sidebar.collapsed+.visualization-container {
-    margin-left: 24px;
-}
-
 .graph-wrapper {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .chart-container {
@@ -417,14 +414,23 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
 }
 
 /* Adjust SVG sizing when sidebar is collapsed */
+.sidebar.collapsed~.visualization-container .chart-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidebar.collapsed~.visualization-container svg {
-    width: 95% !important;
-    height: 95% !important;
-    max-width: 2000px;
-    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
 }
 
 /* Title positioning */

@@ -2,7 +2,26 @@ import html2canvas from 'html2canvas';
 import * as d3 from 'd3';
 
 export async function exportToPNG(wrapper) {
+    // Temporarily hide sidebar for full-width export
+    const sidebar = document.querySelector('.sidebar');
+    const wasCollapsed = sidebar.classList.contains('collapsed');
+
     try {
+        sidebar.classList.add('collapsed');
+
+        // Force a resize to update the graph dimensions
+        const resizeEvent = new Event('resize');
+        window.dispatchEvent(resizeEvent);
+
+        // Also trigger the graph's resize method directly
+        const currentGraph = window.currentGraph || document.querySelector('[data-graph-type]')?.__graph;
+        if (currentGraph && currentGraph.handleResize) {
+            currentGraph.handleResize();
+        }
+
+        // Wait for the sidebar transition to complete (300ms) plus extra time for graph resize
+        await new Promise(resolve => setTimeout(resolve, 400));
+
         // Get the SVG element and its dimensions
         const svg = wrapper.querySelector('svg');
         if (!svg) throw new Error('No SVG element found');
@@ -53,6 +72,11 @@ export async function exportToPNG(wrapper) {
         // Clean up
         document.body.removeChild(container);
 
+        // Restore sidebar state
+        if (!wasCollapsed) {
+            sidebar.classList.remove('collapsed');
+        }
+
         // Create download link
         const link = document.createElement('a');
         link.download = `${companyName}-${techName}.png`.replace(/\s+/g, '-');
@@ -63,11 +87,36 @@ export async function exportToPNG(wrapper) {
     } catch (error) {
         console.error('Error exporting PNG:', error);
         alert('Failed to export PNG. Please try again.');
+    } finally {
+        // Ensure sidebar is restored even if there's an error
+        const sidebar = document.querySelector('.sidebar');
+        if (!wasCollapsed) {
+            sidebar.classList.remove('collapsed');
+        }
     }
 }
 
-export function exportToSVG(wrapper) {
+export async function exportToSVG(wrapper) {
+    // Temporarily hide sidebar for full-width export
+    const sidebar = document.querySelector('.sidebar');
+    const wasCollapsed = sidebar.classList.contains('collapsed');
+
     try {
+        sidebar.classList.add('collapsed');
+
+        // Force a resize to update the graph dimensions
+        const resizeEvent = new Event('resize');
+        window.dispatchEvent(resizeEvent);
+
+        // Also trigger the graph's resize method directly
+        const currentGraph = window.currentGraph || document.querySelector('[data-graph-type]')?.__graph;
+        if (currentGraph && currentGraph.handleResize) {
+            currentGraph.handleResize();
+        }
+
+        // Wait for the sidebar transition to complete (300ms) plus extra time for graph resize
+        await new Promise(resolve => setTimeout(resolve, 400));
+
         // Get the SVG element
         const svg = wrapper.querySelector('svg');
         if (!svg) throw new Error('No SVG element found');
@@ -140,6 +189,11 @@ export function exportToSVG(wrapper) {
         const serializer = new XMLSerializer();
         const svgString = serializer.serializeToString(containerSvg);
 
+        // Restore sidebar state
+        if (!wasCollapsed) {
+            sidebar.classList.remove('collapsed');
+        }
+
         const link = document.createElement('a');
         link.download = `${companyName}-${techName}.svg`.replace(/\s+/g, '-');
         link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString);
@@ -149,5 +203,11 @@ export function exportToSVG(wrapper) {
     } catch (error) {
         console.error('Error exporting SVG:', error);
         alert('Failed to export SVG. Please try again.');
+    } finally {
+        // Ensure sidebar is restored even if there's an error
+        const sidebar = document.querySelector('.sidebar');
+        if (!wasCollapsed) {
+            sidebar.classList.remove('collapsed');
+        }
     }
 }

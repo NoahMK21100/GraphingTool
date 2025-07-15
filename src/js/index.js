@@ -226,6 +226,13 @@ class GraphVisualizer {
         // Add this to your existing JavaScript
         document.getElementById('sidebarToggle').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('collapsed');
+
+            // Force graph resize after sidebar animation
+            setTimeout(() => {
+                if (this.currentGraph && this.currentGraph.handleResize) {
+                    this.currentGraph.handleResize();
+                }
+            }, 300); // Match the CSS transition duration
         });
     }
 
@@ -300,15 +307,15 @@ class GraphVisualizer {
         });
 
         // Export controls
-        document.getElementById('exportPNG')?.addEventListener('click', () => {
+        document.getElementById('exportPNG')?.addEventListener('click', async () => {
             if (this.currentGraph) {
-                exportToPNG(this.currentGraph.wrapper);
+                await exportToPNG(this.currentGraph.wrapper);
             }
         });
 
-        document.getElementById('exportSVG')?.addEventListener('click', () => {
+        document.getElementById('exportSVG')?.addEventListener('click', async () => {
             if (this.currentGraph) {
-                exportToSVG(this.currentGraph.wrapper);
+                await exportToSVG(this.currentGraph.wrapper);
             }
         });
 

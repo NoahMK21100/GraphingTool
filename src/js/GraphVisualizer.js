@@ -131,15 +131,15 @@ class GraphVisualizer {
         });
 
         // Export controls
-        document.getElementById('exportPNG')?.addEventListener('click', () => {
+        document.getElementById('exportPNG')?.addEventListener('click', async () => {
             if (this.currentGraph) {
-                exportToPNG(this.currentGraph.wrapper);
+                await exportToPNG(this.currentGraph.wrapper);
             }
         });
 
-        document.getElementById('exportSVG')?.addEventListener('click', () => {
+        document.getElementById('exportSVG')?.addEventListener('click', async () => {
             if (this.currentGraph) {
-                exportToSVG(this.currentGraph.wrapper);
+                await exportToSVG(this.currentGraph.wrapper);
             }
         });
 

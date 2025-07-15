@@ -2213,7 +2213,13 @@ export const EXAMPLE_DATA = {
                         ["Anduril Industries", "Sentry Towers", "onboard processor"],
                         ["Anduril Industries", "Sentry Towers", "power management module"],
 
-
+                        // Lattice OS
+                        ["Anduril Industries", "Lattice OS", "secure servers"],
+                        ["Anduril Industries", "Lattice OS", "data processing units"],
+                        ["Anduril Industries", "Lattice OS", "AI model hosts"],
+                        ["Anduril Industries", "Lattice OS", "network interfaces"],
+                        ["Anduril Industries", "Lattice OS", "secure communications modules"],
+                        ["Anduril Industries", "Lattice OS", "storage infrastructure"]
                     ]
                 }
 

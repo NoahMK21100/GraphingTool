@@ -86,9 +86,9 @@ export class SankeyGraph extends BaseGraph {
         const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
         this.margin = {
             top: 20,
-            right: 40,  // Reduced fixed margin
+            right: isSidebarCollapsed ? 60 : 100,
             bottom: 20,
-            left: 40    // Reduced fixed margin
+            left: isSidebarCollapsed ? 60 : 120
         };
 
         // Calculate actual diagram dimensions
@@ -165,14 +165,15 @@ export class SankeyGraph extends BaseGraph {
 
                 // Position text based on node position
                 const isLeftSide = d.x0 < width / 2;
-                const x = isLeftSide ? -padding : (d.x1 - d.x0 + padding);
+                const x = isLeftSide ? -padding - 15 : (d.x1 - d.x0 + padding);
 
                 // Create text element with proper positioning
                 const text = g.append('text')
                     .attr('x', x)
                     .attr('y', (d.y1 - d.y0) / 2)
                     .attr('dy', '0.35em')
-                    .attr('text-anchor', isLeftSide ? 'end' : 'start');
+                    .attr('text-anchor', isLeftSide ? 'end' : 'start')
+                    .attr('font-weight', '600')
 
                 // Simple text wrapping - split into two lines if text is too long
                 const maxLength = 25; // characters before wrapping
@@ -203,16 +204,7 @@ export class SankeyGraph extends BaseGraph {
                     text.text(d.name);
                 }
 
-                // Add background with padding
-                const bbox = text.node().getBBox();
-                g.insert('rect', 'text')
-                    .attr('class', 'label-background')
-                    .attr('x', isLeftSide ? bbox.x - 4 : x - 4)
-                    .attr('y', bbox.y - 2)
-                    .attr('width', bbox.width + 8)
-                    .attr('height', bbox.height + 4)
-                    .attr('fill', 'white')
-                    .attr('opacity', 0.8);
+
             });
 
             // Setup interactions
@@ -223,11 +215,11 @@ export class SankeyGraph extends BaseGraph {
             throw error;
         }
 
-        // Update SVG dimensions and viewBox
+        // Update SVG dimensions and viewBox with extra space for labels
         this.svg
             .attr('width', '100%')
             .attr('height', '100%')
-            .attr('viewBox', [0, 0, this.width, this.height])
+            .attr('viewBox', [-50, 0, this.width + 100, this.height])
             .attr('preserveAspectRatio', 'xMidYMid meet');
     }
 
@@ -280,7 +272,7 @@ export class SankeyGraph extends BaseGraph {
         const isSidebarCollapsed = document.querySelector('.sidebar').classList.contains('collapsed');
         this.margin = {
             top: 20,
-            right: isSidebarCollapsed ? 40 : 80,
+            right: isSidebarCollapsed ? 60 : 100,
             bottom: 20,
             left: isSidebarCollapsed ? 60 : 120
         };
