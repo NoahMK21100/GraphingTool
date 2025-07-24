@@ -48332,12 +48332,7 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "wings"
-                        ],
-                        [
-                            "Anduril Industries",
-                            "Altius-600/700",
-                            "fuselage"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
@@ -48357,7 +48352,7 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "flight control computer"
+                            "flight computer"
                         ],
                         [
                             "Anduril Industries",
@@ -48367,38 +48362,38 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "GPS unit"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "datalink radio"
+                            "radio transceiver"
                         ],
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "EO/IR seeker"
+                            "EO/IR sensor"
                         ],
                         [
                             "Anduril Industries",
                             "Altius-600/700",
-                            "warhead payload"
+                            "warhead"
                         ],
                         // Anvil
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "multi-rotor airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "electric motors"
+                            "electric motor"
                         ],
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "propellers"
+                            "propeller"
                         ],
                         [
                             "Anduril Industries",
@@ -48413,17 +48408,17 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "inertial navigation"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "GPS unit"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "radio link"
+                            "radio transceiver"
                         ],
                         [
                             "Anduril Industries",
@@ -48438,13 +48433,13 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Anvil",
-                            "detonation device"
+                            "warhead"
                         ],
                         // Barracuda
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "aerodynamic airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
@@ -48464,27 +48459,27 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "GPS unit"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "INS unit"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "radio communication module"
+                            "radio transceiver"
                         ],
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "seeker head"
+                            "seeker"
                         ],
                         [
                             "Anduril Industries",
                             "Barracuda",
-                            "onboard mission computer"
+                            "onboard processor"
                         ],
                         [
                             "Anduril Industries",
@@ -48495,17 +48490,17 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "quadcopter airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "electric motors"
+                            "electric motor"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "propellers"
+                            "propeller"
                         ],
                         [
                             "Anduril Industries",
@@ -48515,43 +48510,38 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "autopilot module"
+                            "autopilot system"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "GPS unit"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "INS unit"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "onboard computer"
+                            "onboard processor"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "EO/IR camera"
+                            "EO/IR sensor"
                         ],
                         [
                             "Anduril Industries",
                             "Bolt",
-                            "radio datalink"
+                            "radio transceiver"
                         ],
                         // Copperhead
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "underwater hull"
-                        ],
-                        [
-                            "Anduril Industries",
-                            "Copperhead",
-                            "propeller drive"
+                            "hull"
                         ],
                         [
                             "Anduril Industries",
@@ -48561,17 +48551,17 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "battery module"
+                            "propeller"
                         ],
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "sonar system"
+                            "battery pack"
                         ],
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "inertial navigation"
+                            "sonar"
                         ],
                         [
                             "Anduril Industries",
@@ -48581,18 +48571,23 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "onboard mission computer"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Copperhead",
-                            "warhead payload"
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "warhead"
                         ],
                         // Dive-LD/Dive-XL
                         [
                             "Anduril Industries",
                             "Dive-LD/Dive-XL",
-                            "submersible hull"
+                            "hull"
                         ],
                         [
                             "Anduril Industries",
@@ -48602,12 +48597,17 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Dive-LD/Dive-XL",
-                            "electric thrusters"
+                            "electric motor"
                         ],
                         [
                             "Anduril Industries",
                             "Dive-LD/Dive-XL",
-                            "inertial measurement unit"
+                            "thruster"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
@@ -48622,7 +48622,7 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Dive-LD/Dive-XL",
-                            "navigation computer"
+                            "navigation system"
                         ],
                         [
                             "Anduril Industries",
@@ -48633,7 +48633,7 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Fury",
-                            "fixed-wing airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
@@ -48643,7 +48643,7 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Fury",
-                            "fuel tanks"
+                            "fuel tank"
                         ],
                         [
                             "Anduril Industries",
@@ -48653,17 +48653,17 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Fury",
-                            "GPS unit"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Fury",
-                            "INS unit"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Fury",
-                            "EO/IR sensor suite"
+                            "EO/IR sensor"
                         ],
                         [
                             "Anduril Industries",
@@ -48673,18 +48673,18 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Fury",
-                            "datalink radio"
+                            "radio transceiver"
                         ],
                         [
                             "Anduril Industries",
                             "Fury",
-                            "mission payload bays"
+                            "mission payload"
                         ],
                         // Ghost 4/X
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "rotor airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
@@ -48704,84 +48704,109 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "fuel system"
-                        ],
-                        [
-                            "Anduril Industries",
-                            "Ghost 4/X",
                             "battery pack"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "flight control computer"
+                            "fuel tank"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "GPS unit"
+                            "flight computer"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "INS unit"
+                            "inertial navigation system"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "EO/IR camera"
+                            "GPS system"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "radio datalink"
+                            "EO/IR sensor"
                         ],
                         [
                             "Anduril Industries",
                             "Ghost 4/X",
-                            "modular payload rail"
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "modular payload bay"
                         ],
                         // Roadrunner/Roadrunner-M
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "delta-wing airframe"
+                            "airframe"
                         ],
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "twin turbojets"
+                            "turbojet engine"
                         ],
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "fuel tanks"
+                            "fuel tank"
                         ],
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "vectoring thrust system"
+                            "thrust vectoring system"
                         ],
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "flight control computer"
+                            "flight control system"
                         ],
                         [
                             "Anduril Industries",
                             "Roadrunner/Roadrunner-M",
-                            "GPS unit"
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "radar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "EO sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "warhead"
                         ],
                         // Sentry Towers
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "telescoping mast"
+                            "mast"
                         ],
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "solar panels"
+                            "solar panel"
                         ],
                         [
                             "Anduril Industries",
@@ -48791,22 +48816,22 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "radar sensors"
+                            "radar"
                         ],
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "optical cameras"
+                            "optical sensor"
                         ],
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "IR sensors"
+                            "thermal sensor"
                         ],
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "communications antennas"
+                            "communications antenna"
                         ],
                         [
                             "Anduril Industries",
@@ -48816,38 +48841,1558 @@ const EXAMPLE_DATA = {
                         [
                             "Anduril Industries",
                             "Sentry Towers",
-                            "power management module"
+                            "power management unit"
                         ],
                         // Lattice OS
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "secure servers"
+                            "server cluster"
                         ],
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "data processing units"
+                            "data processing unit"
                         ],
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "AI model hosts"
+                            "AI model host"
                         ],
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "network interfaces"
+                            "network interface"
                         ],
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "secure communications modules"
+                            "secure communications module"
                         ],
                         [
                             "Anduril Industries",
                             "Lattice OS",
-                            "storage infrastructure"
+                            "storage system"
+                        ]
+                    ]
+                },
+                spaceX: {
+                    name: "SpaceX Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "rocket engine"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "fuel tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "oxidizer tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "flight computer"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "grid fin"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "landing leg"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon 9",
+                            "telemetry system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "rocket engine"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "fuel tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "oxidizer tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "flight computer"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "grid fin"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "landing leg"
+                        ],
+                        [
+                            "SpaceX",
+                            "Falcon Heavy",
+                            "telemetry system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "combustion chamber"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "turbopump"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "thrust vector control"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "injector"
+                        ],
+                        [
+                            "SpaceX",
+                            "Merlin engine family",
+                            "control valve"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "combustion chamber"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "propellant tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "pressure control system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "thruster nozzle"
+                        ],
+                        [
+                            "SpaceX",
+                            "Draco/SuperDraco",
+                            "valve assembly"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "capsule body"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "heat shield"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "reaction control system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "life support system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "docking mechanism"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "parachute system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "solar panel"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "battery pack"
+                        ],
+                        [
+                            "SpaceX",
+                            "Dragon 2",
+                            "communications antenna"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "rocket engine"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "cryogenic fuel tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "cryogenic oxidizer tank"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "aerodynamic flap"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "heat shield"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "guidance computer"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "navigation system"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "landing leg"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starship",
+                            "payload bay"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "satellite bus"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "phased array antenna"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "solar panel"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "battery pack"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "ion thruster"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "star tracker"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "reaction wheel"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starlink",
+                            "onboard processor"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "satellite bus"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "phased array antenna"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "solar panel"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "battery pack"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "ion thruster"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "star tracker"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "reaction wheel"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "onboard processor"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "infrared sensor"
+                        ],
+                        [
+                            "SpaceX",
+                            "Starshield",
+                            "radar"
+                        ]
+                    ]
+                },
+                shieldAI: {
+                    name: "Shield AI Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "onboard processor"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "GPU"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "AI software stack"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind",
+                            "sensor fusion interface"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "airframe"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "ducted fan"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "fuel engine"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "fuel tank"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "autopilot system"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "GPS system"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "SATCOM antenna"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "radar"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "electronic warfare module"
+                        ],
+                        [
+                            "Shield AI",
+                            "V-BAT (MQ-35)",
+                            "landing gear"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "quadcopter airframe"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "electric motor"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "propeller"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "battery pack"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "onboard processor"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "vision sensor"
+                        ],
+                        [
+                            "Shield AI",
+                            "Nova",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "camera array"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "gimbal mount"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "GPU"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "data interface"
+                        ],
+                        [
+                            "Shield AI",
+                            "ViDAR Pod",
+                            "mounting hardware"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "onboard processor"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "GPU"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "AI software stack"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "sensor fusion interface"
+                        ],
+                        [
+                            "Shield AI",
+                            "Hivemind Enterprise",
+                            "cloud integration module"
+                        ]
+                    ]
+                },
+                trueAnomaly: {
+                    name: "True Anomaly Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "satellite bus"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "chemical thruster"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "reaction wheel"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "star tracker"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "GPS system"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "onboard processor"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Jackal AOV",
+                            "radio transceiver"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "radar"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "electro-optical sensor"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "signal processor"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Mosaic",
+                            "radio transceiver"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "data processing unit"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "network interface"
+                        ],
+                        [
+                            "True Anomaly",
+                            "Golden Dome",
+                            "cybersecurity module"
+                        ]
+                    ]
+                },
+                impulseSpace: {
+                    name: "Impulse Space Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "satellite bus"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "chemical thruster"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "reaction wheel"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "solar panel"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "battery pack"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "star tracker"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "GPS system"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mira OTV",
+                            "onboard processor"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "chemical thruster"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "fuel tank"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "payload adapter"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "navigation system"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Helios",
+                            "onboard processor"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "lander chassis"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "descent engine"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "heat shield"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "solar panel"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "battery pack"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "landing gear"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "navigation system"
+                        ],
+                        [
+                            "Impulse Space",
+                            "Mars Lander",
+                            "radio transceiver"
+                        ]
+                    ]
+                },
+                saronicTechnologies: {
+                    name: "Saronic Technologies Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "forward sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "navigation radar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "forward sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "navigation radar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "sensor mast"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "communication system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "sensor suite"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "radio transceiver"
+                        ]
+                    ]
+                },
+                epirus: {
+                    name: "Epirus Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "high-power microwave array"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "power supply module"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "thermal management unit"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "electromagnetic control unit"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "targeting computer"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas",
+                            "mount platform"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "high-power microwave array"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "cooling system"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "power supply module"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "targeting computer"
+                        ],
+                        [
+                            "Epirus",
+                            "Leonidas H2O",
+                            "remote control system"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "power conditioning system"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "energy storage unit"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "wireless power transmission module"
+                        ],
+                        [
+                            "Epirus",
+                            "SmartPower",
+                            "load management system"
+                        ]
+                    ]
+                },
+                xEnergy: {
+                    name: "X-Energy Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "reactor core"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "helium gas coolant system"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "control rod assembly"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "steam generator"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "containment vessel"
+                        ],
+                        [
+                            "X-Energy",
+                            "Xe-100",
+                            "digital control system"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "TRISO fuel particle"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "uranium kernel"
+                        ],
+                        [
+                            "X-Energy",
+                            "TRISO-X fuel",
+                            "ceramic coating"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "reactor core"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "thermal battery"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "shielding module"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "autonomous control unit"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "containment vessel"
+                        ],
+                        [
+                            "X-Energy",
+                            "Mobile Micro Reactor",
+                            "power distribution system"
+                        ]
+                    ]
+                },
+                databricks: {
+                    name: "Databricks Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "data processing engine"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "cloud integration interface"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Platform",
+                            "user management system"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "storage layer"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "transaction log"
+                        ],
+                        [
+                            "Databricks",
+                            "Delta Lake",
+                            "data versioning system"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "SQL execution engine"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "query optimizer"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks SQL",
+                            "interactive query interface"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "model training module"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "experiment tracking system"
+                        ],
+                        [
+                            "Databricks",
+                            "MLflow/AutoML",
+                            "deployment interface"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "data catalog"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "access control module"
+                        ],
+                        [
+                            "Databricks",
+                            "Unity Catalog",
+                            "audit logging system"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "vendor management system"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "data exchange interface"
+                        ],
+                        [
+                            "Databricks",
+                            "Databricks Marketplace",
+                            "billing module"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "natural language interface"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "LLM backend"
+                        ],
+                        [
+                            "Databricks",
+                            "Assistant (Gen AI)",
+                            "context management engine"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "stream processing engine"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "pipeline orchestrator"
+                        ],
+                        [
+                            "Databricks",
+                            "LakeFlow DLT",
+                            "data validation module"
+                        ]
+                    ]
+                },
+                groq: {
+                    name: "Groq Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "matrix multiplication engine"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "instruction scheduler"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "dataflow controller"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "memory controller"
+                        ],
+                        [
+                            "Groq",
+                            "Language Processing Unit",
+                            "cache subsystem"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "rack-mounted chassis"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "high-speed interconnect"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "power supply module"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "thermal management unit"
+                        ],
+                        [
+                            "Groq",
+                            "GroqRack",
+                            "network interface card"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "cloud orchestration layer"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "virtual compute node"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "resource scheduler"
+                        ],
+                        [
+                            "Groq",
+                            "GroqCloud",
+                            "load balancer"
+                        ]
+                    ]
+                },
+                appliedIntuition: {
+                    name: "Applied Intuition Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "simulation engine"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "scenario builder"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "sensor emulation module"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Simulation Platform",
+                            "physics engine"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "real-time scheduler"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "hardware abstraction layer"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "communication bus"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Vehicle OS",
+                            "safety monitor"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "robotics middleware"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "navigation planner"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "autonomy framework"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Axion",
+                            "decision engine"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "perception system"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "sensor fusion module"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "AI-based object detection"
+                        ],
+                        [
+                            "Applied Intuition",
+                            "Acuity",
+                            "tracking engine"
+                        ]
+                    ]
+                },
+                cerebrasSystems: {
+                    name: "Cerebras Systems Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "AI core array"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "mesh interconnect"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "memory interface"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "WSE-3",
+                            "power delivery network"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "server chassis"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "cooling module"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "network interface module"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "CS-3",
+                            "power supply"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "cloud training platform"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "inference engine"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "scaling coordinator"
+                        ],
+                        [
+                            "Cerebras Systems",
+                            "Cerebras Cloud",
+                            "multi-node manager"
                         ]
                     ]
                 }
