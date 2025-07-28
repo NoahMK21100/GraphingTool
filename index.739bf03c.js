@@ -50395,6 +50395,1764 @@ const EXAMPLE_DATA = {
                             "multi-node manager"
                         ]
                     ]
+                },
+                armis: {
+                    name: "Armis Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "asset discovery engine"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "threat detection module"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "zero-trust access controller"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "device intelligence database"
+                        ],
+                        [
+                            "Armis",
+                            "Armis Centrix",
+                            "real-time telemetry processor"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "anomaly detection engine"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "behavioral analytics module"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "network packet analyzer"
+                        ],
+                        [
+                            "Armis",
+                            "Threat Detection",
+                            "automated response system"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "CVSS risk scoring engine"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "patch status scanner"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "remediation workflow engine"
+                        ],
+                        [
+                            "Armis",
+                            "Vulnerability Mgmt.",
+                            "exploit signature database"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "deep passive scanner"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "MAC and IP fingerprinting engine"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "device classification algorithm"
+                        ],
+                        [
+                            "Armis",
+                            "Asset Discovery",
+                            "visibility dashboard"
+                        ]
+                    ]
+                },
+                psiQuantum: {
+                    name: "PsiQuantum Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "photon source array"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "single-photon detector network"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "quantum error correction unit"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "quantum logic gate matrix"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "quantum compiler stack"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Photonic Q-Computer",
+                            "control electronics platform"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "cryogenic cooling system"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "waveguide array"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "photon routing chip"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "optical switch matrix"
+                        ],
+                        [
+                            "PsiQuantum",
+                            "Cryogenic Silicon Photonics",
+                            "low-loss optical interconnect"
+                        ]
+                    ]
+                },
+                lambda: {
+                    name: "Lambda Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "NVIDIA GPU array"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "PCIe expansion bus"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "NVLink interface"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "liquid cooling system"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Workstations",
+                            "high-throughput SSD"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "virtual GPU manager"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "multi-tenant scheduler"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "container orchestration platform"
+                        ],
+                        [
+                            "Lambda",
+                            "GPU Servers/Cloud",
+                            "storage backend"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "compute provisioning engine"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "API gateway"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "data center fabric"
+                        ],
+                        [
+                            "Lambda",
+                            "Cloud Infrastructure",
+                            "network telemetry system"
+                        ]
+                    ]
+                },
+                basePower: {
+                    name: "Base Power Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "lithium-ion battery pack"
+                        ],
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "battery management system"
+                        ],
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "power inverter"
+                        ],
+                        [
+                            "Base Power",
+                            "Home Battery",
+                            "thermal regulation module"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "grid interface controller"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "demand response unit"
+                        ],
+                        [
+                            "Base Power",
+                            "Grid Services",
+                            "real-time grid analytics"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "energy pricing algorithm"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "plan optimization engine"
+                        ],
+                        [
+                            "Base Power",
+                            "Fixed-Rate Energy Plans",
+                            "user billing interface"
+                        ]
+                    ]
+                },
+                apex: {
+                    name: "APEX Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "APEX",
+                            "Aries",
+                            "propellant tank"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "liquid propulsion system"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "avionics suite"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "flight control computer"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "telemetry system"
+                        ],
+                        [
+                            "APEX",
+                            "Aries",
+                            "payload integration adapter"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "solid propulsion motor"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "guidance and navigation unit"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "inertial measurement unit"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "flight control surfaces"
+                        ],
+                        [
+                            "APEX",
+                            "Nova",
+                            "telemetry antenna array"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "automated assembly line"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "additive manufacturing center"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "composite material curing system"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "industrial robotics suite"
+                        ],
+                        [
+                            "APEX",
+                            "Factory One",
+                            "quality control vision system"
+                        ]
+                    ]
+                },
+                nominal: {
+                    name: "Nominal Company Subsystem Flow",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "Subsystem"
+                    ],
+                    data: [
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "financial inference engine"
+                        ],
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "data ingestion pipeline"
+                        ],
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "real-time analytics dashboard"
+                        ],
+                        [
+                            "Nominal",
+                            "AI Financial OS",
+                            "decision modeling system"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "ledger generation model"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "journal entry classifier"
+                        ],
+                        [
+                            "Nominal",
+                            "Generative Subledgers",
+                            "validation rule engine"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "entity harmonization module"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "cross-ledger reconciliation system"
+                        ],
+                        [
+                            "Nominal",
+                            "Multi-Entity Consolidation",
+                            "roll-up reporting tool"
+                        ]
+                    ]
+                }
+            }
+        },
+        natsec_sankey_3: {
+            name: "Anduril & Saronic Technologies Detailed Flow",
+            technologies: {
+                main: {
+                    name: "Anduril & Saronic Combined Overview",
+                    columns: [
+                        'Company',
+                        'Product',
+                        'Subsystem',
+                        'Tech Category',
+                        'Location of HQ (State)'
+                    ],
+                    data: [
+                        // Anduril Products
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Loitering Munition",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Small Loitering Munition",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Multi-Mission UAV",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Surveillance UAV",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Underwater Loitering Munition",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Autonomous UUV",
+                            "Maritime Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Large Multi-Mission UAV",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Multi-Role Helicopter UAV",
+                            "Autonomous And Robotic Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "High-Speed Interceptor",
+                            "Weapon Systems",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Surveillance System",
+                            "Sensors And Detection",
+                            "CA"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "AI Command & Control",
+                            "Artificial Intelligence",
+                            "CA"
+                        ],
+                        // Saronic Products
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Medium USV",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Fast Attack USV",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Multi-Mission USV",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Stealth USV",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Communications USV",
+                            "Maritime Systems",
+                            "TX"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Heavy Payload USV",
+                            "Maritime Systems",
+                            "TX"
+                        ]
+                    ]
+                },
+                andurilIndustries: {
+                    name: "Anduril Industries Detailed Breakdown",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "System (Category)",
+                        "Subcategory",
+                        "Subsystem"
+                    ],
+                    data: [
+                        // Altius-600/700 - Loitering Munition UAV
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Energy & Infrastructure",
+                            "Fossil Fuel Technologies",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "turbojet engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "piston engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "flight computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Altius-600/700",
+                            "Weapon Systems",
+                            "Precision-Guided Munition",
+                            "warhead"
+                        ],
+                        // Anvil - Small Loitering Munition
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "propeller"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "flight controller"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "optical sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Anvil",
+                            "Weapon Systems",
+                            "Precision-Guided Munition",
+                            "warhead"
+                        ],
+                        // Barracuda - Multi-Mission UAV
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "turbofan engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Energy & Infrastructure",
+                            "Fossil Fuel Technologies",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "flight control system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "seeker"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Barracuda",
+                            "Weapon Systems",
+                            "Precision-Guided Munition",
+                            "warhead"
+                        ],
+                        // Bolt - Surveillance UAV
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "propeller"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "autopilot system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Bolt",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Copperhead - Underwater Loitering Munition
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Underwater Vehicles (UUVs)",
+                            "hull"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Acoustic Systems",
+                            "Sonar System",
+                            "sonar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Sensors And Detection",
+                            "Environmental Monitoring Sensors",
+                            "depth sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Copperhead",
+                            "Weapon Systems",
+                            "Precision-Guided Munition",
+                            "warhead"
+                        ],
+                        // Dive-LD/Dive-XL - Autonomous Underwater Vehicles
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Underwater Vehicles (UUVs)",
+                            "hull"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "thruster"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Sensors And Detection",
+                            "Environmental Monitoring Sensors",
+                            "depth sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Maritime Systems",
+                            "Subsea Infrastructure Maintenance",
+                            "buoyancy control system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Positioning And Navigation",
+                            "Underwater Navigation Systems",
+                            "navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Dive-LD/Dive-XL",
+                            "Advanced Manufacturing",
+                            "Modular Robotic System",
+                            "payload interface"
+                        ],
+                        // Fury - Large Multi-Mission UAV
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "turbofan engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Energy & Infrastructure",
+                            "Fossil Fuel Technologies",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "flight computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Electromagnetic (EM) & Radio Frequency (RF)",
+                            "Radar System",
+                            "radar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Fury",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "mission payload"
+                        ],
+                        // Ghost 4/X - Multi-Role Helicopter UAV
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "main rotor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "tail rotor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Energy & Infrastructure",
+                            "Fossil Fuel Technologies",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "flight computer"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Ghost 4/X",
+                            "Advanced Manufacturing",
+                            "Modular Robotic System",
+                            "modular payload bay"
+                        ],
+                        // Roadrunner/Roadrunner-M - High-Speed Interceptor
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Aerial Vehicles (UAVs)",
+                            "airframe"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Aerospace And Propulsion",
+                            "Aerospace Propulsion System",
+                            "turbojet engine"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Energy & Infrastructure",
+                            "Fossil Fuel Technologies",
+                            "fuel tank"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Aerospace And Propulsion",
+                            "Advanced Propulsion Control System",
+                            "thrust vectoring system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "flight control system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Positioning And Navigation",
+                            "Inertial Navigation Systems",
+                            "inertial navigation system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Electromagnetic (EM) & Radio Frequency (RF)",
+                            "Radar System",
+                            "radar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Roadrunner/Roadrunner-M",
+                            "Weapon Systems",
+                            "Precision-Guided Munition",
+                            "warhead"
+                        ],
+                        // Sentry Towers - Surveillance System
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Sensors And Detection",
+                            "Advanced Sensor Technologies",
+                            "mast"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Energy & Infrastructure",
+                            "Renewable Energy Generation/Harvesting",
+                            "solar panel"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Energy & Infrastructure",
+                            "Battery Technology",
+                            "battery pack"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Electromagnetic (EM) & Radio Frequency (RF)",
+                            "Radar System",
+                            "radar"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "optical sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Sensors And Detection",
+                            "Environmental Monitoring Sensors",
+                            "thermal sensor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "communications antenna"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Electronics & Semiconductors",
+                            "Microprocessors",
+                            "onboard processor"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Sentry Towers",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        // Lattice OS - AI Command & Control Platform
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Data And Infrastructure",
+                            "Cloud Computing Platforms",
+                            "server cluster"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Artificial Intelligence",
+                            "Machine Learning Algorithms",
+                            "data processing unit"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Artificial Intelligence",
+                            "Deep Learning Networks",
+                            "AI model host"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Communications Systems",
+                            "5G/6G Network Infrastructure",
+                            "network interface"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Cyber And Information Systems",
+                            "Computer Security/Access Control",
+                            "secure communications module"
+                        ],
+                        [
+                            "Anduril Industries",
+                            "Lattice OS",
+                            "Data And Infrastructure",
+                            "Data Center Technology",
+                            "storage system"
+                        ]
+                    ]
+                },
+                saronicTechnologies: {
+                    name: "Saronic Technologies Detailed Breakdown",
+                    columns: [
+                        "Company",
+                        "Product",
+                        "System (Category)",
+                        "Subcategory",
+                        "Subsystem"
+                    ],
+                    data: [
+                        // Spyglass - Medium USV
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Acoustic Systems",
+                            "Sonar System",
+                            "forward sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Electromagnetic (EM) & Radio Frequency (RF)",
+                            "Radar System",
+                            "navigation radar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Spyglass",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Cutlass - Fast Attack USV
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Acoustic Systems",
+                            "Sonar System",
+                            "forward sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Electromagnetic (EM) & Radio Frequency (RF)",
+                            "Radar System",
+                            "navigation radar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cutlass",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Corsair - Multi-Mission USV
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Sensors And Detection",
+                            "Advanced Sensor Technologies",
+                            "sensor mast"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Corsair",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Mirage - Stealth USV
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Acoustic Systems",
+                            "Sonar System",
+                            "sonar"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Sensors And Detection",
+                            "Optical Sensors",
+                            "EO/IR sensor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Mirage",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Cipher - Communications USV
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Communications Systems",
+                            "Satellite Communication Systems",
+                            "communication system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Cipher",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ],
+                        // Marauder - Heavy Payload USV
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Autonomous And Robotic Systems",
+                            "Unmanned Surface Vehicles (USVs)",
+                            "composite hull"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Transportation & Vehicle Tech",
+                            "Electric Propulsion Systems",
+                            "electric motor"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Maritime Systems",
+                            "Maritime Propulsion Systems",
+                            "propeller"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Energy & Infrastructure",
+                            "Energy Storage Systems (Batteries)",
+                            "lithium-ion battery"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Energy & Infrastructure",
+                            "Power Management System",
+                            "power management unit"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Sensors And Detection",
+                            "Multi-Modal Sensor Fusion",
+                            "sensor suite"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Positioning And Navigation",
+                            "Multi-Constellation GNSS Receivers",
+                            "GPS system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Autonomous And Robotic Systems",
+                            "Advanced Perception Systems",
+                            "autopilot system"
+                        ],
+                        [
+                            "Saronic Technologies",
+                            "Marauder",
+                            "Communications Systems",
+                            "Radio Communications",
+                            "radio transceiver"
+                        ]
+                    ]
                 }
             }
         }
